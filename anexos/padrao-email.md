@@ -1,23 +1,21 @@
 # Anexo: Padrão de e-mail corporativo
 
-> **Versão:** 0.1 (rascunho) · **Data:** 15/10/2026
+> **Versão:** 1.0 · **Data:** 15/10/2026
 > Usado pelos POP-01 (entrada), POP-11 (funcionário ativo) e POP-02 (saída).
 
 ## 1. Onde ficam as contas
 
 O e-mail é o **da hospedagem do domínio** de cada empresa (painel tipo cPanel do provedor). Cada empresa do grupo tem o **seu próprio domínio**.
 
-| Empresa do grupo | Domínio | Painel da hospedagem | Logo para a assinatura (URL) |
-|---|---|---|---|
-| _a preencher_ | `@_____.com.br` | _a preencher_ | _a preencher_ |
-| _a preencher_ | `@_____.com.br` | _a preencher_ | _a preencher_ |
-| _a preencher_ | `@_____.com.br` | _a preencher_ | _a preencher_ |
+| Empresa do grupo | Domínio | Hospedagem |
+|---|---|---|
+| Postos Vale da Serra | `@postosvaledaserra.com.br` | Ittek |
+| Sertão Petróleo | `@sertaopetroleo.com.br` | Ittek |
+| TRR Vale da Serra | `@trrvaledaserra.com.br` | Ittek |
 
 > Os dados de acesso aos painéis **não** entram neste arquivo. Ficam no cofre de senhas da TI.
 
 ## 2. Padrão de endereço
-
-### Pessoas
 
 `nome.sobrenome@<domínio-da-empresa>`
 
@@ -26,51 +24,51 @@ O e-mail é o **da hospedagem do domínio** de cada empresa (painel tipo cPanel 
 - Homônimo (endereço já existe ou existiu): acrescentar número: `joao.silva2@`. Nunca reaproveitar o endereço de quem saiu.
 - Sem apelido, sem número de telefone, sem cargo no endereço da pessoa.
 
-### Setores (aliases)
+## 3. Assinatura padrão (imagem de rodapé)
 
-Endereços de setor **não** são de uma pessoa. Eles encaminham para quem atende o setor:
+A assinatura de e-mail é **uma imagem padronizada**, feita pelo **RH** para cada funcionário a partir do modelo de rodapé da empresa.
 
-| Endereço | Uso |
-|---|---|
-| `financeiro@` | Contas a pagar/receber, cobrança |
-| `vendas@` | Pedidos e comercial |
-| `rh@` | RH/DP |
-| `ti@` | Chamados de TI |
-| `contato@` | Formulário do site, contato geral |
+### Conteúdo da imagem
 
-Lista completa e quem recebe cada alias: manter no Formulário B de cada pessoa e revisar no POP-11 §4.
+1. **Foto** do funcionário, editada pelo RH (seção 4)
+2. **Nome** (como a pessoa é chamada no trabalho: `João Silva`)
+3. **Cargo** · **Empresa**
+4. **Telefone/WhatsApp** corporativo, no formato `(DD) 9XXXX-XXXX`
 
-## 3. Assinatura padrão
+Mesmo layout, fontes e cores para todos da mesma empresa. Nada além disso: sem frase motivacional, sem informação fora do modelo.
 
-### Conteúdo (nesta ordem)
-
-1. **Nome** (como a pessoa é chamada no trabalho: `João Silva`)
-2. **Cargo** · **Empresa**
-3. **Telefone/WhatsApp** corporativo
-4. **Logo** da empresa
-
-Nada além disso: sem frase motivacional, sem imagem de fundo, sem cores fora do padrão, sem foto.
+<div style="border: 1px dashed #999; padding: 14px; margin: 8px 0; color: #444; font-size: 9.5pt;"><b>[ foto ]</b> &nbsp; <b>João Silva</b> · Analista Financeiro · TRR Vale da Serra · (32) 99999-0000 &nbsp; <i>(exemplo de disposição; o visual final é o modelo do RH)</i></div>
 
 ### Regras
 
-- Gerar sempre a partir do modelo [assinatura-modelo.html](assinatura-modelo.html). Não montar à mão.
-- Logo **por link** (URL da imagem hospedada no site da empresa), não colado como imagem: imagem colada vira anexo em muitos programas.
-- Telefone no formato `(DD) 9XXXX-XXXX`.
-- Mudou de cargo ou de empresa: atualizar a assinatura no mesmo dia (POP-11 §3).
+- Sempre a partir do **modelo de rodapé da empresa**. Não montar à mão.
+- Arquivo **PNG**, com **600 px de largura**, nome `rodape-nome.sobrenome.png`. O RH guarda o arquivo na pasta do funcionário e envia para a TI.
+- Mudou de cargo, de telefone ou de empresa: o RH refaz a imagem e a TI troca no mesmo dia (POP-11 §3).
 
-### Como gerar
-
-1. Abrir uma cópia de `assinatura-modelo.html` no editor de texto.
-2. Trocar os campos entre `{{ }}`: `{{NOME}}`, `{{CARGO}}`, `{{EMPRESA}}`, `{{TELEFONE}}`, `{{TELEFONE_LINK}}` (só números com DDI, ex.: `5532999998888`), `{{LOGO_URL}}`, `{{COR_EMPRESA}}`.
-3. Abrir o arquivo no navegador e conferir.
-
-### Como instalar
+### Como instalar (TI)
 
 | Programa | Caminho |
 |---|---|
-| **Outlook clássico** (Windows) | Abrir o HTML no navegador → selecionar tudo (Ctrl+A) → copiar → Outlook: *Arquivo → Opções → Email → Assinaturas → Novo* → colar → definir como padrão para mensagens novas **e** respostas |
-| **Novo Outlook / Outlook Web** | *Configurações → Contas → Assinaturas* → colar → definir como padrão |
-| **Webmail Roundcube** (comum em cPanel) | *Configurações → Identidades* → escolher a identidade → ligar o editor HTML → colar → Salvar |
+| **Outlook clássico** (Windows) | *Arquivo → Opções → Email → Assinaturas → Novo* → botão de inserir imagem → escolher o PNG → definir como padrão para mensagens novas **e** respostas |
+| **Novo Outlook / Outlook Web** | *Configurações → Contas → Assinaturas* → inserir imagem → definir como padrão |
+| **Webmail Roundcube** (comum em cPanel) | *Configurações → Identidades* → escolher a identidade → ligar o editor HTML → inserir imagem → Salvar |
 | **Celular** (Gmail/Outlook app) | Assinatura simples só em texto: `Nome · Cargo · Empresa · Telefone` |
 
-Depois de instalar: mandar um e-mail de teste para um endereço externo e conferir se o logo aparece.
+Depois de instalar: mandar um e-mail de teste para um endereço externo e conferir como a assinatura aparece.
+
+## 4. Foto do funcionário
+
+A mesma foto vale para a **imagem de rodapé** e para a **foto de perfil** (WhatsApp corporativo e e-mail).
+
+1. **Quando:** na admissão (POP-01), antes do primeiro dia.
+2. **Como tirar:** de frente, do peito para cima, fundo liso e claro, boa luz, sem óculos escuros nem boné. Pode ser com o celular da empresa.
+3. **RH edita:** recorta no formato padrão, ajusta luz e fundo e monta a imagem de rodapé.
+4. **RH envia para a TI:** a foto editada e o PNG do rodapé.
+5. **Autorização:** o funcionário autoriza o uso da foto ao assinar o Formulário C. Na saída (POP-02), a foto sai do perfil do WhatsApp e não é mais usada.
+
+## Aprovação
+
+| Área | Nome | Assinatura | Data |
+|---|---|---|---|
+| RH | Camila Faverao | | ___/___/____ |
+| TI | Lui Grosz | | ___/___/____ |

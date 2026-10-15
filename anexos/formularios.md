@@ -1,12 +1,14 @@
 # Anexo: Formulários de TI
 
-> **Versão:** 0.1 (rascunho) · **Data:** 15/10/2026
-> Usados pelos POP-01 (entrada), POP-11 (funcionário ativo) e POP-02 (saída). Imprimir ou copiar para o formato que o RH usa.
-> Os termos C, D e E são modelos: **validar o texto com o jurídico/contador** antes de usar.
+> **Versão:** 1.0 · **Data:** 15/10/2026
+> Usados pelos POP-01 (entrada), POP-11 (funcionário ativo) e POP-02 (saída).
+> **A e B são digitais, no GLPI.** O A é o formulário do chamado "Solicitação de TI" e o B é a ficha de acessos no cadastro da pessoa. Os campos abaixo são os que o GLPI deve ter.
+> **C e D são em papel**, assinados pelo funcionário e pela TI, e ficam na pasta do funcionário no RH.
+> Os termos C e D são modelos padrão de entrega e devolução de equipamento.
 
 ---
 
-## Formulário A: Solicitação de TI
+## Formulário A: Solicitação de TI (chamado no GLPI)
 
 **Tipo:** ☐ Entrada ☐ Mudança de função/posto ☐ Troca de equipamento ☐ Afastamento ☐ Saída
 
@@ -30,7 +32,6 @@
 | Item | Sim | Detalhe |
 |---|---|---|
 | E-mail corporativo | ☐ | |
-| Aliases de setor | ☐ | quais: |
 | Sistema VS | ☐ | perfil: · postos/unidades: |
 | ERP | ☐ | perfil: |
 | Petroshow | ☐ | perfil: |
@@ -40,21 +41,19 @@
 | WhatsApp corporativo | ☐ | grupos: |
 | Outro | ☐ | |
 
-Solicitado por (RH): ______________ Data: ___/___/____
-Aprovado por (gestor): ______________ Data: ___/___/____
+Solicitado por (RH) e aprovado por (gestor): registrados no chamado, com data e hora.
 
 ---
 
-## Formulário B: Checklist de acessos
+## Formulário B: Checklist de acessos (ficha no GLPI)
 
-Uma folha por funcionário, **atualizada a cada mudança**. Na saída, vira a lista do que bloquear.
+Uma ficha por funcionário no GLPI, **atualizada a cada mudança**. Na saída, vira a lista do que bloquear.
 
 **Funcionário:** ______________ **Empresa:** ______________
 
 | Sistema / item | Usuário ou identificação | Criado em / por | Alterado em / por (o quê) | Bloqueado em / por |
 |---|---|---|---|---|
 | E-mail | | | | |
-| Aliases de setor | | | | |
 | Sistema VS | | | | |
 | ERP | | | | |
 | Petroshow | | | | |
@@ -82,6 +81,7 @@ Comprometo-me a:
 3. Avisar a TI **imediatamente** em caso de perda, roubo ou defeito.
 4. Não compartilhar minhas senhas.
 5. Devolver os equipamentos, com acessórios, ao sair da empresa ou quando solicitado.
+6. Autorizo o uso da minha foto no perfil do WhatsApp corporativo, no e-mail e na assinatura de e-mail, somente enquanto eu trabalhar na empresa.
 
 Local e data: ______________, ___/___/____
 
@@ -98,23 +98,16 @@ Funcionário(a): ______________________ TI: ______________________
 | | | ☐ | ☐ | |
 | | | ☐ | ☐ | |
 
-☐ Celular: wipe feito pelo Android Enterprise em ___/___/____
+☐ Celular: wipe feito pelo Headwind MDM em ___/___/____
 ☐ Computador: arquivos de trabalho copiados em ___/___/____
 
 Local e data: ______________, ___/___/____
 
 Funcionário(a): ______________________ TI: ______________________
 
----
+## Aprovação
 
-## Formulário E: Ciência de localização do aparelho (LGPD)
-
-Eu, ______________________, fui informado(a) de que o celular corporativo de patrimônio ______________ tem a **localização ativada** pelo gerenciamento da empresa.
-
-- **Finalidade:** encontrar o aparelho em caso de perda ou roubo e proteger os dados da empresa.
-- A localização **não** é usada para controle de jornada nem para outra finalidade sem aviso prévio por escrito.
-- Só a TI tem acesso a essa informação.
-
-Local e data: ______________, ___/___/____
-
-Funcionário(a): ______________________ TI: ______________________
+| Área | Nome | Assinatura | Data |
+|---|---|---|---|
+| RH | Camila Faverao | | ___/___/____ |
+| TI | Lui Grosz | | ___/___/____ |

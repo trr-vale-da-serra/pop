@@ -1,7 +1,9 @@
-# Plano de POP de TI: Gestão de Computadores e Celulares
+# Plano de TI: Gestão de Computadores e Celulares
 
-> **Versão:** 0.1 (rascunho) · **Data:** 15/10/2026 · **Responsável:** _a definir_
-> **Regra geral:** todas as ferramentas precisam ser **gratuitas** (licença grátis ou open source, sem mensalidade).
+> **Versão:** 1.0 · **Data:** 15/10/2026 · **Responsável:** Lui Grosz (TI)
+> Empresas: Postos Vale da Serra, Sertão Petróleo e TRR Vale da Serra.
+> **Regra geral:** todas as ferramentas são **gratuitas** (licença grátis ou open source, sem mensalidade).
+> **Regra de equipamento:** nenhum serviço ou dado da empresa roda em equipamento que não seja da empresa.
 
 ---
 
@@ -9,166 +11,214 @@
 
 Padronizar como a TI controla, protege e dá suporte aos equipamentos da empresa:
 
-- **Computadores** em ambiente misto: Windows e Linux, porque parte das máquinas está migrando para Linux.
+- **Computadores:** Linux (padrão) e Windows (só onde algum programa exige).
 - **Celulares** corporativos Android.
-
-## 2. Status das decisões
-
-| Área | Item | Status |
-|---|---|---|
-| Celulares | Bloqueio de apps | ✅ Decidido |
-| Celulares | Android Enterprise (versão gratuita) | ✅ Decidido |
-| Celulares | Bloqueio remoto do aparelho | ✅ Decidido |
-| Celulares | Bloqueio de depuração USB (anti-debug) | ✅ Decidido |
-| Computadores | Ferramenta de controle remoto/gestão Windows + Linux | 🟡 Em avaliação |
-| Computadores | Inventário, atualizações, backup, segurança | 🟡 Em avaliação |
-| Pessoas | POP-01 (entrada), POP-11 (funcionário ativo), POP-02 (saída) | 📝 Rascunho |
-| E-mail | Padrão `nome.sobrenome@`, um domínio por empresa, assinatura padrão | ✅ Decidido (domínios a preencher) |
 
 ---
 
-## 3. Computadores (Windows + Linux)
+## 2. Ferramentas adotadas
 
-### 3.1 Ferramenta principal de controle: propostas
-
-| Ferramenta | O que faz | Windows | Linux | Custo | Observação |
-|---|---|---|---|---|---|
-| **MeshCentral** ⭐ | Acesso remoto (tela, terminal, arquivos), inventário básico, agrupamento de máquinas, ações em massa | ✅ | ✅ | Grátis (open source, servidor próprio) | **Recomendação principal.** Um painel web só para tudo, leve, roda em qualquer PC velho ou VM |
-| **RustDesk** (servidor próprio) | Acesso remoto tipo "AnyDesk/TeamViewer" | ✅ | ✅ | Grátis no plano open source | Bom para suporte pontual, mas gerencia menos que o MeshCentral |
-| **Tactical RMM** | RMM completo (scripts, alertas, patches) | ✅ | ⚠️ | Open source | O agente Linux e alguns recursos ficam restritos a patrocinadores. **Conferir antes de adotar** |
-
-**Sugestão:** usar o **MeshCentral** para controle e suporte e o **Ansible** (3.2) para configurar várias máquinas de uma vez.
-
-### 3.2 Configuração em massa e padronização
-
-| Ferramenta | Uso | Custo |
+| Área | Ferramenta | Para quê |
 |---|---|---|
-| **Ansible** | Instala programas, aplica configurações e cria usuários em várias máquinas ao mesmo tempo. Linux via SSH, Windows via WinRM. Não precisa instalar agente | Grátis |
-| **Samba AD** | Servidor de domínio gratuito (substitui o Windows Server). Login único e políticas (GPO) para Windows, e Linux entrando no domínio via SSSD | Grátis |
+| Acesso remoto e controle | **MeshCentral** | Tela, terminal e arquivos de qualquer PC, Windows ou Linux, pelo navegador |
+| Suporte de fornecedor | **AnyDesk** | Só para fornecedores externos, com regras (§3.2) |
+| Configuração em massa | **Ansible** | Instala programas e aplica configurações em vários PCs de uma vez |
+| Inventário, chamados e patrimônio | **GLPI + GLPI Agent** | Inventário automático, chamados de TI e quem está com cada equipamento |
+| Segurança | **Wazuh** | Painel central de alertas de segurança de todas as máquinas |
+| Antivírus | **Microsoft Defender** (Windows) e **ClamAV** (Linux) | Antivírus em cada máquina, com alertas enviados ao Wazuh |
+| Monitoramento | **Uptime Kuma** | Avisa quando o link, o servidor ou um serviço cai |
+| Backup de PCs | **UrBackup** | Backup central de todos os PCs no servidor |
+| Backup do servidor | **Restic** | Cópia do próprio servidor para um disco USB externo |
+| Senhas | **Vaultwarden** | Cofre com **todas** as senhas: da empresa e de cada funcionário |
+| Criptografia de disco | **BitLocker** (Windows Pro) e **LUKS** (Linux) | Protege os dados se o PC for roubado |
+| Firewall e internet | **OPNsense** | Firewall, VPN WireGuard e troca automática para a Starlink |
+| Celulares | **Headwind MDM Community** (Android Enterprise) | Políticas, bloqueio de apps, bloqueio e limpeza remotos |
 
-### 3.3 Inventário e chamados (helpdesk)
+Não há domínio (Active Directory). As configurações dos PCs são aplicadas pelo Ansible.
 
-| Ferramenta | Uso | Custo |
-|---|---|---|
-| **GLPI + GLPI Agent** | Inventário automático (hardware, software, licenças) e sistema de chamados. Windows e Linux | Grátis (open source) |
-| **Snipe-IT** | Controle de patrimônio: quem está com qual equipamento, termo de responsabilidade | Grátis (servidor próprio) |
+---
 
-### 3.4 Segurança e monitoramento
+## 3. Computadores
 
-| Ferramenta | Uso | Custo |
-|---|---|---|
-| **Wazuh** | Monitoramento central de segurança (SIEM/XDR), **não é antivírus**: junta os alertas de todas as máquinas, detecta vulnerabilidades, alterações em arquivos e logins suspeitos, e recebe os alertas do Defender e do ClamAV. Windows e Linux | Grátis (open source) |
-| **Microsoft Defender** | Antivírus que já vem no Windows | Grátis (incluso) |
-| **ClamAV** | Antivírus para Linux | Grátis |
-| **Zabbix** ou **Uptime Kuma** | Avisa quando máquina, internet (Starlink) ou serviço cai | Grátis |
-| **BitLocker / LUKS** | Criptografia de disco (BitLocker no Windows Pro, LUKS no Linux) | Grátis (incluso) |
-| **OPNsense** | Firewall/roteador com filtro de sites, VPN e **failover entre o link principal e a Starlink** (ver 5.4) | Grátis |
+### 3.1 Sistema padrão
+
+- **Linux (padrão):** **Ubuntu 26.04 LTS** com GNOME, com as extensões **Dash to Panel** (barra de tarefas embaixo) e **ArcMenu** (menu Iniciar), para a tela ficar parecida com o Windows. Instalação no POP-04.
+- **Windows:** fica só nos PCs que usam programas que não rodam no Linux (ex.: alguns sistemas de banco ou fornecedores). Instalação no POP-05.
+- **Nome dos computadores:** `<EMPRESA>-PC-<patrimônio>`, com `POSTOS`, `SERTAO` ou `TRR` no lugar de `<EMPRESA>` (ex.: `TRR-PC-0012`).
+- **Usuários:** cada pessoa tem um usuário **sem permissão de administrador**. A TI tem uma conta administradora separada, com a senha no Vaultwarden.
+
+### 3.2 Acesso remoto
+
+**TI:** sempre pelo **MeshCentral**, com 2FA ligado para todos os usuários do painel.
+
+**Fornecedores (AnyDesk):**
+
+1. Só quando **a empresa chamou o fornecedor**. Nunca para quem ligou oferecendo suporte.
+2. Sempre **assistido**: alguém no PC aceita a conexão e acompanha. **Nunca** configurar senha de acesso autônomo.
+3. Cada acesso é registrado num **chamado do GLPI**: fornecedor, data, motivo e quem acompanhou.
+4. O AnyDesk fica instalado só nos PCs que recebem suporte de fornecedor.
+
+### 3.3 Segurança
+
+- **Antivírus:** Defender no Windows e ClamAV no Linux, os dois enviando alertas ao Wazuh.
+- **Wazuh:** a TI olha o painel **toda semana** e trata os alertas críticos no mesmo dia (POP-09).
+- **Criptografia de disco:**
+  - Linux: **LUKS**, ligado na instalação.
+  - Windows Pro: **BitLocker**, com a chave de recuperação no Vaultwarden.
+  - Windows Home: usar a **Criptografia do dispositivo** se o PC tiver. Se não tiver, o PC fica na lista para migrar para Linux ou atualizar para Pro.
+- **Senhas:** **todas** as senhas ficam no Vaultwarden, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, ERP, Petroshow, Infinitum, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
+- **Monitoramento:** o Uptime Kuma vigia o link principal, a Starlink, o servidor e cada serviço. Os alertas vão para o WhatsApp da TI.
+
+### 3.4 Atualizações
+
+- **Linux:** atualizações de segurança automáticas todos os dias (`unattended-upgrades`).
+- **Mensal (Windows e Linux):** na **2ª quarta-feira de cada mês, à noite**, o Ansible força as atualizações pendentes e reinicia o que precisar. Detalhes no POP-06.
 
 ### 3.5 Backup
 
-| Ferramenta | Uso | Custo |
-|---|---|---|
-| **UrBackup** | Backup centralizado de arquivos e imagem de disco. Windows e Linux | Grátis (open source) |
-| **Veeam Agent (edição Free)** | Backup de máquina individual. Windows e Linux | Grátis |
-| **Restic** | Backup por linha de comando, criptografado | Grátis |
+| O quê | Como | Frequência | Guarda |
+|---|---|---|---|
+| Arquivos dos PCs | UrBackup | Toda noite | 30 dias |
+| Imagem completa do disco dos PCs | UrBackup | Toda semana | 4 imagens |
+| Servidor inteiro (serviços, cofre, backups) | Restic para disco USB externo | Toda noite | 30 dias |
+| WhatsApp dos celulares | Google Drive do Gmail do aparelho (§4.3) | Todo dia | Último backup |
+| Caixa de e-mail de quem saiu | Download por IMAP para o servidor (POP-02) | Na saída | **Permanente** |
 
-### 3.6 Senhas
-
-| Ferramenta | Uso | Custo |
-|---|---|---|
-| **Vaultwarden** | Cofre de senhas da empresa, compatível com os apps do Bitwarden | Grátis (servidor próprio) |
-
-### 3.7 Atualizações (patches)
-
-- **Linux:** `unattended-upgrades` (Ubuntu/Mint) para atualizações automáticas de segurança, mais Ansible para forçar atualizações.
-- **Windows:** política local/GPO (via Samba AD) para o Windows Update, mais Ansible (módulo `win_updates`) para forçar atualizações.
-- Sugestão de distro para a migração: **Ubuntu LTS** ou **Linux Mint** (estáveis e com suporte longo).
+**Teste de restauração todo mês** (POP-07). Backup que nunca foi testado não conta como backup.
 
 ---
 
 ## 4. Celulares (Android)
 
-### 4.1 Já decidido
+### 4.1 Conta Google
 
-- **Android Enterprise (versão gratuita):** base do gerenciamento.
-- **Bloqueio de apps:** só apps aprovados (via Play Store gerenciada).
-- **Bloqueio remoto:** travar o aparelho em caso de perda ou roubo.
-- **Anti-depuração USB:** desativar Opções do desenvolvedor e Depuração USB.
+- A TI cria **um Gmail por celular**: `celularNN.<empresa>@gmail.com` (ex.: `celular01.trrvaledaserra@gmail.com`). A senha e o 2FA ficam no **Vaultwarden**.
+- A conta fica com o **aparelho**, não com a pessoa. O funcionário **nunca** entra com o Gmail pessoal no aparelho da empresa.
+- Assim a proteção contra restauração de fábrica (FRP) fica sempre com a empresa: depois de um reset ou wipe, a TI desbloqueia o aparelho com essa conta.
+- **E-mail de recuperação:** `lui.grosz@trrvaledaserra.com.br` (responsável de TI).
+- **Telefone de recuperação:** celular corporativo do responsável de TI (Lui Grosz). Nunca número pessoal, nunca o chip do próprio aparelho.
+- Se o responsável de TI mudar, trocar o e-mail e o telefone de recuperação de todas as contas (POP-02).
+- O Google limita quantas contas um mesmo número pode verificar. Se travar, verificar a conta na criação com o chip do próprio aparelho e manter o número da TI só como recuperação.
 
-### 4.2 Ideias complementares (todas gratuitas, quase todas são só políticas do próprio Android Enterprise)
+### 4.2 Políticas do Headwind MDM
 
-| Ideia | Por quê |
+Todo celular corporativo é registrado no Headwind MDM (aparelho zerado, provisionado por QR code) e recebe:
+
+| Política | Regra |
 |---|---|
-| Exigir senha/PIN forte e bloqueio de tela automático | Proteção básica se o aparelho for perdido |
-| Bloquear instalação de fontes desconhecidas (APK) | Evita app pirata ou malware |
-| Bloquear restauração de fábrica pelo usuário | Impede que o funcionário "limpe" o aparelho e saia do controle |
-| Limpeza remota (wipe) | Complemento do bloqueio remoto em caso de roubo |
-| Wi-Fi corporativo enviado automaticamente | O funcionário não precisa saber a senha da rede |
-| Bloquear transferência de arquivos via USB | Complementa a anti-depuração e evita vazamento de dados |
-| Política de atualização do sistema (automática ou em janela de horário) | Mantém os aparelhos seguros |
-| Modo quiosque (app único) para aparelhos de função específica | Ideal para coletor, vendas ou ponto |
-| Perfil de trabalho (BYOD) para celular pessoal | Separa os dados da empresa sem invadir a privacidade |
-| Localização do aparelho | Achar aparelho perdido (**avisar o funcionário por escrito**, ver LGPD) |
-| **Headwind MDM (Community)** como alternativa | MDM open source e gratuito, caso o Android Enterprise grátis fique limitado |
+| Bloqueio de apps | Só apps da lista aprovada pela TI (POP-08) |
+| Apps de fora da loja (APK) | Bloqueados |
+| Senha | PIN de no mínimo 6 dígitos, bloqueio de tela automático em 2 minutos |
+| Restauração de fábrica pelo usuário | Bloqueada |
+| Depuração USB e Opções do desenvolvedor | Bloqueadas |
+| Bloqueio remoto | Ativo |
+| Limpeza remota (wipe) | Ativa |
+| Wi-Fi da empresa | Enviado automaticamente (o funcionário não sabe a senha) |
+| Atualização do sistema | Automática, em janela noturna |
+| Localização | **Desativada.** A empresa não registra nem consulta a localização dos aparelhos |
+
+Só aparelhos da empresa. **Celular pessoal não é gerenciado** e não recebe dados da empresa.
+
+**Apps padrão** (instalados em todo celular corporativo pelo Headwind MDM):
+
+| App | Para quê |
+|---|---|
+| **WhatsApp Business** | Atendimento e comunicação de trabalho |
+| **YouTube** | Vídeos de treinamento e de fornecedores (versão grátis, com anúncios) |
+| **Google Drive** | Abrir **PDF**, sem anúncios |
+| **Google Planilhas** | Abrir **Excel** (.xlsx), sem anúncios |
+| **Google Documentos** | Abrir **Word** (.docx), sem anúncios |
+| **Google Apresentações** | Abrir **PowerPoint** (.pptx), sem anúncios |
+
+Os apps do Google usam o Gmail da empresa do aparelho (§4.1). Qualquer outro app segue o POP-08.
+
+### 4.3 Backup do WhatsApp
+
+O WhatsApp é a principal ferramenta de trabalho, então as conversas precisam de backup:
+
+1. WhatsApp → Configurações → Conversas → Backup → conta: o **Gmail da empresa do aparelho**.
+2. Frequência: **diária**. **Sem vídeos** no backup.
+3. Configurações → Armazenamento e dados → download automático de **vídeos desligado** (Wi-Fi e dados móveis).
+4. Ligar o **backup com criptografia de ponta a ponta**. A senha vai para o Vaultwarden, no item do aparelho. **Sem essa senha ninguém restaura o backup.**
+5. Todo mês a TI confere a data e o tamanho do último backup (POP-07). Se passar de **12 GB** (o limite grátis é 15 GB), limpar arquivos grandes antigos em "Gerenciar armazenamento".
+
+O backup só restaura em aparelho com o **mesmo número**. Quando o aparelho troca de mãos, o histórico continua no Gmail da empresa.
 
 ---
 
-## 5. Infraestrutura necessária (atenção)
-
-As ferramentas são grátis, mas várias precisam de **um servidor** para rodar:
+## 5. Infraestrutura
 
 ### 5.1 Internet
 
 | Link | Uso | IP |
 |---|---|---|
-| **Link empresarial** | Principal | **IPv4 fixo** |
-| **Starlink** | Backup (contingência) | Sem IP fixo (provável CGNAT) |
+| **Link empresarial** | Principal | IPv4 fixo |
+| **Starlink** | Backup | Sem IP fixo |
+
+O **OPNsense** troca para a Starlink automaticamente quando o link principal cai e volta sozinho quando ele normaliza (POP-10).
 
 ### 5.2 Servidor
 
-- **Recomendado:** um PC antigo da empresa com **Ubuntu Server**, ligado 24h, **dentro da empresa** (custo: só energia). Como o link principal tem IP fixo, o servidor pode ser acessado de fora.
-- **Alternativa:** VM gratuita em nuvem (ex.: **Oracle Cloud "Always Free"**). Conferir as condições atuais antes de usar.
+- Roda no **PC de trabalho do Lui Grosz**, dentro da empresa, ligado 24h, com todos os serviços em **contêineres Docker**.
+- Reinícios e manutenção **só fora do horário de trabalho**: se esse PC para, param juntos MeshCentral, Headwind, GLPI, Wazuh, Vaultwarden e backup.
+- O PC também é usado no dia a dia, então: 2FA em todos os painéis, disco criptografado e atualizações em dia.
+- O servidor é copiado toda noite para um **disco USB externo** da empresa (Restic).
 
-### 5.3 Cuidados ao expor o servidor pelo IP fixo
+### 5.3 O que fica exposto na internet
 
-- Expor para a internet **somente o MeshCentral** (porta 443/HTTPS), com **autenticação de dois fatores (2FA)** ligada.
-- GLPI, Wazuh, Vaultwarden e os demais painéis ficam **só na rede interna**. De fora, acessar via **VPN** (WireGuard no OPNsense, grátis).
-- **⚠️ Durante uma queda do link principal:** a internet cai para a Starlink, que não tem IP fixo. Os PCs **dentro da empresa** continuam funcionando normalmente, mas o **acesso de fora** ao servidor fica indisponível até o link principal voltar. É aceitável para backup. Se precisar de acesso externo mesmo nessa situação, usar **Cloudflare Tunnel** (grátis) como caminho alternativo.
-
-### 5.4 Failover automático (link principal → Starlink)
-
-O **OPNsense** (ver 3.4) faz **failover gratuito** entre os dois links: se o link principal cair, a rede passa para a Starlink automaticamente e volta quando o principal normaliza. Esse é um bom motivo para adiantar a implantação do firewall.
+- **Só o MeshCentral** (porta 443, HTTPS), com 2FA.
+- Todo o resto (GLPI, Wazuh, Vaultwarden, Headwind, UrBackup, Uptime Kuma) fica **só na rede interna**. De fora, acessar pela **VPN WireGuard** do OPNsense.
+- Durante uma queda do link principal, a rede interna funciona normalmente pela Starlink, mas **o acesso de fora fica indisponível** até o link voltar. Isso é aceito.
 
 ---
 
-## 6. POPs a escrever (próximos passos)
+## 6. E-mail
 
-| # | POP | Prioridade |
+| Empresa | Domínio | Hospedagem |
 |---|---|---|
-| [POP-01](POPs/POP-01-entrada.md) | Entrada de funcionário (criar usuário, entregar PC/celular, termo de responsabilidade) | Alta · 📝 rascunho |
-| [POP-02](POPs/POP-02-saida.md) | Saída de funcionário (bloquear acessos, recolher e limpar equipamentos) | Alta · 📝 rascunho |
-| [POP-11](POPs/POP-11-funcionario-ativo.md) | Funcionário ativo: mudança de função/posto, revisão semestral de acessos, troca de equipamento, afastamento | Alta · 📝 rascunho |
-| POP-03 | Celular perdido/roubado (bloqueio → localização → wipe → B.O.) | Alta |
-| POP-04 | Instalação padrão de computador Linux (imagem padrão + agentes MeshCentral/GLPI/Wazuh) | Alta |
-| POP-05 | Instalação padrão de computador Windows | Média |
-| POP-06 | Atualizações mensais (Windows e Linux) | Média |
-| POP-07 | Backup e teste de restauração (mensal) | Alta |
-| POP-08 | Solicitação de novo app no celular/PC (aprovação) | Média |
-| POP-09 | Incidente de segurança (vírus, vazamento, acesso indevido) | Média |
-| POP-10 | Queda do link principal (failover para Starlink e retorno) | Média |
+| Postos Vale da Serra | `@postosvaledaserra.com.br` | Ittek |
+| Sertão Petróleo | `@sertaopetroleo.com.br` | Ittek |
+| TRR Vale da Serra | `@trrvaledaserra.com.br` | Ittek |
 
-**Anexos usados pelos POPs de pessoas:** [padrão de e-mail e assinatura](anexos/padrao-email.md) · [modelo de assinatura](anexos/assinatura-modelo.html) · [formulários A–E](anexos/formularios.md)
+Padrão de endereço `nome.sobrenome@`, assinatura em imagem padronizada feita pelo RH e foto do funcionário: ver [anexo: padrão de e-mail](anexos/padrao-email.md).
 
 ---
 
-## 7. Pendências / decisões em aberto
+## 7. Responsáveis
 
-- [ ] Validar o MeshCentral como ferramenta principal de controle (teste com 2 PCs: 1 Windows e 1 Linux)
-- [ ] Separar o PC que será o servidor interno (Ubuntu Server)
-- [ ] Decidir quando implantar o OPNsense (failover link principal → Starlink)
-- [ ] Definir a distro Linux padrão
-- [ ] Decidir se haverá domínio (Samba AD) ou só gestão via MeshCentral/Ansible
-- [ ] Confirmar os limites da versão gratuita do Android Enterprise escolhida
-- [ ] Definir o responsável por cada POP
-- [ ] Preencher domínio, painel e logo de cada empresa em [anexos/padrao-email.md](anexos/padrao-email.md)
-- [ ] Validar os termos dos formulários C, D e E com o jurídico/contador
+| Papel | Pessoa |
+|---|---|
+| TI (todos os POPs) | Lui Grosz |
+| RH (POP-01, POP-02 e POP-11) | Camila Faverao |
+| Direção (incidentes com dados pessoais, POP-09) | Artur |
+
+---
+
+## 8. POPs
+
+| # | POP |
+|---|---|
+| [POP-01](POPs/POP-01-entrada.md) | Entrada de funcionário |
+| [POP-02](POPs/POP-02-saida.md) | Saída de funcionário |
+| [POP-03](POPs/POP-03-celular-perdido.md) | Celular perdido ou roubado |
+| [POP-04](POPs/POP-04-instalacao-linux.md) | Instalação padrão de computador Linux |
+| [POP-05](POPs/POP-05-instalacao-windows.md) | Instalação padrão de computador Windows |
+| [POP-06](POPs/POP-06-atualizacoes.md) | Atualizações mensais |
+| [POP-07](POPs/POP-07-backup.md) | Backup e teste de restauração |
+| [POP-08](POPs/POP-08-novo-app.md) | Solicitação de app novo |
+| [POP-09](POPs/POP-09-incidente.md) | Incidente de segurança |
+| [POP-10](POPs/POP-10-queda-link.md) | Queda do link principal |
+| [POP-11](POPs/POP-11-funcionario-ativo.md) | Funcionário ativo (mudanças, revisão de acessos, troca de equipamento, afastamento) |
+
+**Anexos:** [padrão de e-mail e assinatura](anexos/padrao-email.md) · [formulários A a D](anexos/formularios.md)
+
+---
+
+## 9. Ordem de implantação
+
+1. Preparar o servidor no PC do Lui Grosz: Docker e disco USB para o Restic.
+2. OPNsense: firewall, failover para a Starlink e VPN WireGuard.
+3. Vaultwarden (o cofre precisa existir antes de criar as outras senhas).
+4. MeshCentral, GLPI, Wazuh, UrBackup e Uptime Kuma.
+5. Primeiro PC Linux pelo POP-04: conferir o acesso remoto do MeshCentral e do AnyDesk no Ubuntu 26.04. Depois, os demais PCs.
+6. Headwind MDM e o primeiro celular: conferir todas as políticas do §4.2. Depois, os demais celulares.
