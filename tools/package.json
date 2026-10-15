@@ -1,0 +1,11 @@
+{
+  "name": "pop-tools",
+  "private": true,
+  "type": "module",
+  "description": "Geracao do .docx de revisao do RH (python gera os PDFs)",
+  "dependencies": {
+    "docx": "^9.11.0",
+    "mammoth": "^1.13.0",
+    "marked": "^14.1.4"
+  }
+}
