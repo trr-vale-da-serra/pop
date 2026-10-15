@@ -22,6 +22,8 @@ Padronizar como a TI controla, protege e dá suporte aos equipamentos da empresa
 | Celulares | Bloqueio de depuração USB (anti-debug) | ✅ Decidido |
 | Computadores | Ferramenta de controle remoto/gestão Windows + Linux | 🟡 Em avaliação |
 | Computadores | Inventário, atualizações, backup, segurança | 🟡 Em avaliação |
+| Pessoas | POP-01 (entrada), POP-11 (funcionário ativo), POP-02 (saída) | 📝 Rascunho |
+| E-mail | Padrão `nome.sobrenome@`, um domínio por empresa, assinatura padrão | ✅ Decidido (domínios a preencher) |
 
 ---
 
@@ -143,8 +145,9 @@ O **OPNsense** (ver 3.4) faz **failover gratuito** entre os dois links: se o lin
 
 | # | POP | Prioridade |
 |---|---|---|
-| POP-01 | Entrada de funcionário (criar usuário, entregar PC/celular, termo de responsabilidade) | Alta |
-| POP-02 | Saída de funcionário (bloquear acessos, recolher e limpar equipamentos) | Alta |
+| [POP-01](POPs/POP-01-entrada.md) | Entrada de funcionário (criar usuário, entregar PC/celular, termo de responsabilidade) | Alta · 📝 rascunho |
+| [POP-02](POPs/POP-02-saida.md) | Saída de funcionário (bloquear acessos, recolher e limpar equipamentos) | Alta · 📝 rascunho |
+| [POP-11](POPs/POP-11-funcionario-ativo.md) | Funcionário ativo: mudança de função/posto, revisão semestral de acessos, troca de equipamento, afastamento | Alta · 📝 rascunho |
 | POP-03 | Celular perdido/roubado (bloqueio → localização → wipe → B.O.) | Alta |
 | POP-04 | Instalação padrão de computador Linux (imagem padrão + agentes MeshCentral/GLPI/Wazuh) | Alta |
 | POP-05 | Instalação padrão de computador Windows | Média |
@@ -153,6 +156,8 @@ O **OPNsense** (ver 3.4) faz **failover gratuito** entre os dois links: se o lin
 | POP-08 | Solicitação de novo app no celular/PC (aprovação) | Média |
 | POP-09 | Incidente de segurança (vírus, vazamento, acesso indevido) | Média |
 | POP-10 | Queda do link principal (failover para Starlink e retorno) | Média |
+
+**Anexos usados pelos POPs de pessoas:** [padrão de e-mail e assinatura](anexos/padrao-email.md) · [modelo de assinatura](anexos/assinatura-modelo.html) · [formulários A–E](anexos/formularios.md)
 
 ---
 
@@ -165,3 +170,5 @@ O **OPNsense** (ver 3.4) faz **failover gratuito** entre os dois links: se o lin
 - [ ] Decidir se haverá domínio (Samba AD) ou só gestão via MeshCentral/Ansible
 - [ ] Confirmar os limites da versão gratuita do Android Enterprise escolhida
 - [ ] Definir o responsável por cada POP
+- [ ] Preencher domínio, painel e logo de cada empresa em [anexos/padrao-email.md](anexos/padrao-email.md)
+- [ ] Validar os termos dos formulários C, D e E com o jurídico/contador
