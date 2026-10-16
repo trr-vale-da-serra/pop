@@ -12,7 +12,7 @@ Garantir que, quando alguém sai da empresa, **nenhum acesso continue ativo**, t
 | Papel | Responsabilidade |
 |---|---|
 | **RH/DP** | Dispara o POP: chamado no GLPI (Formulário A) com tipo **Saída** e a data/hora do desligamento |
-| **Gestor** | Diz quem assume os e-mails, o WhatsApp e os arquivos da pessoa |
+| **Gestor** | Diz quem assume os e-mails, o celular e os arquivos da pessoa |
 | **TI** | Bloqueia os acessos, recolhe e limpa os equipamentos, registra |
 
 ## 3. Quando
@@ -30,7 +30,7 @@ O RH avisa a TI **com antecedência**. No caso de justa causa, o aviso é sigilo
 ### 4.1 Antes do desligamento
 
 1. **RH** abre o chamado no GLPI (Formulário A), tipo **Saída**: data e hora, tipo de saída, gestor.
-2. **Gestor** informa: quem recebe os e-mails, quem fica com o WhatsApp corporativo, para onde vão os arquivos.
+2. **Gestor** informa: quem recebe os e-mails, quem fica com o celular corporativo (e o WhatsApp dele), para onde vão os arquivos.
 3. **TI** abre no GLPI o Formulário B (checklist de acessos) da pessoa. Ele é a lista do que bloquear.
 4. **TI** confere que o PC tem backup recente no **UrBackup** e copia os arquivos de trabalho para quem assume.
 
@@ -45,7 +45,7 @@ Seguir o Formulário B item por item e marcar cada um como bloqueado no GLPI, co
    - Encaminhar para o gestor (ou para quem ele indicou) por **90 dias**.
 6. **Sistema VS:** desativar o usuário (não excluir: o histórico de quem fez o quê precisa continuar).
 7. **Petroshow (ERP) / Sigest / Infinitum / Orion:** desativar os usuários (não excluir, pelo mesmo motivo).
-8. **WhatsApp corporativo:** o número é da empresa. Conferir que o backup do dia foi feito (POP-TI §4.3), recolher o aparelho, passar o atendimento para quem assume e trocar o nome/foto do perfil.
+8. **Celular e WhatsApp:** o número é da empresa. Conferir que o backup do dia foi feito (POP-TI §4.3), recolher o aparelho, entregar a quem assume o atendimento e trocar o nome do perfil do WhatsApp.
 9. **Grupos de WhatsApp pessoais de trabalho:** se a pessoa estava em grupos de trabalho com o número pessoal, removê-la.
 10. **Senhas compartilhadas** que a pessoa conhecia (Wi-Fi, contas de setor, sistemas com login único): trocar. Atualizar as senhas novas no Vaultwarden.
 11. **Acesso remoto:** remover a pessoa do **MeshCentral** e da **VPN WireGuard**, se tinha acesso.

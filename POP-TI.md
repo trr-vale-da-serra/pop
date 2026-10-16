@@ -119,7 +119,7 @@ Só aparelhos da empresa. **Celular pessoal não é gerenciado** e não recebe d
 
 | App | Para quê |
 |---|---|
-| **WhatsApp Business** | Atendimento e comunicação de trabalho |
+| **WhatsApp** (versão normal, não o Business) | Atendimento e comunicação de trabalho, com o número do chip da empresa |
 | **YouTube** | Vídeos de treinamento e de fornecedores (versão grátis, com anúncios) |
 | **Google Drive** | Abrir **PDF**, sem anúncios |
 | **Google Planilhas** | Abrir **Excel** (.xlsx), sem anúncios |

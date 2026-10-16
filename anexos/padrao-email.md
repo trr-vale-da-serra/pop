@@ -33,7 +33,7 @@ A assinatura de e-mail é **uma imagem padronizada**, feita pelo **RH** para cad
 1. **Foto** do funcionário, editada pelo RH (seção 4)
 2. **Nome** (como a pessoa é chamada no trabalho: `João Silva`)
 3. **Cargo** · **Empresa**
-4. **Telefone/WhatsApp** corporativo, no formato `(DD) 9XXXX-XXXX`
+4. **Telefone** do celular corporativo, no formato `(DD) 9XXXX-XXXX`
 
 Mesmo layout, fontes e cores para todos da mesma empresa. Nada além disso: sem frase motivacional, sem informação fora do modelo.
 
@@ -58,13 +58,13 @@ Depois de instalar: mandar um e-mail de teste para um endereço externo e confer
 
 ## 4. Foto do funcionário
 
-A mesma foto vale para a **imagem de rodapé** e para a **foto de perfil** (WhatsApp corporativo e e-mail).
+A mesma foto vale para a **imagem de rodapé** e para a **foto de perfil** do e-mail.
 
 1. **Quando:** na admissão (POP-01), antes do primeiro dia.
 2. **Como tirar:** de frente, do peito para cima, fundo liso e claro, boa luz, sem óculos escuros nem boné. Pode ser com o celular da empresa.
 3. **RH edita:** recorta no formato padrão, ajusta luz e fundo e monta a imagem de rodapé.
 4. **RH envia para a TI:** a foto editada e o PNG do rodapé.
-5. **Autorização:** o funcionário autoriza o uso da foto ao assinar o Formulário C. Na saída (POP-02), a foto sai do perfil do WhatsApp e não é mais usada.
+5. **Autorização:** o funcionário autoriza o uso da foto ao assinar o Formulário C. Na saída (POP-02), a foto sai do e-mail e da assinatura e não é mais usada.
 
 ## Aprovação
 

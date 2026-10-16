@@ -78,8 +78,7 @@ Vale para defeito, substituição por um mais novo, perda (ver também POP-03) o
 2. **TI**, no último dia antes do afastamento:
    1. **E-mail:** resposta automática ("ausente até dd/mm, falar com <gestor/setor>"). Se o gestor pedir, encaminhar cópia para o setor.
    2. **Sistema VS / Petroshow (ERP) / Sigest / Infinitum / Orion:** desativar o usuário (sem excluir).
-   3. **Celular corporativo:** fica com a pessoa ou volta para a empresa, conforme o gestor decidir. Se ficar, continua sob as políticas do Headwind MDM.
-   4. **WhatsApp corporativo:** se outra pessoa assumir o atendimento, o aparelho fica com ela durante o afastamento.
+   3. **Celular corporativo:** fica com a pessoa ou volta para a empresa, conforme o gestor decidir. Se ficar, continua sob as políticas do Headwind MDM. Se outra pessoa assumir o atendimento pelo WhatsApp do aparelho, o celular fica com ela durante o afastamento.
 3. **Na volta**, com aviso do RH: reativar os usuários, tirar a resposta automática e conferir que as senhas do Vaultwarden ainda funcionam.
 4. Se a volta virar desligamento, seguir o POP-02.
 

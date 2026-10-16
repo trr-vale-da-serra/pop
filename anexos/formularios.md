@@ -25,7 +25,7 @@
 | Volta prevista (só para afastamento) | |
 | Mudança: função/posto **antigo** → **novo** | |
 | Saída: tipo (pedido / pela empresa / justa causa) | |
-| Saída: quem assume e-mail, WhatsApp e arquivos | |
+| Saída: quem assume e-mail, celular e arquivos | |
 | Troca: motivo | |
 
 **Acessos e equipamentos aprovados pelo gestor** (entrada e mudança):
@@ -40,7 +40,6 @@
 | Infinitum | ☐ | perfil: |
 | Computador | ☐ | |
 | Celular corporativo | ☐ | |
-| WhatsApp corporativo | ☐ | grupos: |
 | Outro | ☐ | |
 
 Solicitado por (RH) e aprovado por (gestor): registrados no chamado, com data e hora.
@@ -61,7 +60,6 @@ Uma ficha por funcionário no GLPI, **atualizada a cada mudança**. Na saída, v
 | Sigest | | | | |
 | Orion | | | | |
 | Infinitum | | | | |
-| WhatsApp corporativo | | | | |
 | Acesso remoto / VPN | | | | |
 | Senhas compartilhadas que conhece | | | | |
 | Outro | | | | |
@@ -84,7 +82,7 @@ Comprometo-me a:
 3. Avisar a TI **imediatamente** em caso de perda, roubo ou defeito.
 4. Não compartilhar minhas senhas.
 5. Devolver os equipamentos, com acessórios, ao sair da empresa ou quando solicitado.
-6. Autorizo o uso da minha foto no perfil do WhatsApp corporativo, no e-mail e na assinatura de e-mail, somente enquanto eu trabalhar na empresa.
+6. Autorizo o uso da minha foto no e-mail e na assinatura de e-mail, somente enquanto eu trabalhar na empresa.
 
 Local e data: ______________, ___/___/____
 
