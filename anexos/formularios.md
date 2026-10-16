@@ -1,6 +1,6 @@
 # Anexo: Formulários de TI
 
-> **Versão:** 1.0 · **Data:** 15/10/2026
+> **Versão:** 1.1 · **Data:** 16/10/2026
 > Usados pelos POP-01 (entrada), POP-11 (funcionário ativo) e POP-02 (saída).
 > **A e B são digitais, no GLPI.** O A é o formulário do chamado "Solicitação de TI" e o B é a ficha de acessos no cadastro da pessoa. Os campos abaixo são os que o GLPI deve ter.
 > **C e D são em papel**, assinados pelo funcionário e pela TI, e ficam na pasta do funcionário no RH.
@@ -17,6 +17,7 @@
 | Nome completo | |
 | Empresa do grupo | |
 | Cargo / setor | |
+| Perfil de entrada (POP-01 §3, só para entrada) | ☐ A: Sem acesso de TI ☐ B: Estoquista ☐ C: Escritório ☐ D: Gestão |
 | Posto / unidade | |
 | Gestor | |
 | Data (início, mudança, saída ou afastamento) | |
@@ -35,6 +36,7 @@
 | Sistema VS | ☐ | perfil: · postos/unidades: |
 | ERP | ☐ | perfil: |
 | Petroshow | ☐ | perfil: |
+| Sigest | ☐ | perfil: |
 | Infinitum | ☐ | perfil: |
 | Computador | ☐ | |
 | Celular corporativo | ☐ | |
@@ -57,6 +59,7 @@ Uma ficha por funcionário no GLPI, **atualizada a cada mudança**. Na saída, v
 | Sistema VS | | | | |
 | ERP | | | | |
 | Petroshow | | | | |
+| Sigest | | | | |
 | Infinitum | | | | |
 | WhatsApp corporativo | | | | |
 | Acesso remoto / VPN | | | | |

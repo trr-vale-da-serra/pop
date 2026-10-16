@@ -44,7 +44,7 @@ Seguir o Formulário B item por item e marcar cada um como bloqueado no GLPI, co
    - Ativar resposta automática: "Fulano não faz mais parte da equipe. Para assuntos de <setor>, escreva para <e-mail do gestor>".
    - Encaminhar para o gestor (ou para quem ele indicou) por **90 dias**.
 6. **Sistema VS:** desativar o usuário (não excluir: o histórico de quem fez o quê precisa continuar).
-7. **ERP / Petroshow / Infinitum:** desativar os usuários (não excluir, pelo mesmo motivo).
+7. **ERP / Petroshow / Sigest / Infinitum:** desativar os usuários (não excluir, pelo mesmo motivo).
 8. **WhatsApp corporativo:** o número é da empresa. Conferir que o backup do dia foi feito (POP-TI §4.3), recolher o aparelho, passar o atendimento para quem assume e trocar o nome/foto do perfil.
 9. **Grupos de WhatsApp pessoais de trabalho:** se a pessoa estava em grupos de trabalho com o número pessoal, removê-la.
 10. **Senhas compartilhadas** que a pessoa conhecia (Wi-Fi, contas de setor, sistemas com login único): trocar. Atualizar as senhas novas no Vaultwarden.

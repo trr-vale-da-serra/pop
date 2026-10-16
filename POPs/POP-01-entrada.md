@@ -1,11 +1,13 @@
 # POP-01: Entrada de funcionário
 
-> **Versão:** 1.0 · **Data:** 15/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
+> **Versão:** 1.1 · **Data:** 16/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
 > Faz parte do [Plano de TI](../POP-TI.md). Formulários em [anexos/formularios.md](../anexos/formularios.md).
 
 ## 1. Objetivo
 
 Garantir que todo funcionário novo comece a trabalhar no primeiro dia com **só os acessos e equipamentos que a função precisa**, todos registrados e com termo assinado.
+
+Funcionários dos **postos** (frentista, caixa, chefe de pista, lubrificador) **não fazem parte** deste POP.
 
 ## 2. Quem faz o quê
 
@@ -16,31 +18,47 @@ Garantir que todo funcionário novo comece a trabalhar no primeiro dia com **só
 | **TI** | Cria as contas, prepara e entrega os equipamentos, registra tudo |
 | **Funcionário** | Assina o termo de responsabilidade e recebe as senhas da TI |
 
-## 3. Quando
+## 3. Perfis de entrada e prazos
 
-- RH envia a solicitação **no mínimo 3 dias úteis antes** da data de início.
-- Tudo pronto **até o dia anterior** ao início.
+O **cargo** define o perfil. O perfil define o pacote padrão e com quanta antecedência o RH abre o chamado.
+
+| Perfil | Cargos | O que a TI entrega | RH abre o chamado |
+|---|---|---|---|
+| **A: Sem acesso de TI** | Motorista, zelador, auxiliar de limpeza, mecânico, borracheiro | Nada. O chamado serve só para registrar a pessoa | Até o **dia do início** (pode começar no mesmo dia) |
+| **B: Estoquista** | Estoquista | Celular corporativo, Petroshow, Sigest, Infinitum e Sistema VS | **2 dias úteis antes** do início |
+| **C: Escritório** | Administrativo, financeiro, comercial, RH/DP, documentação, compras | E-mail corporativo, Sistema VS, ERP e computador | **3 dias úteis antes** do início |
+| **D: Gestão** | Gerentes e supervisores | Tudo do perfil C + celular corporativo e WhatsApp corporativo | **3 dias úteis antes** do início |
+
+Regras:
+
+- **Todo funcionário tem chamado, inclusive o perfil A.** Sem ele a pessoa não fica registrada no GLPI, e a saída (POP-02) e as mudanças (POP-11) não têm de onde partir.
+- **O gestor pode pedir mais que o pacote** do perfil (ex.: celular para um motorista). Vale o prazo do perfil que tem aquele item.
+- Perfis B, C e D: tudo pronto **até o dia anterior** ao início. Se for preciso **comprar** computador ou celular, o prazo da compra não está incluído: a TI informa no chamado a data em que o equipamento fica pronto.
+- Se a pessoa começar antes dos acessos ficarem prontos, ela **espera o acesso: nunca usa o login de um colega**.
+- Cargo que não está na tabela: o gestor indica o perfil mais próximo no chamado e a TI confirma.
 
 ## 4. Passo a passo
 
 ### 4.1 Solicitação (RH)
 
-1. Abrir no GLPI o chamado **Solicitação de TI** (Formulário A) com tipo **Entrada**: nome completo, empresa do grupo, cargo, setor, posto/unidade, gestor, data de início.
+1. Abrir no GLPI o chamado **Solicitação de TI** (Formulário A) com tipo **Entrada**: nome completo, empresa do grupo, cargo, setor, posto/unidade, gestor, data de início e **perfil de entrada** (seção 3), respeitando o prazo do perfil.
 2. Incluir o gestor no chamado para aprovação.
    - **Foto:** pedir ao funcionário a foto no padrão de [anexos/padrao-email.md](../anexos/padrao-email.md) §4 (ou tirar na admissão). O RH edita, monta a imagem de rodapé e anexa as duas ao chamado para a TI.
 
 ### 4.2 Aprovação (gestor)
 
-3. Marcar no chamado os acessos e equipamentos necessários (lista na seção 5).
+3. Conferir o perfil e marcar no chamado os acessos e equipamentos necessários (lista na seção 5). O pacote do perfil é o padrão; o que for além dele precisa de justificativa no chamado.
 4. Para o **Sistema VS**, informar o **perfil** e **quais postos/unidades** a pessoa pode ver. Na dúvida, o mínimo: gerente de posto vê só o próprio posto.
 5. **Aprovar o chamado** no GLPI.
 
 ### 4.3 Preparação (TI)
 
+> **Perfil A:** a TI só cadastra a pessoa no GLPI, com o Formulário B sem acessos, e fecha o chamado. Os passos 6 a 17 não se aplicam.
+
 6. **E-mail:** criar a conta no padrão de [anexos/padrao-email.md](../anexos/padrao-email.md) (`nome.sobrenome@<domínio-da-empresa>`), no painel da hospedagem da empresa correta. Senha forte gerada pelo Vaultwarden.
 7. **Assinatura de e-mail:** receber do RH a **imagem de rodapé** (`rodape-nome.sobrenome.png`) e a foto editada (passo 2).
 8. **Sistema VS:** criar o usuário com o perfil e os postos aprovados. Conferir logando com o usuário que ele **não** enxerga posto ou tela fora do aprovado.
-9. **ERP / Petroshow / Infinitum:** criar os usuários aprovados, com o perfil da função (nunca copiar o perfil de outra pessoa sem conferir).
+9. **ERP / Petroshow / Sigest / Infinitum:** criar os usuários aprovados, com o perfil da função (nunca copiar o perfil de outra pessoa sem conferir).
 10. **Computador** (se aprovado):
     - Preparar pela instalação padrão (POP-04 Linux ou POP-05 Windows).
     - Criar o usuário local da pessoa, **sem permissão de administrador**.
@@ -65,7 +83,7 @@ Garantir que todo funcionário novo comece a trabalhar no primeiro dia com **só
 |---|---|
 | E-mail corporativo | Padrão `nome.sobrenome@` do domínio da empresa |
 | Sistema VS (site) | Perfil + postos/unidades permitidos |
-| ERP / Petroshow / Infinitum | Um usuário por pessoa, com perfil da função |
+| ERP / Petroshow / Sigest / Infinitum | Um usuário por pessoa, com perfil da função |
 | Computador | Instalação padrão (POP-04/05) + GLPI |
 | Celular corporativo | Headwind MDM + políticas decididas |
 | WhatsApp corporativo | O número é da empresa, não da pessoa |
@@ -78,7 +96,8 @@ Garantir que todo funcionário novo comece a trabalhar no primeiro dia com **só
 
 ## 7. Prazo e conferência
 
-- Tudo criado até o dia anterior ao início.
+- Perfis B, C e D: tudo criado até o dia anterior ao início (seção 3).
+- Perfil A: chamado aberto e fechado até o dia do início.
 - Até o fim da **primeira semana**: o gestor confirma que nada está faltando e que não sobra acesso.
 
 ## Aprovação

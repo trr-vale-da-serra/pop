@@ -1,1 +1,4 @@
 node_modules/
+
+# Planilha do RH com dados pessoais: nunca entra no repositório (público)
+anexos/DADOS_RH_2026.xlsx
