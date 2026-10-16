@@ -1,0 +1,47 @@
+# Instalação automática do Ubuntu 26.04 (POP-04 §4.1).
+# NÃO usar este arquivo direto: rodar gerar.py, que preenche as senhas e grava
+# o autoinstall.yaml no pendrive. O arquivo gerado tem senhas: nunca vai para o git.
+#
+# O instalador pede confirmação antes de apagar o disco. Não colocar "autoinstall"
+# nos parâmetros de boot: isso tira a confirmação.
+autoinstall:
+  version: 1
+
+  locale: pt_BR.UTF-8
+  keyboard:
+    layout: br            # Português (Brasil ABNT2)
+  timezone: America/Sao_Paulo
+
+  # Conta administradora da TI. O nome do PC é provisório (pc-novo-<final do MAC>,
+  # para achar o IP na lista de DHCP do OPNsense). O Ansible troca para
+  # <EMPRESA>-PC-<patrimônio>.
+  identity:
+    hostname: pc-novo
+    realname: TI
+    username: "@@TI_USUARIO@@"
+    password: "@@TI_SENHA_HASH@@"
+
+  # Apaga o maior disco. Sem criptografia de disco (decisão da TI, out/2026).
+  storage:
+    layout:
+      name: lvm
+
+  ssh:
+    install-server: true
+    allow-pw: true
+    authorized-keys:
+      - "@@CHAVE_SSH@@"
+
+  updates: security
+  drivers:
+    install: true
+  codecs:
+    install: true
+
+  late-commands:
+    - >-
+      sh -c 'nic=$(ip route show default | awk "{print \$5; exit}");
+      fim=$(tr -d : < /sys/class/net/$nic/address | tail -c 5);
+      nome=pc-novo-$fim;
+      echo $nome > /target/etc/hostname;
+      sed -i "s/\bpc-novo\b/$nome/g" /target/etc/hosts'

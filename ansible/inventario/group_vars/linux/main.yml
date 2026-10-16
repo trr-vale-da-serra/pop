@@ -1,0 +1,25 @@
+---
+# Conta administradora da TI (POP-04 §4.1, passo 5). Senha no Vaultwarden.
+ansible_user: ti
+ansible_become: true
+
+# Chave pública do servidor Ansible, instalada na conta da TI no primeiro uso.
+ti_chave_ssh_publica: "{{ lookup('ansible.builtin.file', '~/.ssh/id_ed25519.pub', errors='warn') | default('', true) }}"
+
+# Depois que a chave entrar em todos os PCs, trocar para true (SSH só por chave).
+ssh_desativar_senha: false
+
+fuso_horario: America/Sao_Paulo
+
+# --- Servidores dos agentes (POP-TI §5.2). Vazio = o agente é pulado. ---
+meshcentral_url: ""          # ex.: https://mesh.trrvaledaserra.com.br
+# meshcentral_meshid: no vault.yml (ID do grupo de dispositivos do MeshCentral)
+glpi_url: ""                 # ex.: http://192.168.1.10:8080/
+wazuh_manager: ""            # ex.: 192.168.1.10
+wazuh_grupo: linux
+urbackup_versao: "2.5.25"
+urbackup_instalar: false     # ligar depois que o servidor UrBackup estiver no ar
+urbackup_respostas: "y\\n"   # respostas do instalador; conferir no primeiro PC
+
+# AnyDesk só nos PCs que recebem suporte de fornecedor (marcar no host).
+anydesk: false

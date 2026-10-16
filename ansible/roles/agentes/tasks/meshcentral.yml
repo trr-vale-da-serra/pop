@@ -1,0 +1,13 @@
+---
+# Mesmo instalador do botão "Adicionar agente > Linux" do painel do MeshCentral.
+- name: Baixar o instalador do agente MeshCentral
+  ansible.builtin.get_url:
+    url: "{{ meshcentral_url }}/meshagents?script=1"
+    dest: /root/meshinstall.sh
+    mode: "0700"
+
+- name: Instalar o agente MeshCentral
+  ansible.builtin.command:
+    cmd: /root/meshinstall.sh {{ meshcentral_url | quote }} {{ meshcentral_meshid | quote }}
+    creates: /usr/local/mesh_services/meshagent/meshagent
+  no_log: true

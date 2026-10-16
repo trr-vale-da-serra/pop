@@ -1,0 +1,34 @@
+---
+# POP-TI §3.1: Dash to Panel (barra embaixo) e ArcMenu (menu Iniciar).
+- name: Extensões do GNOME
+  ansible.builtin.apt:
+    name:
+      - gnome-shell-extension-dashtopanel
+      - gnome-shell-extension-arc-menu
+    state: present
+
+- name: Perfil do dconf com padrões da empresa
+  ansible.builtin.copy:
+    dest: /etc/dconf/profile/user
+    content: |
+      user-db:user
+      system-db:local
+    mode: "0644"
+  notify: Atualizar dconf
+
+- name: Pasta de padrões do dconf
+  ansible.builtin.file:
+    path: /etc/dconf/db/local.d
+    state: directory
+    mode: "0755"
+
+# Vale para quem ainda não mudou essas opções; cada usuário novo já entra assim.
+- name: Ligar Dash to Panel e ArcMenu, desligar o dock do Ubuntu
+  ansible.builtin.copy:
+    dest: /etc/dconf/db/local.d/00-ti-aparencia
+    content: |
+      [org/gnome/shell]
+      enabled-extensions=['dash-to-panel@jderose9.github.com', 'arcmenu@arcmenu.com']
+      disabled-extensions=['ubuntu-dock@ubuntu.com']
+    mode: "0644"
+  notify: Atualizar dconf

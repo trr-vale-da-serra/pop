@@ -1,0 +1,10 @@
+[Unit]
+Description=Varredura semanal do ClamAV (TI)
+
+[Timer]
+OnCalendar=Wed 12:30
+Persistent=true
+RandomizedDelaySec=30m
+
+[Install]
+WantedBy=timers.target

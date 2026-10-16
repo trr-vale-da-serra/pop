@@ -1,0 +1,7 @@
+---
+apps_apt:
+  - libreoffice
+  - libreoffice-l10n-pt-br
+  - libreoffice-help-pt-br
+  - hunspell-pt-br
+  - evince            # leitor de PDF

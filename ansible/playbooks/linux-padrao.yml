@@ -1,0 +1,13 @@
+---
+# POP-04 §4.2: configuração padrão de PC Linux (Ubuntu 26.04 LTS).
+# PC instalado pelo pendrive (autoinstall) já tem a chave SSH:
+#   ansible-playbook playbooks/linux-padrao.yml -l TRR-PC-0012 -K --ask-vault-pass
+# PC instalado à mão: acrescentar -k (senha SSH) na primeira vez.
+- name: Configuração padrão do Linux
+  hosts: linux
+  roles:
+    - base
+    - desktop
+    - apps
+    - clamav
+    - agentes

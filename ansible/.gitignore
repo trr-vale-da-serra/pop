@@ -1,0 +1,3 @@
+# vault.yml só entra no git criptografado (começa com $ANSIBLE_VAULT).
+.vault-senha
+*.retry

@@ -1,0 +1,11 @@
+---
+# Programas padrão (POP-04 §4.2). Programa novo segue o POP-08 e entra nesta lista.
+- name: Programas padrão (apt)
+  ansible.builtin.apt:
+    name: "{{ apps_apt }}"
+    state: present
+
+- name: Navegador (snap)
+  community.general.snap:
+    name: firefox
+    state: present

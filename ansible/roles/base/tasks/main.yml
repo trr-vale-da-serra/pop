@@ -1,0 +1,62 @@
+---
+- name: Conferir o nome do computador (POP-TI §3.1)
+  ansible.builtin.assert:
+    that: inventory_hostname is match('^(POSTOS|SERTAO|TRR)-PC-[0-9]{4}$')
+    fail_msg: "Nome fora do padrão <EMPRESA>-PC-<patrimônio>: {{ inventory_hostname }}"
+
+- name: Definir o nome do computador
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Fuso horário
+  community.general.timezone:
+    name: "{{ fuso_horario }}"
+
+- name: Chave SSH do servidor Ansible na conta da TI
+  ansible.posix.authorized_key:
+    user: "{{ ansible_user }}"
+    key: "{{ ti_chave_ssh_publica }}"
+  when: ti_chave_ssh_publica | length > 0
+
+- name: SSH só por chave
+  ansible.builtin.copy:
+    dest: /etc/ssh/sshd_config.d/10-ti.conf
+    content: |
+      PasswordAuthentication no
+      PermitRootLogin no
+    mode: "0644"
+  when: ssh_desativar_senha | bool
+  notify: Reiniciar ssh
+
+- name: Atualizar o sistema
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+    autoremove: true
+
+- name: Pacotes de base e idioma
+  ansible.builtin.apt:
+    name:
+      - unattended-upgrades
+      - language-pack-pt
+      - language-pack-gnome-pt
+      - curl
+      - perl
+    state: present
+
+- name: Atualização de segurança diária (unattended-upgrades)
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+      APT::Periodic::AutocleanInterval "7";
+    mode: "0644"
+
+# O reinício fica para a janela mensal (POP-06), nunca no meio do expediente.
+- name: Sem reinício automático pelo unattended-upgrades
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/52ti-unattended
+    content: |
+      Unattended-Upgrade::Automatic-Reboot "false";
+    mode: "0644"

@@ -1,0 +1,42 @@
+---
+- name: ClamAV
+  ansible.builtin.apt:
+    name:
+      - clamav
+      - clamav-daemon
+      - clamav-freshclam
+    state: present
+
+# O Wazuh lê os alertas do ClamAV pelo syslog (POP-TI §3.3).
+- name: ClamAV registra no syslog
+  ansible.builtin.lineinfile:
+    path: /etc/clamav/clamd.conf
+    regexp: '^LogSyslog '
+    line: LogSyslog true
+  notify: Reiniciar clamav
+
+- name: Serviços do ClamAV ligados
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - clamav-freshclam
+    - clamav-daemon
+
+- name: Varredura semanal da pasta /home
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    mode: "0644"
+  loop:
+    - ti-clamscan.service
+    - ti-clamscan.timer
+  notify: Recarregar systemd
+
+- name: Ligar o timer da varredura
+  ansible.builtin.systemd:
+    name: ti-clamscan.timer
+    state: started
+    enabled: true
+    daemon_reload: true

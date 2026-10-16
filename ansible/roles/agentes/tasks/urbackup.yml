@@ -1,0 +1,15 @@
+---
+# Na rede interna o cliente acha o servidor UrBackup sozinho (broadcast).
+# TESTAR NO PRIMEIRO PC: o instalador faz perguntas (instalar? tipo de snapshot?).
+# As respostas vêm de urbackup_respostas; o timeout evita travar se a pergunta mudar.
+- name: Baixar o cliente UrBackup
+  ansible.builtin.get_url:
+    url: "https://hndl.urbackup.org/Client/{{ urbackup_versao }}/UrBackup%20Client%20Linux%20{{ urbackup_versao }}.sh"
+    dest: /root/urbackup-client.sh
+    mode: "0700"
+
+- name: Instalar o cliente UrBackup
+  ansible.builtin.shell:
+    cmd: printf '{{ urbackup_respostas }}' | sh /root/urbackup-client.sh
+    creates: /usr/local/bin/urbackupclientctl
+  timeout: 600

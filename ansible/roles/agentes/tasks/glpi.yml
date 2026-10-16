@@ -1,0 +1,20 @@
+---
+- name: GLPI Agent
+  ansible.builtin.apt:
+    name: glpi-agent
+    state: present
+
+- name: Servidor do GLPI
+  ansible.builtin.copy:
+    dest: /etc/glpi-agent/conf.d/ti.cfg
+    content: |
+      server = {{ glpi_url }}
+      tag = {{ inventory_hostname.split('-')[0] }}
+    mode: "0644"
+  notify: Reiniciar glpi-agent
+
+- name: GLPI Agent ligado
+  ansible.builtin.service:
+    name: glpi-agent
+    state: started
+    enabled: true

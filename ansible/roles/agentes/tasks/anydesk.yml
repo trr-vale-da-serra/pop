@@ -1,0 +1,16 @@
+---
+# Instalado sem senha de acesso autônomo: o acesso é sempre assistido (POP-TI §3.2).
+- name: Repositório do AnyDesk
+  ansible.builtin.deb822_repository:
+    name: anydesk
+    types: deb
+    uris: https://deb.anydesk.com/
+    suites: all
+    components: main
+    signed_by: https://keys.anydesk.com/repos/DEB-GPG-KEY
+
+- name: AnyDesk
+  ansible.builtin.apt:
+    name: anydesk
+    state: present
+    update_cache: true

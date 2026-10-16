@@ -1,0 +1,4 @@
+---
+# Copiar para vault.yml e criptografar:
+#   ansible-vault encrypt inventario/group_vars/linux/vault.yml
+meshcentral_meshid: ""

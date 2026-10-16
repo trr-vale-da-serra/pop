@@ -1,0 +1,11 @@
+[Unit]
+Description=Varredura semanal do ClamAV (TI)
+After=clamav-daemon.service
+Requires=clamav-daemon.service
+
+[Service]
+Type=oneshot
+Nice=19
+IOSchedulingClass=idle
+ExecStart=/usr/bin/clamdscan --multiscan --fdpass --infected --no-summary /home
+SuccessExitStatus=1

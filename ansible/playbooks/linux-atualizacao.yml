@@ -1,0 +1,29 @@
+---
+# POP-06 §3.2, passo 3: atualização mensal do Linux (2ª quarta-feira, à noite).
+#   ansible-playbook playbooks/linux-atualizacao.yml
+- name: Atualização mensal do Linux
+  hosts: linux
+  serial: 5
+  tasks:
+    - name: Atualizar pacotes apt
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+        autoremove: true
+        autoclean: true
+
+    - name: Atualizar pacotes snap (Firefox)
+      ansible.builtin.command: snap refresh
+      register: snap
+      changed_when: "'refreshed' in snap.stdout or 'refreshed' in snap.stderr"
+
+    - name: Verificar se precisa reiniciar
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: reiniciar
+
+    - name: Reiniciar
+      ansible.builtin.reboot:
+        msg: "Reinicio da atualizacao mensal da TI"
+        reboot_timeout: 900
+      when: reiniciar.stat.exists
