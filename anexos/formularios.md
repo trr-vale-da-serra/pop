@@ -34,8 +34,7 @@
 |---|---|---|
 | E-mail corporativo | ☐ | |
 | Sistema VS | ☐ | perfil: · postos/unidades: |
-| ERP | ☐ | perfil: |
-| Petroshow | ☐ | perfil: |
+| Petroshow (ERP) | ☐ | perfil: |
 | Sigest | ☐ | perfil: |
 | Orion | ☐ | perfil: |
 | Infinitum | ☐ | perfil: |
@@ -58,8 +57,7 @@ Uma ficha por funcionário no GLPI, **atualizada a cada mudança**. Na saída, v
 |---|---|---|---|---|
 | E-mail | | | | |
 | Sistema VS | | | | |
-| ERP | | | | |
-| Petroshow | | | | |
+| Petroshow (ERP) | | | | |
 | Sigest | | | | |
 | Orion | | | | |
 | Infinitum | | | | |

@@ -62,7 +62,7 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 - **Antivírus:** Defender no Windows e ClamAV no Linux, os dois enviando alertas ao Wazuh.
 - **Wazuh:** a TI olha o painel **toda semana** e trata os alertas críticos no mesmo dia (POP-09).
 - **Criptografia de disco:** **não é usada**, nem nos PCs nem no servidor. Se o Windows ligar a criptografia sozinho na instalação, desligar (POP-05).
-- **Senhas:** **todas** as senhas ficam no Vaultwarden, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, ERP, Petroshow, Sigest, Infinitum, Orion, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
+- **Senhas:** **todas** as senhas ficam no Vaultwarden, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, Petroshow (ERP), Sigest, Infinitum, Orion, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
 - **Monitoramento:** o Uptime Kuma vigia o link principal, a Starlink, o servidor e cada serviço. Os alertas vão para o WhatsApp da TI.
 
 ### 3.4 Atualizações

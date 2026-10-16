@@ -18,6 +18,8 @@ Funcionários dos **postos** (frentista, caixa, chefe de pista, lubrificador) **
 | **TI** | Cria as contas, prepara e entrega os equipamentos, registra tudo |
 | **Funcionário** | Assina o termo de responsabilidade e recebe as senhas da TI |
 
+> **O que é o GLPI:** é o sistema da TI onde ficam os **chamados** (todo pedido para a TI), o **inventário** de computadores e celulares (com quem está cada aparelho) e a **ficha de acessos** de cada funcionário (Formulário B). Funciona pelo navegador, com usuário e senha próprios, só na rede da empresa (de fora, pela VPN). O RH e o gestor abrem e aprovam o chamado ali, e acompanham pelo próprio chamado o que a TI já fez. É gratuito e roda no servidor da empresa (POP-TI §2).
+
 ## 3. Perfis de entrada e prazos
 
 O **cargo** define o perfil. O perfil define o pacote padrão e com quanta antecedência o RH abre o chamado.
@@ -25,9 +27,9 @@ O **cargo** define o perfil. O perfil define o pacote padrão e com quanta antec
 | Perfil | Cargos | O que a TI entrega | RH abre o chamado |
 |---|---|---|---|
 | **A: Sem acesso de TI** | Motorista, zelador, auxiliar de limpeza, mecânico, borracheiro | Nada. O chamado serve só para registrar a pessoa | Até o **dia do início** (pode começar no mesmo dia) |
-| **B: Estoquista** | Estoquista | Celular corporativo, Petroshow, Sigest, Infinitum e Sistema VS | **2 dias úteis antes** do início |
-| **C: Escritório** | Administrativo, financeiro, comercial, RH/DP, documentação, compras | E-mail corporativo, Sistema VS, ERP, Orion e computador | **3 dias úteis antes** do início |
-| **D: Gestão** | Gerentes e supervisores | Tudo do perfil C + celular corporativo e WhatsApp corporativo | **3 dias úteis antes** do início |
+| **B: Oficina** | Estoquista, documentação, compras | Celular corporativo, e-mail corporativo, Petroshow, Sigest, Infinitum e Sistema VS | **2 dias úteis antes** do início |
+| **C: Escritório** | Administrativo, financeiro, comercial, RH/DP | Tudo do perfil B, Orion e computador | **3 dias úteis antes** do início |
+| **D: Gestão** | Gerentes e supervisores | Tudo do perfil C | **3 dias úteis antes** do início |
 
 Regras:
 
@@ -58,7 +60,7 @@ Regras:
 6. **E-mail:** criar a conta no padrão de [anexos/padrao-email.md](../anexos/padrao-email.md) (`nome.sobrenome@<domínio-da-empresa>`), no painel da hospedagem da empresa correta. Senha forte gerada pelo Vaultwarden.
 7. **Assinatura de e-mail:** receber do RH a **imagem de rodapé** (`rodape-nome.sobrenome.png`) e a foto editada (passo 2).
 8. **Sistema VS:** criar o usuário com o perfil e os postos aprovados. Conferir logando com o usuário que ele **não** enxerga posto ou tela fora do aprovado.
-9. **ERP / Petroshow / Sigest / Infinitum / Orion:** criar os usuários aprovados, com o perfil da função (nunca copiar o perfil de outra pessoa sem conferir).
+9. **Petroshow (ERP) / Sigest / Infinitum / Orion:** criar os usuários aprovados, com o perfil da função (nunca copiar o perfil de outra pessoa sem conferir).
 10. **Computador** (se aprovado):
     - Preparar pela instalação padrão (POP-04 Linux ou POP-05 Windows).
     - Criar o usuário local da pessoa, **sem permissão de administrador**.
@@ -83,7 +85,7 @@ Regras:
 |---|---|
 | E-mail corporativo | Padrão `nome.sobrenome@` do domínio da empresa |
 | Sistema VS (site) | Perfil + postos/unidades permitidos |
-| ERP / Petroshow / Sigest / Infinitum / Orion | Um usuário por pessoa, com perfil da função |
+| Petroshow (ERP) / Sigest / Infinitum / Orion | Um usuário por pessoa, com perfil da função |
 | Computador | Instalação padrão (POP-04/05) + GLPI |
 | Celular corporativo | Headwind MDM + políticas decididas |
 | WhatsApp corporativo | O número é da empresa, não da pessoa |

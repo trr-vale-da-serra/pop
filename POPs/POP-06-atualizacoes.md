@@ -40,3 +40,14 @@ Entre uma janela e outra:
 ## 4. Registro
 
 Chamado mensal no GLPI: data, máquinas atualizadas, máquinas com problema e o que foi feito.
+
+## Perfis de acesso por cargo
+
+> Mesma tabela em todos os POPs. As regras completas estão no [POP-01 §3](POP-01-entrada.md).
+
+| Perfil | Cargos | O que a TI entrega | RH abre o chamado |
+|---|---|---|---|
+| **A: Sem acesso de TI** | Motorista, zelador, auxiliar de limpeza, mecânico, borracheiro | Nada. O chamado serve só para registrar a pessoa | Até o **dia do início** (pode começar no mesmo dia) |
+| **B: Oficina** | Estoquista, documentação, compras | Celular corporativo, e-mail corporativo, Petroshow, Sigest, Infinitum e Sistema VS | **2 dias úteis antes** do início |
+| **C: Escritório** | Administrativo, financeiro, comercial, RH/DP | Tudo do perfil B, Orion e computador | **3 dias úteis antes** do início |
+| **D: Gestão** | Gerentes e supervisores | Tudo do perfil C | **3 dias úteis antes** do início |

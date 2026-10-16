@@ -44,7 +44,7 @@ Seguir o Formulário B item por item e marcar cada um como bloqueado no GLPI, co
    - Ativar resposta automática: "Fulano não faz mais parte da equipe. Para assuntos de <setor>, escreva para <e-mail do gestor>".
    - Encaminhar para o gestor (ou para quem ele indicou) por **90 dias**.
 6. **Sistema VS:** desativar o usuário (não excluir: o histórico de quem fez o quê precisa continuar).
-7. **ERP / Petroshow / Sigest / Infinitum / Orion:** desativar os usuários (não excluir, pelo mesmo motivo).
+7. **Petroshow (ERP) / Sigest / Infinitum / Orion:** desativar os usuários (não excluir, pelo mesmo motivo).
 8. **WhatsApp corporativo:** o número é da empresa. Conferir que o backup do dia foi feito (POP-TI §4.3), recolher o aparelho, passar o atendimento para quem assume e trocar o nome/foto do perfil.
 9. **Grupos de WhatsApp pessoais de trabalho:** se a pessoa estava em grupos de trabalho com o número pessoal, removê-la.
 10. **Senhas compartilhadas** que a pessoa conhecia (Wi-Fi, contas de setor, sistemas com login único): trocar. Atualizar as senhas novas no Vaultwarden.
@@ -70,6 +70,17 @@ Seguir o Formulário B item por item e marcar cada um como bloqueado no GLPI, co
 
 - No dia seguinte ao desligamento, a TI tenta logar (ou pede o relatório do sistema) e confirma que **nenhum** acesso do Formulário B continua ativo.
 - A revisão semestral (POP-11 §4) procura contas que escaparam deste POP.
+
+## Perfis de acesso por cargo
+
+> Mesma tabela em todos os POPs. As regras completas estão no [POP-01 §3](POP-01-entrada.md).
+
+| Perfil | Cargos | O que a TI entrega | RH abre o chamado |
+|---|---|---|---|
+| **A: Sem acesso de TI** | Motorista, zelador, auxiliar de limpeza, mecânico, borracheiro | Nada. O chamado serve só para registrar a pessoa | Até o **dia do início** (pode começar no mesmo dia) |
+| **B: Oficina** | Estoquista, documentação, compras | Celular corporativo, e-mail corporativo, Petroshow, Sigest, Infinitum e Sistema VS | **2 dias úteis antes** do início |
+| **C: Escritório** | Administrativo, financeiro, comercial, RH/DP | Tudo do perfil B, Orion e computador | **3 dias úteis antes** do início |
+| **D: Gestão** | Gerentes e supervisores | Tudo do perfil C | **3 dias úteis antes** do início |
 
 ## Aprovação
 
