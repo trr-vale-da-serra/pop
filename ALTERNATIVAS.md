@@ -70,6 +70,9 @@ Fontes: [Ubuntu 25.10 drops GNOME on Xorg](https://discourse.ubuntu.com/t/ubuntu
 | Zabbix | ❌ Descartado | Pesado e complexo para o tamanho atual |
 | **Vaultwarden** | ✅ Escolhido | Cofre compartilhado, usa os apps do Bitwarden |
 | KeePassXC | ❌ Descartado | Arquivo local, ruim para compartilhar entre pessoas |
+| **Sem criptografia de disco** (PCs e servidor) | ✅ Escolhido (16/10/2026) | PCs de mesa em escritório, com os arquivos no backup. Evita a senha do disco a cada reinício (que travaria a atualização mensal, POP-06) e o risco de perder os dados se a senha se perder. Contra: PC ou disco roubado, descartado ou mandado para conserto pode ser lido por quem pegar |
+| LUKS (Linux) e BitLocker (Windows) com senha | ❌ Descartado | Alguém precisaria digitar a senha do disco a cada reinício |
+| Criptografia com desbloqueio pelo TPM | 🔁 Reavaliar se a empresa tiver notebooks | Liga sozinho e protege o disco tirado do PC. Não funciona em PC sem TPM |
 | **TI guarda todas as senhas, inclusive as pessoais** | ✅ Escolhido | A TI consegue entrar em qualquer conta (suporte, saída, incidente). Contra: perde-se a prova de quem fez o quê, porque a TI também sabe a senha |
 | Só o funcionário sabe a senha (senha provisória trocada no 1º acesso) | ❌ Descartado | |
 | Cofre pessoal de cada funcionário no Vaultwarden | ❌ Descartado | |

@@ -1,11 +1,11 @@
 # POP-04: Instalação padrão de computador Linux
 
-> **Versão:** 1.0 · **Data:** 15/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.1 · **Data:** 16/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
 
-Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos agentes, disco criptografado e registrado no inventário.
+Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos agentes e registrado no inventário.
 
 ## 2. Quando
 
@@ -24,7 +24,7 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 
 1. Iniciar pelo pendrive e escolher **Instalar Ubuntu**.
 2. Idioma **Português (Brasil)**, teclado **Português (Brasil ABNT2)**.
-3. Tipo de instalação: **apagar o disco** e marcar **criptografia do disco (LUKS)**. A senha do disco vai para o Vaultwarden, no item do PC.
+3. Tipo de instalação: **apagar o disco**, **sem** criptografia do disco.
 4. Nome do computador: `<EMPRESA>-PC-<patrimônio>` (ex.: `TRR-PC-0012`).
 5. Usuário: a **conta administradora da TI** (senha no Vaultwarden).
 
@@ -54,5 +54,4 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 
 ## 5. Registro
 
-- Item do PC no Vaultwarden: senha do disco (LUKS).
 - Inventário no GLPI atualizado.

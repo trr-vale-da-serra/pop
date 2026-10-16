@@ -1,6 +1,6 @@
 # Plano de TI: Gestão de Computadores e Celulares
 
-> **Versão:** 1.0 · **Data:** 15/10/2026 · **Responsável:** Lui Grosz (TI)
+> **Versão:** 1.1 · **Data:** 16/10/2026 · **Responsável:** Lui Grosz (TI)
 > Empresas: Postos Vale da Serra, Sertão Petróleo e TRR Vale da Serra.
 > **Regra geral:** todas as ferramentas são **gratuitas** (licença grátis ou open source, sem mensalidade).
 > **Regra de equipamento:** nenhum serviço ou dado da empresa roda em equipamento que não seja da empresa.
@@ -30,7 +30,6 @@ Padronizar como a TI controla, protege e dá suporte aos equipamentos da empresa
 | Backup de PCs | **UrBackup** | Backup central de todos os PCs no servidor |
 | Backup do servidor | **Restic** | Cópia do próprio servidor para um disco USB externo |
 | Senhas | **Vaultwarden** | Cofre com **todas** as senhas: da empresa e de cada funcionário |
-| Criptografia de disco | **BitLocker** (Windows Pro) e **LUKS** (Linux) | Protege os dados se o PC for roubado |
 | Firewall e internet | **OPNsense** | Firewall, VPN WireGuard e troca automática para a Starlink |
 | Celulares | **Headwind MDM Community** (Android Enterprise) | Políticas, bloqueio de apps, bloqueio e limpeza remotos |
 
@@ -62,10 +61,7 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 
 - **Antivírus:** Defender no Windows e ClamAV no Linux, os dois enviando alertas ao Wazuh.
 - **Wazuh:** a TI olha o painel **toda semana** e trata os alertas críticos no mesmo dia (POP-09).
-- **Criptografia de disco:**
-  - Linux: **LUKS**, ligado na instalação.
-  - Windows Pro: **BitLocker**, com a chave de recuperação no Vaultwarden.
-  - Windows Home: usar a **Criptografia do dispositivo** se o PC tiver. Se não tiver, o PC fica na lista para migrar para Linux ou atualizar para Pro.
+- **Criptografia de disco:** **não é usada**, nem nos PCs nem no servidor. Se o Windows ligar a criptografia sozinho na instalação, desligar (POP-05).
 - **Senhas:** **todas** as senhas ficam no Vaultwarden, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, ERP, Petroshow, Sigest, Infinitum, Orion, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
 - **Monitoramento:** o Uptime Kuma vigia o link principal, a Starlink, o servidor e cada serviço. Os alertas vão para o WhatsApp da TI.
 
@@ -161,7 +157,7 @@ O **OPNsense** troca para a Starlink automaticamente quando o link principal cai
 
 - Roda no **PC de trabalho do Lui Grosz**, dentro da empresa, ligado 24h, com todos os serviços em **contêineres Docker**.
 - Reinícios e manutenção **só fora do horário de trabalho**: se esse PC para, param juntos MeshCentral, Headwind, GLPI, Wazuh, Vaultwarden e backup.
-- O PC também é usado no dia a dia, então: 2FA em todos os painéis, disco criptografado e atualizações em dia.
+- O PC também é usado no dia a dia, então: 2FA em todos os painéis e atualizações em dia.
 - O servidor é copiado toda noite para um **disco USB externo** da empresa (Restic).
 
 ### 5.3 O que fica exposto na internet

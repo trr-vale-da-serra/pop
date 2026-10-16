@@ -1,6 +1,6 @@
 # POP-05: Instalação padrão de computador Windows
 
-> **Versão:** 1.0 · **Data:** 15/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.1 · **Data:** 16/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -25,9 +25,7 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 1. Instalar o Windows apagando o disco.
 2. Nome do computador: `<EMPRESA>-PC-<patrimônio>` (ex.: `POSTOS-PC-0007`).
 3. Criar a **conta administradora da TI** (senha no Vaultwarden).
-4. **Criptografia:**
-   - Windows **Pro**: ligar o **BitLocker**. A chave de recuperação vai para o Vaultwarden, no item do PC.
-   - Windows **Home**: ligar a **Criptografia do dispositivo** se aparecer em *Configurações → Privacidade e segurança*. Se não aparecer, registrar no GLPI como "sem criptografia: migrar ou atualizar para Pro".
+4. **Sem criptografia de disco:** se o Windows ligou sozinho o **BitLocker** ou a **Criptografia do dispositivo** (*Configurações → Privacidade e segurança*), desligar e esperar terminar a descriptografia.
 
 ### 4.2 Configuração padrão (Ansible)
 
@@ -53,5 +51,4 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 
 ## 5. Registro
 
-- Item do PC no Vaultwarden: chave do BitLocker (se Pro).
 - Inventário no GLPI atualizado.
