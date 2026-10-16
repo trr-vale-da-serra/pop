@@ -95,7 +95,7 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 - A TI cria **um Gmail por celular**: `celularNN.<empresa>@gmail.com` (ex.: `celular01.trrvaledaserra@gmail.com`). A senha e o 2FA ficam no **Vaultwarden**.
 - A conta fica com o **aparelho**, não com a pessoa. O funcionário **nunca** entra com o Gmail pessoal no aparelho da empresa.
 - Assim a proteção contra restauração de fábrica (FRP) fica sempre com a empresa: depois de um reset ou wipe, a TI desbloqueia o aparelho com essa conta.
-- **E-mail de recuperação:** `lui.grosz@trrvaledaserra.com.br` (responsável de TI).
+- **E-mail de recuperação:** `lui@trrvaledaserra.com.br` (responsável de TI).
 - **Telefone de recuperação:** celular corporativo do responsável de TI (Lui Grosz). Nunca número pessoal, nunca o chip do próprio aparelho.
 - Se o responsável de TI mudar, trocar o e-mail e o telefone de recuperação de todas as contas (POP-02).
 - O Google limita quantas contas um mesmo número pode verificar. Se travar, verificar a conta na criação com o chip do próprio aparelho e manter o número da TI só como recuperação.
