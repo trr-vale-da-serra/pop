@@ -37,6 +37,7 @@
 | ERP | ☐ | perfil: |
 | Petroshow | ☐ | perfil: |
 | Sigest | ☐ | perfil: |
+| Orion | ☐ | perfil: |
 | Infinitum | ☐ | perfil: |
 | Computador | ☐ | |
 | Celular corporativo | ☐ | |
@@ -60,6 +61,7 @@ Uma ficha por funcionário no GLPI, **atualizada a cada mudança**. Na saída, v
 | ERP | | | | |
 | Petroshow | | | | |
 | Sigest | | | | |
+| Orion | | | | |
 | Infinitum | | | | |
 | WhatsApp corporativo | | | | |
 | Acesso remoto / VPN | | | | |

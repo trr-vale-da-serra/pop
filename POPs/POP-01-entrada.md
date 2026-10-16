@@ -26,7 +26,7 @@ O **cargo** define o perfil. O perfil define o pacote padrão e com quanta antec
 |---|---|---|---|
 | **A: Sem acesso de TI** | Motorista, zelador, auxiliar de limpeza, mecânico, borracheiro | Nada. O chamado serve só para registrar a pessoa | Até o **dia do início** (pode começar no mesmo dia) |
 | **B: Estoquista** | Estoquista | Celular corporativo, Petroshow, Sigest, Infinitum e Sistema VS | **2 dias úteis antes** do início |
-| **C: Escritório** | Administrativo, financeiro, comercial, RH/DP, documentação, compras | E-mail corporativo, Sistema VS, ERP e computador | **3 dias úteis antes** do início |
+| **C: Escritório** | Administrativo, financeiro, comercial, RH/DP, documentação, compras | E-mail corporativo, Sistema VS, ERP, Orion e computador | **3 dias úteis antes** do início |
 | **D: Gestão** | Gerentes e supervisores | Tudo do perfil C + celular corporativo e WhatsApp corporativo | **3 dias úteis antes** do início |
 
 Regras:
@@ -58,7 +58,7 @@ Regras:
 6. **E-mail:** criar a conta no padrão de [anexos/padrao-email.md](../anexos/padrao-email.md) (`nome.sobrenome@<domínio-da-empresa>`), no painel da hospedagem da empresa correta. Senha forte gerada pelo Vaultwarden.
 7. **Assinatura de e-mail:** receber do RH a **imagem de rodapé** (`rodape-nome.sobrenome.png`) e a foto editada (passo 2).
 8. **Sistema VS:** criar o usuário com o perfil e os postos aprovados. Conferir logando com o usuário que ele **não** enxerga posto ou tela fora do aprovado.
-9. **ERP / Petroshow / Sigest / Infinitum:** criar os usuários aprovados, com o perfil da função (nunca copiar o perfil de outra pessoa sem conferir).
+9. **ERP / Petroshow / Sigest / Infinitum / Orion:** criar os usuários aprovados, com o perfil da função (nunca copiar o perfil de outra pessoa sem conferir).
 10. **Computador** (se aprovado):
     - Preparar pela instalação padrão (POP-04 Linux ou POP-05 Windows).
     - Criar o usuário local da pessoa, **sem permissão de administrador**.
@@ -83,7 +83,7 @@ Regras:
 |---|---|
 | E-mail corporativo | Padrão `nome.sobrenome@` do domínio da empresa |
 | Sistema VS (site) | Perfil + postos/unidades permitidos |
-| ERP / Petroshow / Sigest / Infinitum | Um usuário por pessoa, com perfil da função |
+| ERP / Petroshow / Sigest / Infinitum / Orion | Um usuário por pessoa, com perfil da função |
 | Computador | Instalação padrão (POP-04/05) + GLPI |
 | Celular corporativo | Headwind MDM + políticas decididas |
 | WhatsApp corporativo | O número é da empresa, não da pessoa |

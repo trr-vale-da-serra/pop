@@ -66,7 +66,7 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
   - Linux: **LUKS**, ligado na instalação.
   - Windows Pro: **BitLocker**, com a chave de recuperação no Vaultwarden.
   - Windows Home: usar a **Criptografia do dispositivo** se o PC tiver. Se não tiver, o PC fica na lista para migrar para Linux ou atualizar para Pro.
-- **Senhas:** **todas** as senhas ficam no Vaultwarden, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, ERP, Petroshow, Sigest, Infinitum, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
+- **Senhas:** **todas** as senhas ficam no Vaultwarden, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, ERP, Petroshow, Sigest, Infinitum, Orion, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
 - **Monitoramento:** o Uptime Kuma vigia o link principal, a Starlink, o servidor e cada serviço. Os alertas vão para o WhatsApp da TI.
 
 ### 3.4 Atualizações
