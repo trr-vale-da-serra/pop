@@ -204,7 +204,7 @@ Padrão de endereço `nome.sobrenome@`, assinatura em imagem padronizada feita p
 | [POP-08](POPs/POP-08-novo-app.md) | Solicitação de app novo |
 | [POP-09](POPs/POP-09-incidente.md) | Incidente de segurança |
 | [POP-10](POPs/POP-10-queda-link.md) | Queda do link principal |
-| [POP-11](POPs/POP-11-funcionario-ativo.md) | Funcionário ativo (mudanças, revisão de acessos, troca de equipamento, afastamento) |
+| [POP-11](POPs/POP-11-funcionario-ativo.md) | Funcionário ativo (mudanças, revisão de acessos, troca de equipamento) |
 
 **Anexos:** [padrão de e-mail e assinatura](anexos/padrao-email.md) · [formulários A a D](anexos/formularios.md)
 

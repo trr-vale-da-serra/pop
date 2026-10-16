@@ -1,18 +1,19 @@
 # POP-11: Funcionário ativo (mudanças durante o contrato)
 
-> **Versão:** 1.0 · **Data:** 15/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
+> **Versão:** 1.1 · **Data:** 16/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
 > Faz parte do [Plano de TI](../POP-TI.md). Formulários em [anexos/formularios.md](../anexos/formularios.md).
 
 ## 1. Objetivo
 
-Manter os acessos e equipamentos de quem já trabalha na empresa **iguais ao que a função atual precisa**: nem faltando, nem sobrando. Cobre quatro situações:
+Manter os acessos e equipamentos de quem já trabalha na empresa **iguais ao que a função atual precisa**: nem faltando, nem sobrando. Cobre três situações:
 
 | Seção | Situação | Quem dispara |
 |---|---|---|
 | 3 | Mudança de função ou de posto/unidade | RH |
 | 4 | Revisão periódica de acessos | TI (calendário) |
 | 5 | Troca de equipamento | Funcionário, gestor ou TI |
-| 6 | Afastamento ou férias longas | RH |
+
+**Férias, atestados e afastamentos são assunto só do RH:** não abrem chamado para a TI e não mudam acessos nem equipamentos. Se o afastamento virar desligamento, segue o POP-02.
 
 ## 2. Quem faz o quê
 
@@ -68,21 +69,7 @@ Vale para defeito, substituição por um mais novo, perda (ver também POP-03) o
 
 ---
 
-## 6. Afastamento ou férias longas
-
-**Quando aplicar:** férias ou afastamento de **15 dias ou mais** (licença, afastamento médico, suspensão).
-
-**Regra:** **suspender**, nunca apagar. Na volta, reativa como estava.
-
-1. **RH** abre o chamado no GLPI (Formulário A), tipo **Afastamento**: data de saída e de volta prevista.
-2. **TI**, no último dia antes do afastamento:
-   1. **E-mail:** resposta automática ("ausente até dd/mm, falar com <gestor/setor>"). Se o gestor pedir, encaminhar cópia para o setor.
-   2. **Sistema VS / Petroshow (ERP) / Sigest / Infinitum / Orion:** desativar o usuário (sem excluir).
-   3. **Celular corporativo:** fica com a pessoa ou volta para a empresa, conforme o gestor decidir. Se ficar, continua sob as políticas do Headwind MDM. Se outra pessoa assumir o atendimento pelo WhatsApp do aparelho, o celular fica com ela durante o afastamento.
-3. **Na volta**, com aviso do RH: reativar os usuários, tirar a resposta automática e conferir que as senhas do Vaultwarden ainda funcionam.
-4. Se a volta virar desligamento, seguir o POP-02.
-
-## 7. Registro
+## 6. Registro
 
 - Formulário A (chamado) de cada solicitação e Formulário B atualizado, no GLPI.
 - Formulários C e D (papel) na pasta do funcionário no RH.
