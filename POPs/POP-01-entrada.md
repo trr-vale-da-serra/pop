@@ -55,7 +55,7 @@ Regras:
 
 ### 4.3 Preparação (TI)
 
-> **Perfil A:** a TI só cadastra a pessoa no GLPI, com o Formulário B sem acessos, e fecha o chamado. Os passos 6 a 17 não se aplicam.
+> **Perfil A:** a TI só cadastra a pessoa no GLPI, com o Formulário B sem acessos, e fecha o chamado. Os passos 6 a 16 não se aplicam.
 
 6. **E-mail:** criar a conta no padrão de [anexos/padrao-email.md](../anexos/padrao-email.md) (`nome.sobrenome@<domínio-da-empresa>`), no painel da hospedagem da empresa correta. Senha forte gerada pelo Vaultwarden.
 7. **Assinatura de e-mail:** receber do RH a **imagem de rodapé** (`rodape-nome.sobrenome.png`) e a foto editada (passo 2).
@@ -69,15 +69,14 @@ Regras:
     - Registrar o aparelho no **Headwind MDM** (Android Enterprise).
     - Entrar com o **Gmail da empresa daquele aparelho** (`celularNN.<empresa>@gmail.com`, senha no Vaultwarden). Se o aparelho é novo, a TI cria a conta antes, com e-mail de recuperação `lui@trrvaledaserra.com.br` e telefone de recuperação do celular corporativo do Lui Grosz (POP-TI §4.1). O funcionário não usa Gmail pessoal no aparelho.
     - Conferir que o aparelho recebeu os **apps padrão** e todas as políticas do POP-TI §4.2 (bloqueio de apps, PIN, bloqueio de reset, bloqueio e wipe remotos, Wi-Fi, localização desativada).
-12. **WhatsApp corporativo** (se aprovado): número da empresa no celular corporativo, nome no padrão da empresa e **foto de perfil** = a foto editada pelo RH, incluir nos grupos de trabalho aprovados. Configurar o **backup diário** no Gmail da empresa, sem vídeos e com criptografia (POP-TI §4.3).
-13. Preencher no GLPI a ficha **Formulário B: Checklist de acessos** com cada conta criada (sistema, usuário, data, quem criou) e salvar cada senha no **Vaultwarden**, na pasta do funcionário.
+12. Preencher no GLPI a ficha **Formulário B: Checklist de acessos** com cada conta criada (sistema, usuário, data, quem criou) e salvar cada senha no **Vaultwarden**, na pasta do funcionário.
 
 ### 4.4 Primeiro dia (TI + funcionário)
 
-14. Entregar os equipamentos e o **Formulário C: Termo de responsabilidade** para assinatura (1 via com o funcionário, 1 na pasta do RH).
-15. Entregar as senhas ao funcionário pessoalmente e acompanhar o primeiro login em cada sistema. **Todas as senhas da pessoa ficam no Vaultwarden** (pasta do funcionário). O funcionário **não troca** as senhas: se precisar trocar, pede à TI, que troca e atualiza o cofre.
-16. Instalar a imagem de rodapé como assinatura no Outlook/webmail e colocar a foto de perfil no e-mail, se o programa permitir (passo a passo em [anexos/padrao-email.md](../anexos/padrao-email.md)).
-17. Explicar as regras básicas: senha não se compartilha com colegas, não se troca sem a TI, aparelho perdido avisa a TI na hora (POP-03), app novo só via solicitação (POP-08).
+13. Entregar os equipamentos e o **Formulário C: Termo de responsabilidade** para assinatura (1 via com o funcionário, 1 na pasta do RH).
+14. Entregar as senhas ao funcionário pessoalmente e acompanhar o primeiro login em cada sistema. **Todas as senhas da pessoa ficam no Vaultwarden** (pasta do funcionário). O funcionário **não troca** as senhas: se precisar trocar, pede à TI, que troca e atualiza o cofre.
+15. Instalar a imagem de rodapé como assinatura no Outlook/webmail e colocar a foto de perfil no e-mail, se o programa permitir (passo a passo em [anexos/padrao-email.md](../anexos/padrao-email.md)).
+16. Explicar as regras básicas: senha não se compartilha com colegas, não se troca sem a TI, aparelho perdido avisa a TI na hora (POP-03), app novo só via solicitação (POP-08).
 
 ## 5. Lista de acessos e equipamentos possíveis
 
@@ -88,7 +87,6 @@ Regras:
 | Petroshow (ERP) / Sigest / Infinitum / Orion | Um usuário por pessoa, com perfil da função |
 | Computador | Instalação padrão (POP-04/05) + GLPI |
 | Celular corporativo | Headwind MDM + políticas decididas |
-| WhatsApp corporativo | O número é da empresa, não da pessoa |
 
 ## 6. Registro
 
