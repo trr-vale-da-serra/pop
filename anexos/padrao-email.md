@@ -1,6 +1,6 @@
 # Anexo: Padrão de e-mail corporativo
 
-> **Versão:** 1.0 · **Data:** 15/10/2026
+> **Versão:** 1.1 · **Data:** 16/10/2026
 > Usado pelos POP-01 (entrada), POP-11 (funcionário ativo) e POP-02 (saída).
 
 ## 1. Onde ficam as contas
@@ -26,24 +26,14 @@ O e-mail é o **da hospedagem do domínio** de cada empresa (painel tipo cPanel 
 
 ## 3. Assinatura padrão (imagem de rodapé)
 
-A assinatura de e-mail é **uma imagem padronizada**, feita pelo **RH** para cada funcionário a partir do modelo de rodapé da empresa.
+A assinatura de e-mail é **uma imagem feita pelo RH**. A foto do funcionário, o conteúdo, o layout e a autorização de uso da foto são **assunto só do RH**.
 
-### Conteúdo da imagem
+### O que a TI recebe do RH
 
-1. **Foto** do funcionário, editada pelo RH (seção 4)
-2. **Nome** (como a pessoa é chamada no trabalho: `João Silva`)
-3. **Cargo** · **Empresa**
-4. **Telefone** do celular corporativo, no formato `(DD) 9XXXX-XXXX`
-
-Mesmo layout, fontes e cores para todos da mesma empresa. Nada além disso: sem frase motivacional, sem informação fora do modelo.
-
-<div style="border: 1px dashed #999; padding: 14px; margin: 8px 0; color: #444; font-size: 9.5pt;"><b>[ foto ]</b> &nbsp; <b>João Silva</b> · Analista Financeiro · TRR Vale da Serra · (32) 99999-0000 &nbsp; <i>(exemplo de disposição; o visual final é o modelo do RH)</i></div>
-
-### Regras
-
-- Sempre a partir do **modelo de rodapé da empresa**. Não montar à mão.
-- Arquivo **PNG**, com **600 px de largura**, nome `rodape-nome.sobrenome.png`. O RH guarda o arquivo na pasta do funcionário e envia para a TI.
+- A imagem de rodapé em **PNG**, com **600 px de largura**, nome `rodape-nome.sobrenome.png`.
+- A foto já editada, para a foto de perfil do e-mail (se o programa permitir).
 - Mudou de cargo, de telefone ou de empresa: o RH refaz a imagem e a TI troca no mesmo dia (POP-11 §3).
+- Na saída (POP-02), a TI tira a imagem e a foto do e-mail.
 
 ### Como instalar (TI)
 
@@ -55,16 +45,6 @@ Mesmo layout, fontes e cores para todos da mesma empresa. Nada além disso: sem 
 | **Celular** (Gmail/Outlook app) | Assinatura simples só em texto: `Nome · Cargo · Empresa · Telefone` |
 
 Depois de instalar: mandar um e-mail de teste para um endereço externo e conferir como a assinatura aparece.
-
-## 4. Foto do funcionário
-
-A mesma foto vale para a **imagem de rodapé** e para a **foto de perfil** do e-mail.
-
-1. **Quando:** na admissão (POP-01), antes do primeiro dia.
-2. **Como tirar:** de frente, do peito para cima, fundo liso e claro, boa luz, sem óculos escuros nem boné. Pode ser com o celular da empresa.
-3. **RH edita:** recorta no formato padrão, ajusta luz e fundo e monta a imagem de rodapé.
-4. **RH envia para a TI:** a foto editada e o PNG do rodapé.
-5. **Autorização:** o funcionário autoriza o uso da foto ao assinar o Formulário C. Na saída (POP-02), a foto sai do e-mail e da assinatura e não é mais usada.
 
 ## Aprovação
 

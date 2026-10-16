@@ -1,6 +1,6 @@
 # POP-02: Saída de funcionário
 
-> **Versão:** 1.0 · **Data:** 15/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
+> **Versão:** 1.1 · **Data:** 16/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
 > Faz parte do [Plano de TI](../POP-TI.md). Formulários em [anexos/formularios.md](../anexos/formularios.md).
 
 ## 1. Objetivo
@@ -11,30 +11,26 @@ Garantir que, quando alguém sai da empresa, **nenhum acesso continue ativo**, t
 
 | Papel | Responsabilidade |
 |---|---|
-| **RH/DP** | Dispara o POP: chamado no GLPI (Formulário A) com tipo **Saída** e a data/hora do desligamento |
+| **RH/DP** | Dispara o POP: chamado no GLPI (Formulário A) com tipo **Saída** e a **data e hora do bloqueio** |
 | **Gestor** | Diz quem assume os e-mails, o celular e os arquivos da pessoa |
 | **TI** | Bloqueia os acessos, recolhe e limpa os equipamentos, registra |
 
 ## 3. Quando
 
-| Tipo de saída | Quando bloquear |
-|---|---|
-| Pedido de demissão ou fim de contrato | No fim do **último dia** de trabalho |
-| Demissão pela empresa | **No mesmo horário** da comunicação ao funcionário |
-| Justa causa ou suspeita de má-fé | **Antes** da comunicação ao funcionário |
-
-O RH avisa a TI **com antecedência**. No caso de justa causa, o aviso é sigiloso: só RH, gestor e TI sabem.
+- O **RH define a data e a hora do bloqueio** e informa só isso no chamado, **com antecedência**. O motivo da saída é assunto do RH e **não vai para a TI**.
+- A TI bloqueia **exatamente** na data e hora do chamado.
+- Todo chamado de saída é **sigiloso**: só RH, gestor e TI sabem até a hora do bloqueio.
 
 ## 4. Passo a passo
 
 ### 4.1 Antes do desligamento
 
-1. **RH** abre o chamado no GLPI (Formulário A), tipo **Saída**: data e hora, tipo de saída, gestor.
+1. **RH** abre o chamado no GLPI (Formulário A), tipo **Saída**: data e hora do bloqueio, gestor.
 2. **Gestor** informa: quem recebe os e-mails, quem fica com o celular corporativo (e o WhatsApp dele), para onde vão os arquivos.
 3. **TI** abre no GLPI o Formulário B (checklist de acessos) da pessoa. Ele é a lista do que bloquear.
 4. **TI** confere que o PC tem backup recente no **UrBackup** e copia os arquivos de trabalho para quem assume.
 
-### 4.2 Bloqueio (no horário da tabela da seção 3)
+### 4.2 Bloqueio (na data e hora do chamado)
 
 Seguir o Formulário B item por item e marcar cada um como bloqueado no GLPI, com data e hora:
 

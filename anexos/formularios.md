@@ -20,10 +20,9 @@
 | Perfil de entrada (POP-01 §3, só para entrada) | ☐ A: Sem acesso de TI ☐ B: Oficina ☐ C: Escritório ☐ D: Gestão |
 | Posto / unidade | |
 | Gestor | |
-| Data (início, mudança ou saída) | |
-| Hora (só para saída) | |
+| Data (início ou mudança) | |
+| Saída: bloquear em (data e hora) | |
 | Mudança: função/posto **antigo** → **novo** | |
-| Saída: tipo (pedido / pela empresa / justa causa) | |
 | Saída: quem assume e-mail, celular e arquivos | |
 | Troca: motivo | |
 
@@ -81,7 +80,6 @@ Comprometo-me a:
 3. Avisar a TI **imediatamente** em caso de perda, roubo ou defeito.
 4. Não compartilhar minhas senhas.
 5. Devolver os equipamentos, com acessórios, ao sair da empresa ou quando solicitado.
-6. Autorizo o uso da minha foto no e-mail e na assinatura de e-mail, somente enquanto eu trabalhar na empresa.
 
 Local e data: ______________, ___/___/____
 

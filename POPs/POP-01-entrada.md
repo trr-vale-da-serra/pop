@@ -45,7 +45,7 @@ Regras:
 
 1. Abrir no GLPI o chamado **Solicitação de TI** (Formulário A) com tipo **Entrada**: nome completo, empresa do grupo, cargo, setor, posto/unidade, gestor, data de início e **perfil de entrada** (seção 3), respeitando o prazo do perfil.
 2. Incluir o gestor no chamado para aprovação.
-   - **Foto:** pedir ao funcionário a foto no padrão de [anexos/padrao-email.md](../anexos/padrao-email.md) §4 (ou tirar na admissão). O RH edita, monta a imagem de rodapé e anexa as duas ao chamado para a TI.
+   - **Foto e imagem de rodapé** (perfis B, C e D): o RH providencia, pelas regras do próprio RH, e anexa as duas ao chamado para a TI ([anexos/padrao-email.md](../anexos/padrao-email.md) §3).
 
 ### 4.2 Aprovação (gestor)
 
