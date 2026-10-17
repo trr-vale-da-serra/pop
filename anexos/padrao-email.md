@@ -1,17 +1,19 @@
 # Anexo: Padrão de e-mail corporativo
 
-> **Versão:** 1.0 · **Data:** 15/10/2026
+> **Versão:** 1.1 · **Data:** 17/10/2026
 > Usado pelos POP-01 (entrada), POP-11 (funcionário ativo) e POP-02 (saída).
 
 ## 1. Onde ficam as contas
 
 O e-mail é o **da hospedagem do domínio** de cada empresa (painel tipo cPanel do provedor). Cada empresa do grupo tem o **seu próprio domínio**.
 
-| Empresa do grupo | Domínio | Hospedagem |
-|---|---|---|
-| Postos Vale da Serra | `@postosvaledaserra.com.br` | Ittek |
-| Sertão Petróleo | `@sertaopetroleo.com.br` | Ittek |
-| TRR Vale da Serra | `@trrvaledaserra.com.br` | Ittek |
+| Empresa do grupo | Domínio |
+|---|---|
+| Postos Vale da Serra | `@postosvaledaserra.com.br` |
+| Sertão Petróleo | `@sertaopetroleo.com.br` |
+| TRR Vale da Serra | `@trrvaledaserra.com.br` |
+
+O provedor de hospedagem atual está no [anexo de ferramentas](ferramentas.md).
 
 > Os dados de acesso aos painéis **não** entram neste arquivo. Ficam no cofre de senhas da TI.
 

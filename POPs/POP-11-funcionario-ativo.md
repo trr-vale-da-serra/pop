@@ -1,6 +1,6 @@
 # POP-11: Funcionário ativo (mudanças durante o contrato)
 
-> **Versão:** 1.0 · **Data:** 15/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
+> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
 > Faz parte do [Plano de TI](../POP-TI.md). Formulários em [anexos/formularios.md](../anexos/formularios.md).
 
 ## 1. Objetivo
@@ -57,11 +57,11 @@ Mesma divisão do POP-01: **RH avisa, gestor aprova, TI executa e registra.**
 Vale para defeito, substituição por um mais novo, perda (ver também POP-03) ou mudança de unidade.
 
 1. Abrir o chamado no GLPI (Formulário A, tipo **Troca de equipamento**) com o motivo.
-2. **TI** prepara o equipamento novo (POP-04/05 para PC; Headwind MDM com as políticas decididas para celular).
-3. **Antes de recolher o antigo:** copiar os dados de trabalho da pessoa para o novo (restaurando do **UrBackup**). Celular: o WhatsApp volta pelo backup do Gmail da empresa.
+2. **TI** prepara o equipamento novo (POP-04/05 para PC; MDM com as políticas decididas para celular).
+3. **Antes de recolher o antigo:** copiar os dados de trabalho da pessoa para o novo (restaurando do **backup dos PCs**). Celular: o WhatsApp volta pelo backup do Gmail da empresa.
 4. Entregar o novo e recolher o antigo **no mesmo momento**, com o **Formulário D: Termo de devolução** para o antigo e um novo **Formulário C** para o novo.
 5. Equipamento antigo:
-   - **Celular:** remover do Headwind MDM só **depois** do wipe e conferir que saiu do painel.
+   - **Celular:** remover do MDM só **depois** do wipe e conferir que saiu do painel.
    - **PC:** apagar os dados antes de reaproveitar ou descartar.
    - Defeito: registrar no inventário como "em manutenção" ou "descartado".
 6. Atualizar o inventário no **GLPI**: equipamento antigo e novo, quem está com cada um.
@@ -78,9 +78,9 @@ Vale para defeito, substituição por um mais novo, perda (ver também POP-03) o
 2. **TI**, no último dia antes do afastamento:
    1. **E-mail:** resposta automática ("ausente até dd/mm, falar com <gestor/setor>"). Se o gestor pedir, encaminhar cópia para o setor.
    2. **Sistema VS / ERP / Petroshow / Infinitum:** desativar o usuário (sem excluir).
-   3. **Celular corporativo:** fica com a pessoa ou volta para a empresa, conforme o gestor decidir. Se ficar, continua sob as políticas do Headwind MDM.
+   3. **Celular corporativo:** fica com a pessoa ou volta para a empresa, conforme o gestor decidir. Se ficar, continua sob as políticas do MDM.
    4. **WhatsApp corporativo:** se outra pessoa assumir o atendimento, o aparelho fica com ela durante o afastamento.
-3. **Na volta**, com aviso do RH: reativar os usuários, tirar a resposta automática e conferir que as senhas do Vaultwarden ainda funcionam.
+3. **Na volta**, com aviso do RH: reativar os usuários, tirar a resposta automática e conferir que as senhas do cofre de senhas ainda funcionam.
 4. Se a volta virar desligamento, seguir o POP-02.
 
 ## 7. Registro

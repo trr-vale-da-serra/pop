@@ -1,6 +1,6 @@
 # Anexo: Formulários de TI
 
-> **Versão:** 1.0 · **Data:** 15/10/2026
+> **Versão:** 1.1 · **Data:** 17/10/2026
 > Usados pelos POP-01 (entrada), POP-11 (funcionário ativo) e POP-02 (saída).
 > **A e B são digitais, no GLPI.** O A é o formulário do chamado "Solicitação de TI" e o B é a ficha de acessos no cadastro da pessoa. Os campos abaixo são os que o GLPI deve ter.
 > **C e D são em papel**, assinados pelo funcionário e pela TI, e ficam na pasta do funcionário no RH.
@@ -98,7 +98,7 @@ Funcionário(a): ______________________ TI: ______________________
 | | | ☐ | ☐ | |
 | | | ☐ | ☐ | |
 
-☐ Celular: wipe feito pelo Headwind MDM em ___/___/____
+☐ Celular: wipe feito pelo MDM em ___/___/____
 ☐ Computador: arquivos de trabalho copiados em ___/___/____
 
 Local e data: ______________, ___/___/____

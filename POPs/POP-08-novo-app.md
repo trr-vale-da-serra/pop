@@ -1,6 +1,6 @@
 # POP-08: Solicitação de app novo (celular ou computador)
 
-> **Versão:** 1.0 · **Data:** 15/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -18,20 +18,20 @@ Só entram nos equipamentos da empresa programas e apps **conferidos pela TI**. 
 
 1. **Funcionário** abre um chamado no GLPI: nome do app, em qual equipamento e para que vai usar no trabalho.
 2. **TI** avalia:
-   - Vem da loja oficial (Play Store, `apt`/loja do Ubuntu, site oficial do fabricante)?
+   - Vem da loja oficial (Play Store, loja oficial do Linux, site oficial do fabricante)?
    - É gratuito ou a empresa já tem licença?
    - Que permissões pede (contatos, arquivos, câmera) e se fazem sentido para o uso?
    - Tem histórico de problema de segurança?
    - Já existe app aprovado que faz a mesma coisa?
 3. **TI** responde no chamado: **aprovado** ou **recusado**, com o motivo, em até **3 dias úteis**.
 4. Se aprovado:
-   - **Celular:** incluir na lista de apps aprovados do Headwind MDM. Vale para todos os aparelhos daquele grupo.
-   - **PC:** instalar pelo MeshCentral ou pelo Ansible.
+   - **Celular:** incluir na lista de apps aprovados do MDM. Vale para todos os aparelhos daquele grupo.
+   - **PC:** instalar pelo acesso remoto ou pela ferramenta de configuração em massa.
 5. App pago: só depois que a compra for autorizada por quem paga.
 
 ## 4. Lista de apps aprovados
 
-Os **apps padrão** de todo celular estão no POP-TI §4.2 e não precisam de solicitação. A lista completa fica no Headwind MDM (celulares) e no playbook do Ansible (PCs). Na revisão semestral de acessos (POP-11 §4), a TI remove o que ninguém usa mais.
+Os **apps padrão** de todo celular estão no POP-TI §4.2 e não precisam de solicitação. A lista completa fica no MDM (celulares) e no roteiro de configuração padrão (PCs). Na revisão semestral de acessos (POP-11 §4), a TI remove o que ninguém usa mais.
 
 ## 5. Registro
 
