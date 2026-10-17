@@ -65,7 +65,7 @@ Seguir o Formulário B item por item e marcar cada um como bloqueado no GLPI, co
 ## 5. Conferência
 
 - No dia seguinte ao desligamento, a TI tenta logar (ou pede o relatório do sistema) e confirma que **nenhum** acesso do Formulário B continua ativo.
-- A revisão semestral (POP-11 §4) procura contas que escaparam deste POP.
+- A revisão semestral (POP-11 §3) procura contas que escaparam deste POP.
 
 ## Aprovação
 

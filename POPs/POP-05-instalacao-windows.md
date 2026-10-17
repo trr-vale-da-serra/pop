@@ -10,7 +10,7 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 ## 2. Quando
 
 - PC que precisa de programa só para Windows (o motivo fica registrado no GLPI).
-- PC Windows que volta de outra pessoa (POP-02, POP-11 §5).
+- PC Windows que volta de outra pessoa (POP-02, POP-11 §4).
 
 ## 3. Antes de começar
 

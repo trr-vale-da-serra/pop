@@ -10,7 +10,7 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 ## 2. Quando
 
 - PC novo ou PC migrado do Windows.
-- PC que volta de outra pessoa (POP-02, POP-11 §5).
+- PC que volta de outra pessoa (POP-02, POP-11 §4).
 
 ## 3. Antes de começar
 

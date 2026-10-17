@@ -24,7 +24,7 @@
 | Firewall | **OPNsense** | Também faz a troca automática para o link reserva |
 | VPN | **WireGuard** (no firewall) | |
 | Link reserva | **Starlink** | Sem IP fixo |
-| MDM dos celulares | **Headwind MDM Community** (Android Enterprise) | Aparelho zerado, provisionado por QR code |
+| MDM dos celulares | **Headwind MDM Community** (Android Enterprise) | Aparelho zerado, provisionado por QR code. Também hospeda e instala os APKs da própria empresa (POP-08 §4) |
 | Serviços do servidor | **Docker** (contêineres) | |
 | Hospedagem de e-mail | **Ittek** | As três empresas |
 

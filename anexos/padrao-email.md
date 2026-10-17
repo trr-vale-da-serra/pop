@@ -45,7 +45,7 @@ Mesmo layout, fontes e cores para todos da mesma empresa. Nada além disso: sem 
 
 - Sempre a partir do **modelo de rodapé da empresa**. Não montar à mão.
 - Arquivo **PNG**, com **600 px de largura**, nome `rodape-nome.sobrenome.png`. O RH guarda o arquivo na pasta do funcionário e envia para a TI.
-- Mudou de cargo, de telefone ou de empresa: o RH refaz a imagem e a TI troca no mesmo dia (POP-11 §3).
+- Mudou de cargo, de telefone ou de empresa: o RH refaz a imagem e a TI troca no mesmo dia (chamado no GLPI).
 
 ### Como instalar (TI)
 

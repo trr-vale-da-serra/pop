@@ -109,7 +109,7 @@ Todo celular corporativo é registrado no MDM (aparelho zerado) e recebe:
 | Política | Regra |
 |---|---|
 | Bloqueio de apps | Só apps da lista aprovada pela TI (POP-08) |
-| Apps de fora da loja (APK) | Bloqueados |
+| Apps de fora da loja (APK) | Bloqueados para o usuário. **Exceção:** apps da própria empresa, instalados só pelo MDM (POP-08 §4) |
 | Senha | PIN de no mínimo 6 dígitos, bloqueio de tela automático em 2 minutos |
 | Restauração de fábrica pelo usuário | Bloqueada |
 | Depuração USB e Opções do desenvolvedor | Bloqueadas |
@@ -212,7 +212,7 @@ Padrão de endereço `nome.sobrenome@`, assinatura em imagem padronizada feita p
 | [POP-08](POPs/POP-08-novo-app.md) | Solicitação de app novo |
 | [POP-09](POPs/POP-09-incidente.md) | Incidente de segurança |
 | [POP-10](POPs/POP-10-queda-link.md) | Queda do link principal |
-| [POP-11](POPs/POP-11-funcionario-ativo.md) | Funcionário ativo (mudanças, revisão de acessos, troca de equipamento, afastamento) |
+| [POP-11](POPs/POP-11-funcionario-ativo.md) | Funcionário ativo (revisão de acessos e troca de equipamento) |
 
 **Anexos:** [ferramentas atuais](anexos/ferramentas.md) · [padrão de e-mail e assinatura](anexos/padrao-email.md) · [formulários A a D](anexos/formularios.md)
 

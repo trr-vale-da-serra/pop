@@ -39,7 +39,7 @@ Assim que o funcionário perceber. **Não esperar** "para ver se aparece": o blo
 
 ### 4.4 Reposição (TI)
 
-8. Preparar um aparelho novo pelo POP-11 §5 (troca de equipamento), com o chip novo.
+8. Preparar um aparelho novo pelo POP-11 §4 (troca de equipamento), com o chip novo.
 9. No aparelho novo, entrar no WhatsApp com o mesmo número e **restaurar o backup** do Gmail da empresa (senha do backup no cofre de senhas).
 10. Atualizar o inventário no GLPI: aparelho antigo como "perdido" ou "roubado".
 
