@@ -2,6 +2,8 @@
 
 Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no POP-04 e no POP-06.
 
+**Primeira vez?** Seguir o [passo a passo do primeiro PC](PRIMEIRO-PC.md).
+
 | Playbook | POP | O que faz |
 |---|---|---|
 | `playbooks/linux-padrao.yml` | POP-04 §4.2 | Deixa um PC Ubuntu 26.04 no padrão da empresa |
@@ -33,7 +35,7 @@ Dentro do Ubuntu do WSL:
 
 ```bash
 sudo apt install -y ansible sshpass git
-git clone <repositório> ~/repos/pop
+git clone https://github.com/vsautonomus/pop.git ~/repos/pop
 cd ~/repos/pop/ansible
 ansible-galaxy collection install -r requirements.yml
 ssh-keygen -t ed25519 -C ansible-ti
