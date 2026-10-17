@@ -18,8 +18,9 @@ import markdown
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 
 ANEXOS = ["anexos/padrao-email.md", "anexos/formularios.md"]
+ANEXOS_TI = ["anexos/ferramentas.md"]
 PDFS = {
-    "POPs-TI-completo.pdf": ["POP-TI.md", *sorted(p.relative_to(RAIZ).as_posix() for p in (RAIZ / "POPs").glob("POP-*.md")), *ANEXOS],
+    "POPs-TI-completo.pdf": ["POP-TI.md", *sorted(p.relative_to(RAIZ).as_posix() for p in (RAIZ / "POPs").glob("POP-*.md")), *ANEXOS_TI, *ANEXOS],
     "POPs-RH-revisao.pdf": ["POPs/POP-01-entrada.md", "POPs/POP-02-saida.md", "POPs/POP-11-funcionario-ativo.md", *ANEXOS],
 }
 

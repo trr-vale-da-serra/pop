@@ -1,6 +1,6 @@
 # POP-08: Solicitação de app novo (celular ou computador)
 
-> **Versão:** 1.0 · **Data:** 15/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -18,32 +18,35 @@ Só entram nos equipamentos da empresa programas e apps **conferidos pela TI**. 
 
 1. **Funcionário** abre um chamado no GLPI: nome do app, em qual equipamento e para que vai usar no trabalho.
 2. **TI** avalia:
-   - Vem da loja oficial (Play Store, `apt`/loja do Ubuntu, site oficial do fabricante)?
+   - Vem da loja oficial (Play Store, loja oficial do Linux, site oficial do fabricante)?
    - É gratuito ou a empresa já tem licença?
    - Que permissões pede (contatos, arquivos, câmera) e se fazem sentido para o uso?
    - Tem histórico de problema de segurança?
    - Já existe app aprovado que faz a mesma coisa?
 3. **TI** responde no chamado: **aprovado** ou **recusado**, com o motivo, em até **3 dias úteis**.
 4. Se aprovado:
-   - **Celular:** incluir na lista de apps aprovados do Headwind MDM. Vale para todos os aparelhos daquele grupo.
-   - **PC:** instalar pelo MeshCentral ou pelo Ansible.
+   - **Celular:** incluir na lista de apps aprovados do MDM. Vale para todos os aparelhos daquele grupo.
+   - **PC:** instalar pelo acesso remoto ou pela ferramenta de configuração em massa.
 5. App pago: só depois que a compra for autorizada por quem paga.
 
-## 4. Lista de apps aprovados
+## 4. App da própria empresa (APK no celular)
 
-Os **apps padrão** de todo celular estão no POP-TI §4.2 e não precisam de solicitação. A lista completa fica no Headwind MDM (celulares) e no playbook do Ansible (PCs). Na revisão semestral de acessos (POP-11 §4), a TI remove o que ninguém usa mais.
+App feito pela empresa ou por fornecedor contratado, que não está na Play Store. É a **única exceção** ao bloqueio de APK do POP-TI §4.2: o funcionário continua sem poder instalar APK; quem instala é o MDM.
 
-## 5. Registro
+1. **Responsável pelo app** (setor ou fornecedor) entrega o APK no chamado do GLPI, com o número da versão e o que mudou.
+2. **TI** confere:
+   - O APK está **assinado com a chave da empresa**, a mesma das versões anteriores. A chave é da empresa e fica no cofre de senhas. Fornecedor que desenvolve o app usa essa chave ou entrega o código para a TI gerar o APK.
+   - As permissões que o app pede fazem sentido para o uso (mesmos critérios do passo 2 da seção 3).
+3. **TI** guarda o APK no servidor, na pasta `apps-empresa/<app>/<versão>/`, que entra no backup do servidor.
+4. **TI** instala pelo MDM num **celular de teste** e confere que o app abre e faz o que deve.
+5. **TI** libera pelo MDM para o grupo de aparelhos. A versão anterior fica guardada para voltar se der problema.
 
-Chamado no GLPI com a decisão e o motivo.
+**Nunca:** mandar APK por WhatsApp, e-mail ou link para o funcionário instalar, nem liberar "fontes desconhecidas" no aparelho.
 
-## Perfis de acesso por cargo
+## 5. Lista de apps aprovados
 
-> Mesma tabela em todos os POPs. As regras completas estão no [POP-01 §3](POP-01-entrada.md).
+Os **apps padrão** de todo celular estão no POP-TI §4.2 e não precisam de solicitação. A lista completa fica no MDM (celulares) e no roteiro de configuração padrão (PCs). Na revisão semestral de acessos (POP-11), a TI remove o que ninguém usa mais.
 
-| Perfil | Cargos | O que a TI entrega | RH abre o chamado |
-|---|---|---|---|
-| **A: Sem acesso de TI** | Motorista, zelador, auxiliar de limpeza, mecânico, borracheiro | Nada. O chamado serve só para registrar a pessoa | Até o **dia do início** (pode começar no mesmo dia) |
-| **B: Oficina** | Estoquista, documentação, compras | Celular corporativo, e-mail corporativo, Petroshow, Sigest, Infinitum e Sistema VS | **2 dias úteis antes** do início |
-| **C: Escritório** | Administrativo, financeiro, comercial, RH/DP | Tudo do perfil B, Orion e computador | **3 dias úteis antes** do início |
-| **D: Gestão** | Gerentes e supervisores | Tudo do perfil C | **3 dias úteis antes** do início |
+## 6. Registro
+
+Chamado no GLPI com a decisão e o motivo. App da empresa: também a versão liberada e a data.

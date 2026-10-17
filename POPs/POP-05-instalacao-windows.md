@@ -1,6 +1,6 @@
 # POP-05: Instalação padrão de computador Windows
 
-> **Versão:** 1.1 · **Data:** 16/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -10,7 +10,7 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 ## 2. Quando
 
 - PC que precisa de programa só para Windows (o motivo fica registrado no GLPI).
-- PC Windows que volta de outra pessoa (POP-02, POP-11 §5).
+- PC Windows que volta de outra pessoa (POP-02, POP-11 §4).
 
 ## 3. Antes de começar
 
@@ -24,42 +24,34 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 
 1. Instalar o Windows apagando o disco.
 2. Nome do computador: `<EMPRESA>-PC-<patrimônio>` (ex.: `POSTOS-PC-0007`).
-3. Criar a **conta administradora da TI** (senha no Vaultwarden).
-4. **Sem criptografia de disco:** se o Windows ligou sozinho o **BitLocker** ou a **Criptografia do dispositivo** (*Configurações → Privacidade e segurança*), desligar e esperar terminar a descriptografia.
+3. Criar a **conta administradora da TI** (senha no cofre de senhas).
+4. **Criptografia:**
+   - Windows **Pro**: ligar a criptografia de disco do Windows. A chave de recuperação vai para o cofre de senhas, no item do PC.
+   - Windows **Home**: ligar a criptografia do Windows se aparecer em *Configurações → Privacidade e segurança*. Se não aparecer, registrar no GLPI como "sem criptografia: migrar ou atualizar para Pro".
 
-### 4.2 Configuração padrão (Ansible)
+### 4.2 Configuração padrão (configuração em massa)
 
-5. Ligar o WinRM (comando da TI, guardado com o playbook).
-6. No servidor: incluir o PC no inventário do Ansible e rodar o playbook padrão do Windows. Ele faz:
+5. Liberar o acesso da ferramenta de configuração em massa (comando no [anexo de ferramentas](../anexos/ferramentas.md) §3).
+6. No servidor: incluir o PC na ferramenta de configuração em massa e rodar o roteiro padrão do Windows. Ele faz:
    - Atualizações do Windows.
    - Programas padrão.
-   - Confere que o **Microsoft Defender** está ativo.
-   - Agentes: **MeshCentral**, **GLPI Agent**, **Wazuh** e **UrBackup**.
+   - Confere que o **antivírus** está ativo.
+   - Agentes: **acesso remoto**, **GLPI Agent**, **painel de segurança** e **backup dos PCs**.
 7. Instalar o programa que exige Windows.
-8. AnyDesk: instalar **só** se o PC recebe suporte de fornecedor (POP-TI §3.2).
+8. Programa de suporte de fornecedor: instalar **só** se o PC recebe suporte de fornecedor (POP-TI §3.2).
 
 ### 4.3 Usuário da pessoa
 
-9. Criar o usuário local da pessoa **sem permissão de administrador**, com senha forte gerada pelo Vaultwarden e salva na pasta do funcionário.
-10. Entregar a senha à pessoa no primeiro dia (POP-01 §4.4). A pessoa não troca a senha sem a TI.
+9. Criar o usuário local da pessoa **sem permissão de administrador**, com senha forte gerada pelo cofre de senhas e salva na pasta do funcionário.
+10. Entregar a senha à pessoa no fim da integração (POP-01 §4.5). A pessoa não troca a senha sem a TI.
 
 ### 4.4 Conferência
 
-11. O PC aparece no **MeshCentral**, no **GLPI** e no **Wazuh**.
-12. O primeiro backup do **UrBackup** terminou.
+11. O PC aparece no **acesso remoto**, no **GLPI** e no **painel de segurança**.
+12. O primeiro **backup dos PCs** terminou.
 13. Registrar no GLPI: patrimônio, número de série, quem recebe e **por que é Windows**.
 
 ## 5. Registro
 
+- Item do PC no cofre de senhas: chave de recuperação da criptografia (se Pro).
 - Inventário no GLPI atualizado.
-
-## Perfis de acesso por cargo
-
-> Mesma tabela em todos os POPs. As regras completas estão no [POP-01 §3](POP-01-entrada.md).
-
-| Perfil | Cargos | O que a TI entrega | RH abre o chamado |
-|---|---|---|---|
-| **A: Sem acesso de TI** | Motorista, zelador, auxiliar de limpeza, mecânico, borracheiro | Nada. O chamado serve só para registrar a pessoa | Até o **dia do início** (pode começar no mesmo dia) |
-| **B: Oficina** | Estoquista, documentação, compras | Celular corporativo, e-mail corporativo, Petroshow, Sigest, Infinitum e Sistema VS | **2 dias úteis antes** do início |
-| **C: Escritório** | Administrativo, financeiro, comercial, RH/DP | Tudo do perfil B, Orion e computador | **3 dias úteis antes** do início |
-| **D: Gestão** | Gerentes e supervisores | Tudo do perfil C | **3 dias úteis antes** do início |

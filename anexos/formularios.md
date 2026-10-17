@@ -1,6 +1,6 @@
 # Anexo: Formulários de TI
 
-> **Versão:** 1.1 · **Data:** 16/10/2026
+> **Versão:** 1.1 · **Data:** 17/10/2026
 > Usados pelos POP-01 (entrada), POP-11 (funcionário ativo) e POP-02 (saída).
 > **A e B são digitais, no GLPI.** O A é o formulário do chamado "Solicitação de TI" e o B é a ficha de acessos no cadastro da pessoa. Os campos abaixo são os que o GLPI deve ter.
 > **C e D são em papel**, assinados pelo funcionário e pela TI, e ficam na pasta do funcionário no RH.
@@ -10,34 +10,33 @@
 
 ## Formulário A: Solicitação de TI (chamado no GLPI)
 
-**Tipo:** ☐ Entrada ☐ Mudança de função/posto ☐ Troca de equipamento ☐ Saída
+**Tipo:** ☐ Entrada ☐ Troca de equipamento ☐ Saída
 
 | Campo | Preenchimento |
 |---|---|
 | Nome completo | |
 | Empresa do grupo | |
 | Cargo / setor | |
-| Perfil de entrada (POP-01 §3, só para entrada) | ☐ A: Sem acesso de TI ☐ B: Oficina ☐ C: Escritório ☐ D: Gestão |
 | Posto / unidade | |
 | Gestor | |
-| Data (início ou mudança) | |
-| Saída: bloquear em (data e hora) | |
-| Mudança: função/posto **antigo** → **novo** | |
-| Saída: quem assume e-mail, celular e arquivos | |
+| Data (início ou saída) | |
+| Hora (só para saída) | |
+| Saída: tipo (pedido / pela empresa / justa causa) | |
+| Saída: quem assume e-mail, WhatsApp e arquivos | |
 | Troca: motivo | |
 
-**Acessos e equipamentos aprovados pelo gestor** (entrada e mudança):
+**Acessos e equipamentos aprovados pelo gestor** (entrada):
 
 | Item | Sim | Detalhe |
 |---|---|---|
 | E-mail corporativo | ☐ | |
 | Sistema VS | ☐ | perfil: · postos/unidades: |
 | Petroshow (ERP) | ☐ | perfil: |
-| Sigest | ☐ | perfil: |
-| Orion | ☐ | perfil: |
 | Infinitum | ☐ | perfil: |
+| Orion | ☐ | perfil: |
 | Computador | ☐ | |
 | Celular corporativo | ☐ | |
+| WhatsApp corporativo | ☐ | grupos: |
 | Outro | ☐ | |
 
 Solicitado por (RH) e aprovado por (gestor): registrados no chamado, com data e hora.
@@ -55,11 +54,10 @@ Uma ficha por funcionário no GLPI, **atualizada a cada mudança**. Na saída, v
 | E-mail | | | | |
 | Sistema VS | | | | |
 | Petroshow (ERP) | | | | |
-| Sigest | | | | |
-| Orion | | | | |
 | Infinitum | | | | |
+| Orion | | | | |
+| WhatsApp corporativo | | | | |
 | Acesso remoto / VPN | | | | |
-| Senhas compartilhadas que conhece | | | | |
 | Outro | | | | |
 
 ---
@@ -80,6 +78,7 @@ Comprometo-me a:
 3. Avisar a TI **imediatamente** em caso de perda, roubo ou defeito.
 4. Não compartilhar minhas senhas.
 5. Devolver os equipamentos, com acessórios, ao sair da empresa ou quando solicitado.
+6. Autorizo o uso da minha foto no perfil do WhatsApp corporativo, no e-mail e na assinatura de e-mail, somente enquanto eu trabalhar na empresa.
 
 Local e data: ______________, ___/___/____
 
@@ -96,7 +95,7 @@ Funcionário(a): ______________________ TI: ______________________
 | | | ☐ | ☐ | |
 | | | ☐ | ☐ | |
 
-☐ Celular: wipe feito pelo Headwind MDM em ___/___/____
+☐ Celular: wipe feito pelo MDM em ___/___/____
 ☐ Computador: arquivos de trabalho copiados em ___/___/____
 
 Local e data: ______________, ___/___/____

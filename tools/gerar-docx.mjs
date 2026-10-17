@@ -2,7 +2,6 @@
 // com "Controlar alteracoes" ja ligado (cada correcao do RH vira sugestao para aceitar ou recusar).
 //
 // Uso:  cd tools && npm install && node gerar-docx.mjs
-// Um POP so:  node gerar-docx.mjs POPs/POP-01-entrada.md  ->  impressao/POP-01-entrada.docx
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -13,15 +12,14 @@ import {
 } from "docx";
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SO_UM = process.argv[2];
-const ARQUIVOS = SO_UM ? [SO_UM] : [
+const ARQUIVOS = [
   "POPs/POP-01-entrada.md",
   "POPs/POP-02-saida.md",
   "POPs/POP-11-funcionario-ativo.md",
   "anexos/padrao-email.md",
   "anexos/formularios.md",
 ];
-const SAIDA = path.join(RAIZ, "impressao", SO_UM ? `${path.basename(SO_UM, ".md")}.docx` : "POPs-RH-revisao.docx");
+const SAIDA = path.join(RAIZ, "impressao", "POPs-RH-revisao.docx");
 
 const FONTE = "Calibri";
 const LARGURA = 9638; // A4 com margens de 2 cm, em DXA
