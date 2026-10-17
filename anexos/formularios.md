@@ -33,9 +33,9 @@
 |---|---|---|
 | E-mail corporativo | ☐ | |
 | Sistema VS | ☐ | perfil: · postos/unidades: |
-| ERP | ☐ | perfil: |
-| Petroshow | ☐ | perfil: |
+| Petroshow (ERP) | ☐ | perfil: |
 | Infinitum | ☐ | perfil: |
+| Orion | ☐ | perfil: |
 | Computador | ☐ | |
 | Celular corporativo | ☐ | |
 | WhatsApp corporativo | ☐ | grupos: |
@@ -55,12 +55,11 @@ Uma ficha por funcionário no GLPI, **atualizada a cada mudança**. Na saída, v
 |---|---|---|---|---|
 | E-mail | | | | |
 | Sistema VS | | | | |
-| ERP | | | | |
-| Petroshow | | | | |
+| Petroshow (ERP) | | | | |
 | Infinitum | | | | |
+| Orion | | | | |
 | WhatsApp corporativo | | | | |
 | Acesso remoto / VPN | | | | |
-| Senhas compartilhadas que conhece | | | | |
 | Outro | | | | |
 
 ---

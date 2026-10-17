@@ -42,7 +42,7 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 ### 4.3 Usuário da pessoa
 
 9. Criar o usuário da pessoa **sem permissão de administrador**, com senha forte gerada pelo cofre de senhas e salva na pasta do funcionário.
-10. Entregar a senha à pessoa no primeiro dia (POP-01 §4.4). A pessoa não troca a senha sem a TI.
+10. Entregar a senha à pessoa no fim da integração (POP-01 §4.5). A pessoa não troca a senha sem a TI.
 
 ### 4.4 Conferência
 

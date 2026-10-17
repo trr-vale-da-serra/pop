@@ -68,7 +68,7 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
   - Linux: ligada na instalação.
   - Windows Pro: ligada na instalação, com a chave de recuperação no cofre de senhas.
   - Windows Home: usar a criptografia que o Windows oferecer, se o PC tiver. Se não tiver, o PC fica na lista para migrar para Linux ou atualizar para Pro.
-- **Senhas:** **todas** as senhas ficam no cofre de senhas, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, ERP, Petroshow, Infinitum, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
+- **Senhas:** **todas** as senhas ficam no cofre de senhas, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, Petroshow, Infinitum, Orion, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
 - **Monitoramento:** vigia o link principal, o link reserva, o servidor e cada serviço. Os alertas vão para o WhatsApp da TI.
 
 ### 3.4 Atualizações

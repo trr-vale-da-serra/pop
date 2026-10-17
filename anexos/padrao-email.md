@@ -62,7 +62,7 @@ Depois de instalar: mandar um e-mail de teste para um endereço externo e confer
 
 A mesma foto vale para a **imagem de rodapé** e para a **foto de perfil** (WhatsApp corporativo e e-mail).
 
-1. **Quando:** na admissão (POP-01), antes do primeiro dia.
+1. **Quando:** na admissão (POP-01), no máximo no 1º dia da integração, para o rodapé ficar pronto até o fim do 2º dia.
 2. **Como tirar:** de frente, do peito para cima, fundo liso e claro, boa luz, sem óculos escuros nem boné. Pode ser com o celular da empresa.
 3. **RH edita:** recorta no formato padrão, ajusta luz e fundo e monta a imagem de rodapé.
 4. **RH envia para a TI:** a foto editada e o PNG do rodapé.

@@ -28,7 +28,7 @@ Mesma divisão do POP-01: **RH avisa, gestor aprova, TI executa e registra.**
 2. **Gestor novo** marca os acessos da função nova. **Gestor antigo** confirma o que deixa de ser necessário.
 3. **TI**, na data da mudança:
    1. **Sistema VS:** trocar perfil e postos. Conferir logando com o usuário que o posto antigo **sumiu**.
-   2. **ERP / Petroshow / Infinitum:** ajustar perfil; remover acesso à unidade antiga.
+   2. **Petroshow / Infinitum / Orion:** ajustar perfil; remover acesso à unidade antiga.
    3. **E-mail:** a conta continua a mesma. O **RH refaz a imagem de rodapé** com o cargo novo (e empresa, se mudou de empresa do grupo) e a TI troca a assinatura no mesmo dia.
    4. **Mudou de empresa do grupo:** criar conta no domínio novo e tratar a antiga como saída (POP-02, seção de e-mail).
    5. **WhatsApp:** sair dos grupos da função antiga; entrar nos da nova.
@@ -77,7 +77,7 @@ Vale para defeito, substituição por um mais novo, perda (ver também POP-03) o
 1. **RH** abre o chamado no GLPI (Formulário A), tipo **Afastamento**: data de saída e de volta prevista.
 2. **TI**, no último dia antes do afastamento:
    1. **E-mail:** resposta automática ("ausente até dd/mm, falar com <gestor/setor>"). Se o gestor pedir, encaminhar cópia para o setor.
-   2. **Sistema VS / ERP / Petroshow / Infinitum:** desativar o usuário (sem excluir).
+   2. **Sistema VS / Petroshow / Infinitum / Orion:** desativar o usuário (sem excluir).
    3. **Celular corporativo:** fica com a pessoa ou volta para a empresa, conforme o gestor decidir. Se ficar, continua sob as políticas do MDM.
    4. **WhatsApp corporativo:** se outra pessoa assumir o atendimento, o aparelho fica com ela durante o afastamento.
 3. **Na volta**, com aviso do RH: reativar os usuários, tirar a resposta automática e conferir que as senhas do cofre de senhas ainda funcionam.
