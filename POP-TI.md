@@ -32,7 +32,6 @@ Os POPs falam da **função** de cada ferramenta (ex.: "cofre de senhas", "acess
 | **Backup dos PCs** | Backup central de todos os PCs no servidor |
 | **Backup do servidor** | Cópia do próprio servidor para um disco USB externo |
 | **Cofre de senhas** | Guarda **todas** as senhas: da empresa e de cada funcionário |
-| **Criptografia de disco** | Protege os dados se o PC for roubado |
 | **Firewall** | Firewall, VPN e troca automática para o link reserva |
 | **MDM dos celulares** | Políticas, bloqueio de apps, bloqueio e limpeza remotos |
 
@@ -64,10 +63,7 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 
 - **Antivírus:** em todo PC, Windows e Linux, enviando alertas ao painel de segurança.
 - **Painel de segurança:** a TI olha o painel **toda semana** e trata os alertas críticos no mesmo dia (POP-09).
-- **Criptografia de disco:**
-  - Linux: ligada na instalação.
-  - Windows Pro: ligada na instalação, com a chave de recuperação no cofre de senhas.
-  - Windows Home: usar a criptografia que o Windows oferecer, se o PC tiver. Se não tiver, o PC fica na lista para migrar para Linux ou atualizar para Pro.
+- **Criptografia de disco:** **não é usada**, nem nos PCs nem no servidor. Se o Windows ligar a criptografia sozinho na instalação, desligar (POP-05).
 - **Senhas:** **todas** as senhas ficam no cofre de senhas, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, Petroshow, Infinitum, Orion, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
 - **Monitoramento:** vigia o link principal, o link reserva, o servidor e cada serviço. Os alertas vão para o WhatsApp da TI.
 
@@ -163,7 +159,7 @@ O **firewall** troca para o link reserva automaticamente quando o link principal
 
 - Roda no **PC de trabalho do Lui Grosz**, dentro da empresa, ligado 24h, com todos os serviços em **contêineres**.
 - Reinícios e manutenção **só fora do horário de trabalho**: se esse PC para, param juntos o acesso remoto, o MDM, o GLPI, o painel de segurança, o cofre de senhas e o backup.
-- O PC também é usado no dia a dia, então: 2FA em todos os painéis, disco criptografado e atualizações em dia.
+- O PC também é usado no dia a dia, então: 2FA em todos os painéis e atualizações em dia.
 - O servidor é copiado toda noite para um **disco USB externo** da empresa (backup do servidor).
 
 ### 5.3 O que fica exposto na internet

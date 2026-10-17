@@ -25,9 +25,7 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 1. Instalar o Windows apagando o disco.
 2. Nome do computador: `<EMPRESA>-PC-<patrimônio>` (ex.: `POSTOS-PC-0007`).
 3. Criar a **conta administradora da TI** (senha no cofre de senhas).
-4. **Criptografia:**
-   - Windows **Pro**: ligar a criptografia de disco do Windows. A chave de recuperação vai para o cofre de senhas, no item do PC.
-   - Windows **Home**: ligar a criptografia do Windows se aparecer em *Configurações → Privacidade e segurança*. Se não aparecer, registrar no GLPI como "sem criptografia: migrar ou atualizar para Pro".
+4. **Sem criptografia de disco:** se o Windows ligou a criptografia sozinho (*Configurações → Privacidade e segurança*), desligar e esperar terminar a descriptografia.
 
 ### 4.2 Configuração padrão (configuração em massa)
 
@@ -53,5 +51,4 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 
 ## 5. Registro
 
-- Item do PC no cofre de senhas: chave de recuperação da criptografia (se Pro).
 - Inventário no GLPI atualizado.

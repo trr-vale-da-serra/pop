@@ -20,7 +20,6 @@
 | Backup dos PCs | **UrBackup** | |
 | Backup do servidor | **Restic** | Para o disco USB externo |
 | Cofre de senhas | **Vaultwarden** | |
-| Criptografia de disco | **BitLocker** (Windows Pro), **Criptografia do dispositivo** (Windows Home) e **LUKS** (Linux) | |
 | Firewall | **OPNsense** | Também faz a troca automática para o link reserva |
 | VPN | **WireGuard** (no firewall) | |
 | Link reserva | **Starlink** | Sem IP fixo |
@@ -41,6 +40,6 @@
 
 | POP | Detalhe |
 |---|---|
-| POP-04 | Antes do roteiro de configuração: `sudo apt install openssh-server`. No instalador: "apagar o disco" + criptografia LUKS |
-| POP-05 | Antes do roteiro de configuração: ligar o WinRM (comando guardado com o playbook) |
+| POP-04 | Antes do roteiro de configuração: `sudo apt install openssh-server`. No instalador: "apagar o disco", sem criptografia. Ou o pendrive de instalação automática (`ansible/PRIMEIRO-PC.md`) |
+| POP-05 | Antes do roteiro de configuração: ligar o WinRM (comando guardado com o playbook). Criptografia que o Windows liga sozinho: BitLocker / Criptografia do dispositivo, desligar |
 | POP-06 | Playbooks de atualização: `apt` (Linux) e `win_updates` (Windows) |

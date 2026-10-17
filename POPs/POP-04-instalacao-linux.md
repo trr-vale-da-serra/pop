@@ -5,7 +5,7 @@
 
 ## 1. Objetivo
 
-Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos agentes, disco criptografado e registrado no inventário.
+Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos agentes e registrado no inventário.
 
 ## 2. Quando
 
@@ -24,7 +24,7 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 
 1. Iniciar pelo pendrive e escolher **Instalar**.
 2. Idioma **Português (Brasil)**, teclado **Português (Brasil ABNT2)**.
-3. Tipo de instalação: **apagar o disco** e ligar a **criptografia do disco**. A senha do disco vai para o cofre de senhas, no item do PC.
+3. Tipo de instalação: **apagar o disco**, **sem** criptografia do disco.
 4. Nome do computador: `<EMPRESA>-PC-<patrimônio>` (ex.: `TRR-PC-0012`).
 5. Usuário: a **conta administradora da TI** (senha no cofre de senhas).
 
@@ -54,5 +54,4 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 
 ## 5. Registro
 
-- Item do PC no cofre de senhas: senha do disco.
 - Inventário no GLPI atualizado.
