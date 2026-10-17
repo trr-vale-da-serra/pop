@@ -10,7 +10,7 @@
 
 ## Formulário A: Solicitação de TI (chamado no GLPI)
 
-**Tipo:** ☐ Entrada ☐ Mudança de função/posto ☐ Troca de equipamento ☐ Afastamento ☐ Saída
+**Tipo:** ☐ Entrada ☐ Troca de equipamento ☐ Saída
 
 | Campo | Preenchimento |
 |---|---|
@@ -19,15 +19,13 @@
 | Cargo / setor | |
 | Posto / unidade | |
 | Gestor | |
-| Data (início, mudança, saída ou afastamento) | |
+| Data (início ou saída) | |
 | Hora (só para saída) | |
-| Volta prevista (só para afastamento) | |
-| Mudança: função/posto **antigo** → **novo** | |
 | Saída: tipo (pedido / pela empresa / justa causa) | |
 | Saída: quem assume e-mail, WhatsApp e arquivos | |
 | Troca: motivo | |
 
-**Acessos e equipamentos aprovados pelo gestor** (entrada e mudança):
+**Acessos e equipamentos aprovados pelo gestor** (entrada):
 
 | Item | Sim | Detalhe |
 |---|---|---|
@@ -90,7 +88,7 @@ Funcionário(a): ______________________ TI: ______________________
 
 ## Formulário D: Termo de devolução de equipamento
 
-**Funcionário:** ______________ **Motivo:** ☐ Saída ☐ Troca ☐ Afastamento ☐ Outro
+**Funcionário:** ______________ **Motivo:** ☐ Saída ☐ Troca ☐ Outro
 
 | Equipamento | Patrimônio | Devolvido | Acessórios completos | Estado / observação |
 |---|---|---|---|---|
