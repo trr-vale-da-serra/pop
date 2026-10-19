@@ -55,9 +55,9 @@ Um pendrive só serve para todos os PCs. Ele instala o Ubuntu já com idioma, te
    ```bash
    python autoinstall/gerar.py E:\
    ```
-   Ele pede a chave SSH pública do Ansible (copiar do WSL: `~/.ssh/id_ed25519.pub`), e a senha da conta da TI (Vaultwarden).
+   Ele pede a chave SSH pública do Ansible (copiar do WSL: `~/.ssh/id_ed25519.pub`), a senha da conta da TI e, se quiser, o nome e a senha do Wi-Fi da empresa (tudo no Vaultwarden). Com o Wi-Fi, o PC já conecta sozinho depois da instalação. A instalação também coloca o `net-tools` (`ifconfig`).
 
-O `autoinstall.yaml` do pendrive tem a senha da TI (em hash): guardar o pendrive com a TI.
+O `autoinstall.yaml` do pendrive tem a senha da TI (em hash) e a do Wi-Fi: guardar o pendrive com a TI.
 
 **Em cada PC:**
 

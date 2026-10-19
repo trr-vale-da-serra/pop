@@ -45,3 +45,7 @@ autoinstall:
       nome=pc-novo-$fim;
       echo $nome > /target/etc/hostname;
       sed -i "s/\bpc-novo\b/$nome/g" /target/etc/hosts'
+    # ifconfig, para ver o IP do PC. Sem internet na instalação, só não instala.
+    - sh -c 'curtin in-target -- apt-get install -y net-tools || true'
+    # Wi-Fi da empresa, conecta sozinho. O gerar.py tira esta linha se não tiver Wi-Fi.
+    - "@@WIFI_COMANDO@@"

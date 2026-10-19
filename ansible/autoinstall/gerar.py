@@ -3,14 +3,16 @@
 Uso:  python gerar.py E:\
       (E: = pendrive gravado com o Rufus no modo ISO; ver ../README.md)
 
-Pede a senha da conta da TI (no Vaultwarden) e grava o arquivo na raiz do
-pendrive. Nada fica nesta pasta.
+Pede a senha da conta da TI e, se quiser, o Wi-Fi da empresa (os dois no
+Vaultwarden) e grava o arquivo na raiz do pendrive. Nada fica nesta pasta.
 """
+import base64
 import getpass
 import os
 import shutil
 import subprocess
 import sys
+import uuid
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 OPENSSL_WINDOWS = r"C:\Program Files\Git\usr\bin\openssl.exe"
@@ -36,6 +38,36 @@ def senha(pergunta, minimo):
             return s
 
 
+def wifi_comando(rede, senha_wifi):
+    """Comando que grava a conexão Wi-Fi no PC instalado (só o root lê a senha)."""
+    conexao = "\n".join([
+        "[connection]",
+        f"id={rede}",
+        f"uuid={uuid.uuid4()}",
+        "type=wifi",
+        "autoconnect=true",
+        "",
+        "[wifi]",
+        "mode=infrastructure",
+        f"ssid={rede}",
+        "",
+        "[wifi-security]",
+        "key-mgmt=wpa-psk",
+        f"psk={senha_wifi}",
+        "",
+        "[ipv4]",
+        "method=auto",
+        "",
+        "[ipv6]",
+        "method=auto",
+        "",
+    ])
+    # Em base64 para nenhum caractere do nome ou da senha atrapalhar o comando.
+    b64 = base64.b64encode(conexao.encode("utf-8")).decode("ascii")
+    arquivo = "/target/etc/NetworkManager/system-connections/wifi-empresa.nmconnection"
+    return f"sh -c 'echo {b64} | base64 -d > {arquivo} && chmod 600 {arquivo}'"
+
+
 def main():
     if len(sys.argv) != 2:
         sys.exit(__doc__)
@@ -55,6 +87,9 @@ def main():
     usuario = input("Usuário da conta da TI [ti]: ").strip() or "ti"
     ti = senha("Senha da conta da TI: ", 12)
 
+    rede = input("Wi-Fi da empresa, nome da rede [vazio = sem Wi-Fi]: ").strip()
+    comando_wifi = wifi_comando(rede, senha("Senha do Wi-Fi: ", 8)) if rede else ""
+
     hash_ti = subprocess.run(
         [openssl(), "passwd", "-6", "-stdin"], input=ti, capture_output=True, text=True, check=True
     ).stdout.strip()
@@ -67,6 +102,10 @@ def main():
         "@@CHAVE_SSH@@": chave,
     }.items():
         texto = texto.replace(marca, valor)
+    if comando_wifi:
+        texto = texto.replace("@@WIFI_COMANDO@@", comando_wifi)
+    else:
+        texto = "".join(l for l in texto.splitlines(True) if "@@WIFI_COMANDO@@" not in l and "Wi-Fi da empresa" not in l)
 
     saida = os.path.join(destino, "autoinstall.yaml")
     with open(saida, "w", encoding="utf-8", newline="\n") as f:

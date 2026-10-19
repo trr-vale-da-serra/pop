@@ -59,28 +59,38 @@ No `ssh-keygen`, apertar Enter nas perguntas. Depois que a branch `ansible/linux
 
 ## 6. Colocar o `autoinstall.yaml` no pendrive
 
-No PowerShell do Windows, com o pendrive conectado (trocar `E:` pela letra dele):
+No **PC principal**, dentro do Ubuntu do WSL, com o pendrive conectado (trocar `D:` pela letra que o Windows deu a ele):
 
-```powershell
-python C:\repos\pop\ansible\autoinstall\gerar.py E:\
+```bash
+sudo mkdir -p /mnt/d && sudo mount -t drvfs D: /mnt/d
+```
+
+```bash
+cd ~/repos/pop && git pull && python3 ansible/autoinstall/gerar.py /mnt/d
 ```
 
 Ele pergunta:
 
 | Pergunta | Resposta |
 |---|---|
-| Chave SSH pública | `\\wsl.localhost\Ubuntu\home\<usuário do WSL>\.ssh\id_ed25519.pub` |
+| Chave SSH pública | Enter (usa a chave do item 4) |
 | Usuário da conta da TI | `ti` (Enter) |
 | Senha da conta da TI | A senha do item 1 |
+| Wi-Fi da empresa, nome da rede | O nome da rede (no Vaultwarden). Vazio = sem Wi-Fi |
+| Senha do Wi-Fi | A senha da rede (no Vaultwarden) |
 
-O pendrive está pronto e serve para todos os PCs. Ele tem a senha da TI (em hash): **guardar com a TI**.
+```bash
+sudo umount /mnt/d
+```
+
+O pendrive está pronto e serve para todos os PCs. Ele tem a senha da TI (em hash) e a **senha do Wi-Fi**: **guardar com a TI**. Os PCs conectam no Wi-Fi sozinhos e o funcionário não vê a senha.
 
 ## 7. Instalar o PC de teste
 
 1. Ligar o PC pelo pendrive (tecla de boot: F12, F11, F8 ou Esc, depende da marca).
 2. O instalador acha o `autoinstall.yaml` e **pede confirmação para apagar o disco**. Confirmar.
 3. Esperar terminar. O PC reinicia sozinho.
-4. Pegar o IP do PC: no próprio PC em *Configurações → Rede*, ou na lista de DHCP do roteador/OPNsense (nome `pc-novo-XXXX`).
+4. Pegar o IP do PC: no terminal do próprio PC, `ifconfig` (ou `hostname -I`), ou na lista de DHCP do roteador/OPNsense (nome `pc-novo-XXXX`).
 
 ## 8. Rodar o Ansible (no Ubuntu do WSL)
 
