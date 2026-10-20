@@ -26,7 +26,7 @@ Garantir que **dá para recuperar** os arquivos dos PCs, o servidor e as convers
 ## 4. Toda semana (TI, segunda-feira)
 
 1. No backup dos PCs: conferir que **todos** os PCs têm backup de arquivos recente e a imagem da semana.
-2. PC sem backup há mais de 2 dias: descobrir por quê (desligado, fora da empresa, sem rede, disco cheio) e resolver. PC que vive fora da empresa (ex.: notebook que o gerente leva para casa): combinar com a pessoa de deixá-lo na rede da empresa por algumas horas, uma vez por semana.
+2. PC sem backup há mais de 2 dias: descobrir por quê (desligado, fora da empresa, sem rede, disco cheio) e resolver.
 
 ## 5. Todo mês (TI, 1ª semana)
 
