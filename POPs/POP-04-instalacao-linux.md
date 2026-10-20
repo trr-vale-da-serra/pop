@@ -42,10 +42,10 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 ### 4.3 Usuário da pessoa
 
 9. Criar o usuário da pessoa **sem permissão de administrador** e **sem senha** (POP-TI §3.1):
-   - *Configurações → Usuários → Adicionar usuário*, tipo **Padrão**.
-   - No terminal, com a conta da TI: `sudo passwd -d <usuário>` (apaga a senha).
-   - Em *Configurações → Usuários*, ligar o **login automático** desse usuário.
-10. **PC do gestor do departamento:** se o gestor quiser senha, ele mesmo digita a senha que escolheu, na entrega (POP-01 §4.5), com `passwd`. Nesse caso, desligar o login automático. A senha não vai para o cofre. Se ele esquecer, a TI troca com a conta da TI: `sudo passwd <usuário>`.
+   - *Configurações → Sistema → Usuários → Adicionar usuário*, tipo **Padrão**.
+   - Apagar a senha: só a TI, no terminal da conta da TI: `sudo passwd -d <usuário>`. O funcionário **nunca** usa o terminal.
+   - Em *Configurações → Sistema → Usuários*, ligar o **login automático** desse usuário.
+10. **PC do gestor do departamento:** se o gestor quiser senha, na entrega (POP-01 §4.5) a TI abre *Configurações → Sistema → Usuários → Desbloquear* (com a senha da TI), escolhe o usuário do gestor → **Senha → Definir uma senha agora**, e o **gestor digita** a senha que escolheu. Desligar o login automático. A senha não vai para o cofre. Se ele esquecer, a TI troca pela mesma tela.
 
 ### 4.4 Conferência
 

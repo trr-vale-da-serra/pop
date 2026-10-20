@@ -49,6 +49,7 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 - **Usuários:** cada pessoa tem um usuário **sem permissão de administrador** e **sem senha**. A tela de login não aceita colar senha, então senha em todos os PCs não é prático.
   - **Exceção:** no PC do **gestor de cada departamento**, o gestor pode ter senha, **escolhida por ele**. Essa senha não vai para o cofre. Se ele esquecer, a TI troca pela conta administradora.
   - A TI tem uma conta administradora separada, **com senha**, guardada no cofre de senhas.
+- **Terminal:** o funcionário **nunca** precisa abrir o terminal. Tudo o que ele faz no PC é pelas telas gráficas. Comandos ficam só com a TI.
 
 ### 3.2 Acesso remoto
 
