@@ -1,6 +1,6 @@
 # POP-07: Backup e teste de restauração
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -11,21 +11,22 @@ Garantir que **dá para recuperar** os arquivos dos PCs, o servidor e as convers
 
 | O quê | Ferramenta | Frequência | Guarda |
 |---|---|---|---|
-| Arquivos dos PCs | Backup dos PCs | Toda noite | 30 dias |
-| Imagem completa do disco dos PCs | Backup dos PCs | Toda semana | 4 imagens |
+| Arquivos dos PCs | Backup dos PCs | Todo dia, sempre que o PC está ligado na rede da empresa | 30 dias |
+| Imagem completa do disco dos PCs | Backup dos PCs | Toda semana, sempre que o PC está ligado na rede da empresa | 4 imagens |
 | Servidor inteiro | Backup do servidor, para disco USB externo | Toda noite | 30 dias |
 | WhatsApp dos celulares | Google Drive do Gmail do aparelho | Todo dia, sem vídeos | Último backup |
 | Caixa de e-mail de quem saiu | Download por IMAP para o servidor (POP-02) | Na saída | Permanente |
 
 ## 3. Todo dia (automático)
 
-- O backup dos PCs e o do servidor rodam sozinhos à noite.
-- O monitoramento avisa a TI no WhatsApp se um backup falhar.
+- O backup do servidor roda sozinho à noite.
+- O backup dos PCs roda sozinho, durante o dia, sempre que o PC está ligado na rede da empresa. **Ninguém precisa deixar o PC ligado.**
+- O monitoramento avisa a TI por e-mail se um backup falhar.
 
 ## 4. Toda semana (TI, segunda-feira)
 
 1. No backup dos PCs: conferir que **todos** os PCs têm backup de arquivos recente e a imagem da semana.
-2. PC sem backup há mais de 2 dias: descobrir por quê (desligado, sem rede, disco cheio) e resolver.
+2. PC sem backup há mais de 2 dias: descobrir por quê (desligado, fora da empresa, sem rede, disco cheio) e resolver. PC que vive fora da empresa (ex.: notebook que o gerente leva para casa): combinar com a pessoa de deixá-lo na rede da empresa por algumas horas, uma vez por semana.
 
 ## 5. Todo mês (TI, 1ª semana)
 

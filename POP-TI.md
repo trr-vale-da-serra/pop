@@ -65,12 +65,12 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 - **Painel de segurança:** a TI olha o painel **toda semana** e trata os alertas críticos no mesmo dia (POP-09).
 - **Criptografia de disco:** **não é usada**, nem nos PCs nem no servidor. Se o Windows ligar a criptografia sozinho na instalação, desligar (POP-05).
 - **Senhas:** **todas** as senhas ficam no cofre de senhas, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, Petroshow, Infinitum, Orion, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
-- **Monitoramento:** vigia o link principal, o link reserva, o servidor e cada serviço. Os alertas vão para o WhatsApp da TI.
+- **Monitoramento:** vigia o link principal, o link reserva, o servidor e cada serviço. Os alertas vão para o e-mail da TI.
 
 ### 3.4 Atualizações
 
 - **Linux:** atualizações de segurança automáticas todos os dias.
-- **Mensal (Windows e Linux):** na **2ª quarta-feira de cada mês, à noite**, a ferramenta de configuração em massa força as atualizações pendentes e reinicia o que precisar. Detalhes no POP-06.
+- **Mensal (Windows e Linux):** na **2ª quarta-feira de cada mês, depois do expediente**, a ferramenta de configuração em massa força as atualizações pendentes nos PCs ligados e reinicia o que precisar. PC desligado ou fora da empresa é atualizado quando voltar à rede: ninguém precisa deixar o PC ligado. Detalhes no POP-06.
 
 ### 3.5 Backup
 

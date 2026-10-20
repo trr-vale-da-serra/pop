@@ -1,5 +1,5 @@
 ---
-# POP-06 §3.2, passo 3: atualização mensal do Linux (2ª quarta-feira, à noite).
+# POP-06 §3.2, passo 2: atualização mensal do Linux (2ª quarta-feira, depois do expediente, nos PCs ligados).
 #   ansible-playbook playbooks/linux-atualizacao.yml
 - name: Atualização mensal do Linux
   hosts: linux

@@ -1,6 +1,6 @@
 # POP-10: Queda do link principal
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -10,7 +10,7 @@ Manter a empresa com internet quando o link principal cai, usando o link reserva
 ## 2. Como funciona
 
 - O **firewall** troca para o **link reserva sozinho** quando o link principal cai e volta para o principal sozinho quando ele normaliza.
-- O **monitoramento** avisa a TI no WhatsApp quando o link cai e quando volta.
+- O **monitoramento** avisa a TI por e-mail quando o link cai e quando volta.
 
 | Durante a queda | Funciona? |
 |---|---|

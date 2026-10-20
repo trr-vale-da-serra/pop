@@ -16,7 +16,7 @@
 | Configuração em massa | **Ansible** | Os "roteiros de configuração" dos POPs são os playbooks do Ansible |
 | Painel de segurança | **Wazuh** | Recebe os alertas dos antivírus |
 | Antivírus | **Microsoft Defender** (Windows) e **ClamAV** (Linux) | |
-| Monitoramento | **Uptime Kuma** | Alertas no WhatsApp da TI |
+| Monitoramento | **Uptime Kuma** | Alertas no e-mail da TI |
 | Backup dos PCs | **UrBackup** | |
 | Backup do servidor | **Restic** | Para o disco USB externo |
 | Cofre de senhas | **Vaultwarden** | |

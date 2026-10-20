@@ -85,7 +85,7 @@ O `autoinstall.yaml` do pendrive tem a senha da TI (em hash) e a do Wi-Fi: guard
 ansible-playbook playbooks/linux-atualizacao.yml -K
 ```
 
-Atualiza de 5 em 5 PCs e reinicia só os que precisam. O agente Wazuh fica **segurado** (`hold`) para não ficar mais novo que o servidor: atualizar junto com o servidor Wazuh.
+Atualiza de 5 em 5 PCs e reinicia só os que precisam. PC desligado ou fora da empresa aparece como `UNREACHABLE` e os outros seguem normalmente. Quando ele voltar à rede (POP-06 §3.3), rodar só nele com `--limit <nome-do-pc>`. O agente Wazuh fica **segurado** (`hold`) para não ficar mais novo que o servidor: atualizar junto com o servidor Wazuh.
 
 ## Senhas
 
