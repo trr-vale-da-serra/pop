@@ -9,3 +9,17 @@
   community.general.snap:
     name: firefox
     state: present
+
+# uBlock Origin em todo Firefox, instalado à força: o usuário não consegue remover.
+# O Firefox (snap) lê as políticas de /etc/firefox/policies.
+- name: Pasta de políticas do Firefox
+  ansible.builtin.file:
+    path: /etc/firefox/policies
+    state: directory
+    mode: "0755"
+
+- name: Políticas do Firefox (bloqueador de anúncios)
+  ansible.builtin.copy:
+    dest: /etc/firefox/policies/policies.json
+    content: "{{ firefox_politicas | to_nice_json }}"
+    mode: "0644"

@@ -17,7 +17,7 @@ O playbook do Windows (POP-05) ainda não existe.
 |---|---|
 | `base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso horário, chave SSH da TI, atualizações e `unattended-upgrades` (diário, sem reinício automático) |
 | `desktop` | Dash to Panel e ArcMenu ligados para todos os usuários (dconf), dock do Ubuntu desligado |
-| `apps` | LibreOffice em português, leitor de PDF e Firefox. Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
+| `apps` | LibreOffice em português, leitor de PDF e Firefox com o bloqueador de anúncios uBlock Origin (instalado à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
 | `clamav` | ClamAV com alertas no syslog (para o Wazuh) e varredura semanal da `/home` |
 | `agentes` | MeshCentral, GLPI Agent, Wazuh, UrBackup e AnyDesk (só com `anydesk: true` no host) |
 
@@ -105,4 +105,5 @@ A senha do vault vai para o Vaultwarden. `vault.yml` só entra no git criptograf
 - [ ] Respostas do instalador do UrBackup (`urbackup_respostas`).
 - [ ] Nome da conta da TI (`ansible_user`, hoje `ti`).
 - [ ] O instalador Desktop do 26.04 lê o `autoinstall.yaml` do pendrive gravado pelo Rufus, instala o SSH e aplica o nome `pc-novo-XXXX`.
+- [ ] O uBlock Origin aparece sozinho no Firefox (snap) e não dá para remover. Se não aparecer, conferir em `about:policies`.
 - [ ] Acesso remoto do MeshCentral no Wayland (ALTERNATIVAS §1.2).

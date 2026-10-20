@@ -5,3 +5,11 @@ apps_apt:
   - libreoffice-help-pt-br
   - hunspell-pt-br
   - evince            # leitor de PDF
+
+# Políticas do Firefox: https://mozilla.github.io/policy-templates/
+firefox_politicas:
+  policies:
+    ExtensionSettings:
+      uBlock0@raymondhill.net:
+        installation_mode: force_installed
+        install_url: https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi
