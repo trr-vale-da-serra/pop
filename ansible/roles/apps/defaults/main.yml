@@ -1,4 +1,5 @@
 ---
+# Mudou a lista? Atualizar também anexos/ferramentas.md §4 (programas dos PCs Linux).
 apps_apt:
   - libreoffice
   - libreoffice-l10n-pt-br

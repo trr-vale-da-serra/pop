@@ -1,6 +1,6 @@
 # POP-08: Solicitação de app novo (celular ou computador)
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -45,7 +45,7 @@ App feito pela empresa ou por fornecedor contratado, que não está na Play Stor
 
 ## 5. Lista de apps aprovados
 
-Os **apps padrão** de todo celular estão no POP-TI §4.2 e não precisam de solicitação. A lista completa fica no MDM (celulares) e no roteiro de configuração padrão (PCs). Na revisão semestral de acessos (POP-11), a TI remove o que ninguém usa mais.
+Os **apps padrão** de todo celular estão no POP-TI §4.2 e não precisam de solicitação. Os programas de todo PC Linux estão no [anexo de ferramentas](../anexos/ferramentas.md) §4. A lista completa dos celulares fica no MDM. Na revisão semestral de acessos (POP-11), a TI remove o que ninguém usa mais.
 
 ## 6. Registro
 
