@@ -1,6 +1,6 @@
 # POP-04: Instalação padrão de computador Linux
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -41,8 +41,11 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 
 ### 4.3 Usuário da pessoa
 
-9. Criar o usuário da pessoa **sem permissão de administrador**, com senha forte gerada pelo cofre de senhas e salva na pasta do funcionário.
-10. Entregar a senha à pessoa no fim da integração (POP-01 §4.5). A pessoa não troca a senha sem a TI.
+9. Criar o usuário da pessoa **sem permissão de administrador** e **sem senha** (POP-TI §3.1):
+   - *Configurações → Usuários → Adicionar usuário*, tipo **Padrão**.
+   - No terminal, com a conta da TI: `sudo passwd -d <usuário>` (apaga a senha).
+   - Em *Configurações → Usuários*, ligar o **login automático** desse usuário.
+10. **PC do gestor do departamento:** se o gestor quiser senha, ele mesmo digita a senha que escolheu, na entrega (POP-01 §4.5), com `passwd`. Nesse caso, desligar o login automático. A senha não vai para o cofre. Se ele esquecer, a TI troca com a conta da TI: `sudo passwd <usuário>`.
 
 ### 4.4 Conferência
 

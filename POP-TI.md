@@ -1,6 +1,6 @@
 # Plano de TI: Gestão de Computadores e Celulares
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** Lui Grosz (TI)
+> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** Lui Grosz (TI)
 > Empresas: Postos Vale da Serra, Sertão Petróleo e TRR Vale da Serra.
 > **Regra geral:** todas as ferramentas são **gratuitas** (licença grátis ou open source, sem mensalidade).
 > **Regra de equipamento:** nenhum serviço ou dado da empresa roda em equipamento que não seja da empresa.
@@ -46,7 +46,9 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 - **Linux (padrão):** a distribuição e a versão padrão estão no [anexo de ferramentas](anexos/ferramentas.md) §2, com a tela ajustada para ficar parecida com o Windows (barra de tarefas embaixo e menu Iniciar). Instalação no POP-04.
 - **Windows:** fica só nos PCs que usam programas que não rodam no Linux (ex.: alguns sistemas de banco ou fornecedores). Instalação no POP-05.
 - **Nome dos computadores:** `<EMPRESA>-PC-<patrimônio>`, com `POSTOS`, `SERTAO` ou `TRR` no lugar de `<EMPRESA>` (ex.: `TRR-PC-0012`).
-- **Usuários:** cada pessoa tem um usuário **sem permissão de administrador**. A TI tem uma conta administradora separada, com a senha no cofre de senhas.
+- **Usuários:** cada pessoa tem um usuário **sem permissão de administrador** e **sem senha**. A tela de login não aceita colar senha, então senha em todos os PCs não é prático.
+  - **Exceção:** no PC do **gestor de cada departamento**, o gestor pode ter senha, **escolhida por ele**. Essa senha não vai para o cofre. Se ele esquecer, a TI troca pela conta administradora.
+  - A TI tem uma conta administradora separada, **com senha**, guardada no cofre de senhas.
 
 ### 3.2 Acesso remoto
 
@@ -64,7 +66,7 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 - **Antivírus:** em todo PC, Windows e Linux, enviando alertas ao painel de segurança.
 - **Painel de segurança:** a TI olha o painel **toda semana** e trata os alertas críticos no mesmo dia (POP-09).
 - **Criptografia de disco:** **não é usada**, nem nos PCs nem no servidor. Se o Windows ligar a criptografia sozinho na instalação, desligar (POP-05).
-- **Senhas:** **todas** as senhas ficam no cofre de senhas, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, Petroshow, Infinitum, Orion, PC), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre.
+- **Senhas:** **todas** as senhas ficam no cofre de senhas, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, Petroshow, Infinitum, Orion), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre. O usuário do PC não tem senha (§3.1). A senha que o gestor escolhe para o próprio PC é a única que não vai para o cofre.
 - **Monitoramento:** vigia o link principal, o link reserva, o servidor e cada serviço. Os alertas vão para o e-mail da TI.
 
 ### 3.4 Atualizações

@@ -1,6 +1,6 @@
 # POP-01: Entrada de funcionário
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
+> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
 > Faz parte do [Plano de TI](../POP-TI.md). Formulários em [anexos/formularios.md](../anexos/formularios.md).
 
 ## 1. Objetivo
@@ -44,7 +44,7 @@ Garantir que todo funcionário novo conheça a empresa nos **dois primeiros dias
 9. **Petroshow / Infinitum / Orion:** criar os usuários aprovados, com o perfil da função (nunca copiar o perfil de outra pessoa sem conferir).
 10. **Computador** (se aprovado):
     - Preparar pela instalação padrão (POP-04 Linux ou POP-05 Windows).
-    - Criar o usuário local da pessoa, **sem permissão de administrador**.
+    - Criar o usuário local da pessoa, **sem permissão de administrador** e **sem senha** (POP-04/05 §4.3). Exceção: o gestor do departamento pode escolher uma senha para o próprio PC.
     - Registrar no **GLPI**: patrimônio, número de série, quem recebe.
 11. **Celular** (se aprovado):
     - Registrar o aparelho no **MDM**.
@@ -65,7 +65,7 @@ Nos dois primeiros dias o funcionário **ainda não tem** login, senhas, celular
 ### 4.5 Fim do 2º dia: entrega (TI + funcionário)
 
 18. Entregar os equipamentos e o **Formulário C: Termo de responsabilidade** para assinatura (1 via com o funcionário, 1 na pasta do RH).
-19. Entregar as senhas ao funcionário pessoalmente e acompanhar o primeiro login em cada sistema. **Todas as senhas da pessoa ficam no cofre de senhas** (pasta do funcionário). O funcionário **não troca** as senhas: se precisar trocar, pede à TI, que troca e atualiza o cofre.
+19. Entregar as senhas ao funcionário pessoalmente e acompanhar o primeiro login em cada sistema. **Todas as senhas da pessoa ficam no cofre de senhas** (pasta do funcionário). O funcionário **não troca** as senhas: se precisar trocar, pede à TI, que troca e atualiza o cofre. O **computador não tem senha**. Se o gestor do departamento quiser senha no próprio PC, ele digita a que escolher nesse momento, e ela não vai para o cofre.
 20. Instalar a imagem de rodapé como assinatura no Outlook/webmail e colocar a foto de perfil no e-mail, se o programa permitir (passo a passo em [anexos/padrao-email.md](../anexos/padrao-email.md)).
 21. Explicar as regras básicas: senha não se compartilha com colegas, não se troca sem a TI, aparelho perdido avisa a TI na hora (POP-03), app novo só via solicitação (POP-08).
 

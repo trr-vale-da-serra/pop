@@ -1,6 +1,6 @@
 # POP-05: Instalação padrão de computador Windows
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -40,8 +40,8 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 
 ### 4.3 Usuário da pessoa
 
-9. Criar o usuário local da pessoa **sem permissão de administrador**, com senha forte gerada pelo cofre de senhas e salva na pasta do funcionário.
-10. Entregar a senha à pessoa no fim da integração (POP-01 §4.5). A pessoa não troca a senha sem a TI.
+9. Criar o usuário local da pessoa **sem permissão de administrador** e **sem senha** (POP-TI §3.1): *Configurações → Contas → Outros usuários → Adicionar conta → Não tenho as informações de entrada → Adicionar usuário sem conta Microsoft*, deixando a senha **em branco**. Na tela de entrada, a pessoa só clica no próprio nome.
+10. **PC do gestor do departamento:** se o gestor quiser senha, ele mesmo cria a senha que escolheu, na entrega (POP-01 §4.5): *Ctrl+Alt+Del → Alterar uma senha*. A senha não vai para o cofre. Se ele esquecer, a TI troca com a conta administradora da TI: *Gerenciamento do computador → Usuários e grupos locais*.
 
 ### 4.4 Conferência
 
