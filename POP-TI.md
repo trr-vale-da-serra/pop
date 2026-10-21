@@ -156,7 +156,7 @@ O backup só restaura em aparelho com o **mesmo número**. Quando o aparelho tro
 | **Link empresarial** | Principal | IPv4 fixo |
 | **Link reserva** | Backup | Sem IP fixo |
 
-O **firewall** troca para o link reserva automaticamente quando o link principal cai e volta sozinho quando ele normaliza (POP-10).
+O **firewall** troca para o link reserva automaticamente quando o link principal cai e volta sozinho quando ele normaliza.
 
 ### 5.2 Servidor
 
@@ -210,7 +210,6 @@ Padrão de endereço `nome.sobrenome@`, assinatura em imagem padronizada feita p
 | [POP-07](POPs/POP-07-backup.md) | Backup e teste de restauração |
 | [POP-08](POPs/POP-08-novo-app.md) | Solicitação de app novo |
 | [POP-09](POPs/POP-09-incidente.md) | Incidente de segurança |
-| [POP-10](POPs/POP-10-queda-link.md) | Queda do link principal |
 | [POP-11](POPs/POP-11-funcionario-ativo.md) | Funcionário ativo (revisão de acessos e troca de equipamento) |
 
 **Anexos:** [ferramentas atuais](anexos/ferramentas.md) · [padrão de e-mail e assinatura](anexos/padrao-email.md) · [formulários A a D](anexos/formularios.md)
