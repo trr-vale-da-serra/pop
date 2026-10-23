@@ -65,6 +65,34 @@ O `autoinstall.yaml` do pendrive tem a senha da TI (em hash) e a do Wi-Fi: guard
 2. Esperar terminar e reiniciar.
 3. O PC sobe com o nome `pc-novo-<4 últimos dígitos do MAC>`. Pegar o IP na lista de DHCP do OPNsense.
 
+## Pendrive de instalação automática do Windows (POP-05 §4.1)
+
+Mesma ideia do pendrive do Linux, com o arquivo `autounattend.xml`. Ele instala o Windows 11 em português, teclado ABNT2, fuso de Brasília, **sem conta Microsoft** e sem as telas do primeiro uso. Também cria a conta local da TI, impede a criptografia de disco e liga o WinRM, que é o acesso do Ansible. O playbook do Windows ainda não existe.
+
+**Preparar o pendrive (uma vez):**
+
+1. Criar o pendrive com a **Ferramenta de Criação de Mídia** da Microsoft (`microsoft.com/software-download/windows11`), em português. Se usar o Rufus, **desmarcar todas as opções** da janela "Windows User Experience": ele cria um arquivo próprio que conflita com o nosso.
+2. Gerar o `autounattend.xml` na raiz do pendrive. No WSL do PC principal:
+   ```bash
+   sudo mkdir -p /mnt/d && sudo mount -t drvfs D: /mnt/d
+   ```
+   ```bash
+   cd ~/repos/pop && git pull && python3 ansible/autounattend/gerar.py /mnt/d
+   ```
+   ```bash
+   sudo umount /mnt/d
+   ```
+   Ele pede a edição (**home** ou **pro**, a mesma que o PC já tinha, para a licença ativar sozinha) e a senha da conta da TI.
+
+O `autounattend.xml` tem a senha da TI só codificada (qualquer um decodifica): guardar o pendrive com a TI.
+
+**Em cada PC:**
+
+1. Iniciar pelo pendrive.
+2. **Única tela:** a escolha do disco. Apagar as partições do disco do PC e escolher o espaço livre. Fica manual de propósito, para nunca apagar o disco errado.
+3. Esperar. O Windows instala, entra uma vez sozinho na conta da TI, configura e reinicia.
+4. O PC sobe com o nome `PC-NOVO-<4 últimos dígitos do MAC>`. Pegar o IP com `ipconfig` ou na lista de DHCP do firewall.
+
 ## PC novo (POP-04 §4.2)
 
 1. Em `inventario/hosts.yml`, dentro de `linux`, incluir o PC com o nome definitivo e o IP:
@@ -106,4 +134,5 @@ A senha do vault vai para o Vaultwarden. `vault.yml` só entra no git criptograf
 - [ ] Nome da conta da TI (`ansible_user`, hoje `ti`).
 - [ ] O instalador Desktop do 26.04 lê o `autoinstall.yaml` do pendrive gravado pelo Rufus, instala o SSH e aplica o nome `pc-novo-XXXX`.
 - [ ] O uBlock Origin aparece sozinho no Firefox (snap) e não dá para remover. Se não aparecer, conferir em `about:policies`.
+- [ ] Windows: o `autounattend.xml` pula tudo menos a escolha do disco, a conta da TI entra, o WinRM responde (`Test-WSMan <IP>` de outro Windows) e a criptografia fica desligada (`manage-bde -status`).
 - [ ] Acesso remoto do MeshCentral no Wayland (ALTERNATIVAS §1.2).
