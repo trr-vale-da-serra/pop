@@ -1,6 +1,6 @@
 # Plano de TI: Gestão de Computadores e Celulares
 
-> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** Lui Grosz (TI)
+> **Versão:** 1.3 · **Data:** 23/10/2026 · **Responsável:** Lui Grosz (TI)
 > Empresas: Postos Vale da Serra, Sertão Petróleo e TRR Vale da Serra.
 > **Regra geral:** todas as ferramentas são **gratuitas** (licença grátis ou open source, sem mensalidade).
 > **Regra de equipamento:** nenhum serviço ou dado da empresa roda em equipamento que não seja da empresa.
@@ -46,9 +46,10 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 - **Linux (padrão):** a distribuição e a versão padrão estão no [anexo de ferramentas](anexos/ferramentas.md) §2, com a tela ajustada para ficar parecida com o Windows (barra de tarefas embaixo e menu Iniciar). Instalação no POP-04.
 - **Windows:** fica só nos PCs que usam programas que não rodam no Linux (ex.: alguns sistemas de banco ou fornecedores). Instalação no POP-05.
 - **Nome dos computadores:** `<EMPRESA>-PC-<patrimônio>`, com `POSTOS`, `SERTAO` ou `TRR` no lugar de `<EMPRESA>` (ex.: `TRR-PC-0012`).
-- **Usuários:** cada pessoa tem um usuário **sem permissão de administrador** e **sem senha**. A tela de login não aceita colar senha, então senha em todos os PCs não é prático.
-  - **Exceção:** no PC do **gestor de cada departamento**, o gestor pode ter senha, **escolhida por ele**. Essa senha não vai para o cofre. Se ele esquecer, a TI troca pela conta administradora.
+- **Usuários:** todo PC tem a mesma **conta dos funcionários** (`usuario`), **com permissão de administrador** e **sem senha**. Não há uma conta por pessoa. A instalação padrão já cria essa conta (POP-04/05). A tela de login não aceita colar senha, então senha em todos os PCs não é prático.
+  - **Exceção:** no PC do **gestor de cada departamento**, o gestor pode pôr senha na conta dos funcionários daquele PC, **escolhida por ele**. Essa senha não vai para o cofre. Se ele esquecer, a TI troca pela conta administradora da TI.
   - A TI tem uma conta administradora separada, **com senha**, guardada no cofre de senhas.
+  - **Contra (aceito):** não dá para saber quem fez o quê no PC, e qualquer pessoa no PC consegue instalar programas e mudar configurações. Instalar programa continua dependendo da TI (POP-08), mas como regra, não como bloqueio.
 - **Terminal:** o funcionário **nunca** precisa abrir o terminal. Tudo o que ele faz no PC é pelas telas gráficas. Comandos ficam só com a TI.
 
 ### 3.2 Acesso remoto

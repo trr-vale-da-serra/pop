@@ -1,6 +1,6 @@
 # POP-04: Instalação padrão de computador Linux
 
-> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.3 · **Data:** 23/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -39,13 +39,11 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
    - Agentes: **acesso remoto**, **GLPI Agent**, **painel de segurança** e **backup dos PCs**.
 8. Programa de suporte de fornecedor: instalar **só** se o PC recebe suporte de fornecedor (POP-TI §3.2).
 
-### 4.3 Usuário da pessoa
+### 4.3 Conta dos funcionários
 
-9. Criar o usuário da pessoa **sem permissão de administrador** e **sem senha** (POP-TI §3.1):
-   - *Configurações → Sistema → Usuários → Adicionar usuário*, tipo **Padrão**.
-   - Apagar a senha: só a TI, no terminal da conta da TI: `sudo passwd -d <usuário>`. O funcionário **nunca** usa o terminal.
-   - Em *Configurações → Sistema → Usuários*, ligar o **login automático** desse usuário.
-10. **PC do gestor do departamento:** se o gestor quiser senha, na entrega (POP-01 §4.5) a TI abre *Configurações → Sistema → Usuários → Desbloquear* (com a senha da TI), escolhe o usuário do gestor → **Senha → Definir uma senha agora**, e o **gestor digita** a senha que escolheu. Desligar o login automático. A senha não vai para o cofre. Se ele esquecer, a TI troca pela mesma tela.
+9. O pendrive de instalação já cria a **conta dos funcionários** (`usuario`), **com permissão de administrador**, **sem senha** e com **login automático** (POP-TI §3.1). Não há conta por pessoa.
+   - Só se o PC foi instalado à mão: *Configurações → Sistema → Usuários → Adicionar usuário*, tipo **Administrador**; apagar a senha no terminal da conta da TI (`sudo passwd -d usuario`); ligar o **login automático** desse usuário. O funcionário **nunca** usa o terminal.
+10. **PC do gestor do departamento:** se o gestor quiser senha, na entrega (POP-01 §4.5) a TI abre *Configurações → Sistema → Usuários → Desbloquear* (com a senha da TI), escolhe a conta dos funcionários → **Senha → Definir uma senha agora**, e o **gestor digita** a senha que escolheu. Desligar o login automático. A senha não vai para o cofre. Se ele esquecer, a TI troca pela mesma tela.
 
 ### 4.4 Conferência
 
