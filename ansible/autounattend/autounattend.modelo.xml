@@ -77,6 +77,17 @@
               <PlainText>false</PlainText>
             </Password>
           </LocalAccount>
+          <!-- Conta dos funcionários (POP-TI §3.1): a mesma em todo PC,
+               com administrador e SEM senha. -->
+          <LocalAccount wcm:action="add">
+            <Name>@@FUNC_USUARIO@@</Name>
+            <DisplayName>@@FUNC_USUARIO@@</DisplayName>
+            <Group>Administrators</Group>
+            <Password>
+              <Value></Value>
+              <PlainText>true</PlainText>
+            </Password>
+          </LocalAccount>
         </LocalAccounts>
       </UserAccounts>
 

@@ -45,7 +45,7 @@ Clonar **dentro do WSL** (`~/repos`), não usar `/mnt/c/...`: lá a pasta é abe
 
 ## Pendrive de instalação automática (POP-04 §4.1)
 
-Um pendrive só serve para todos os PCs. Ele instala o Ubuntu já com idioma, teclado ABNT2, fuso, conta da TI, SSH e a chave do Ansible. Quem está no PC só confirma que pode apagar o disco.
+Um pendrive só serve para todos os PCs. Ele instala o Ubuntu já com idioma, teclado ABNT2, fuso, conta da TI, a **conta dos funcionários** (`usuario`, com administrador, sem senha e com login automático, POP-TI §3.1), SSH e a chave do Ansible. Quem está no PC só confirma que pode apagar o disco.
 
 **Preparar o pendrive (uma vez, e de novo quando trocar a senha da TI):**
 
@@ -55,7 +55,7 @@ Um pendrive só serve para todos os PCs. Ele instala o Ubuntu já com idioma, te
    ```bash
    python autoinstall/gerar.py E:\
    ```
-   Ele pede a chave SSH pública do Ansible (copiar do WSL: `~/.ssh/id_ed25519.pub`), a senha da conta da TI e, se quiser, o nome e a senha do Wi-Fi da empresa (tudo no Vaultwarden). Com o Wi-Fi, o PC já conecta sozinho depois da instalação. A instalação também coloca o `net-tools` (`ifconfig`).
+   Ele pede a chave SSH pública do Ansible (copiar do WSL: `~/.ssh/id_ed25519.pub`), a senha da conta da TI, o nome da conta dos funcionários (Enter = `usuario`) e, se quiser, o nome e a senha do Wi-Fi da empresa (tudo no Vaultwarden). Com o Wi-Fi, o PC já conecta sozinho depois da instalação. A instalação também coloca o `net-tools` (`ifconfig`).
 
 O `autoinstall.yaml` do pendrive tem a senha da TI (em hash) e a do Wi-Fi: guardar o pendrive com a TI.
 
@@ -67,7 +67,7 @@ O `autoinstall.yaml` do pendrive tem a senha da TI (em hash) e a do Wi-Fi: guard
 
 ## Pendrive de instalação automática do Windows (POP-05 §4.1)
 
-Mesma ideia do pendrive do Linux, com o arquivo `autounattend.xml`. Ele instala o Windows 11 em português, teclado ABNT2, fuso de Brasília, **sem conta Microsoft** e sem as telas do primeiro uso. Também cria a conta local da TI, impede a criptografia de disco e liga o WinRM, que é o acesso do Ansible. O playbook do Windows ainda não existe.
+Mesma ideia do pendrive do Linux, com o arquivo `autounattend.xml`. Ele instala o Windows 11 em português, teclado ABNT2, fuso de Brasília, **sem conta Microsoft** e sem as telas do primeiro uso. Também cria a conta local da TI e a **conta dos funcionários** (`usuario`, com administrador e sem senha, POP-TI §3.1), impede a criptografia de disco e liga o WinRM, que é o acesso do Ansible. O playbook do Windows ainda não existe.
 
 **Preparar o pendrive (uma vez):**
 
@@ -82,7 +82,7 @@ Mesma ideia do pendrive do Linux, com o arquivo `autounattend.xml`. Ele instala 
    ```bash
    sudo umount /mnt/d
    ```
-   Ele pede a edição (**home** ou **pro**, a mesma que o PC já tinha, para a licença ativar sozinha) e a senha da conta da TI.
+   Ele pede a edição (**home** ou **pro**, a mesma que o PC já tinha, para a licença ativar sozinha), a senha da conta da TI e o nome da conta dos funcionários (Enter = `usuario`).
 
 O `autounattend.xml` tem a senha da TI só codificada (qualquer um decodifica): guardar o pendrive com a TI.
 

@@ -76,6 +76,7 @@ Ele pergunta:
 | Chave SSH pública | Enter (usa a chave do item 4) |
 | Usuário da conta da TI | `ti` (Enter) |
 | Senha da conta da TI | A senha do item 1 |
+| Usuário da conta dos funcionários | `usuario` (Enter). Fica com administrador e sem senha |
 | Wi-Fi da empresa, nome da rede | O nome da rede (no Vaultwarden). Vazio = sem Wi-Fi |
 | Senha do Wi-Fi | A senha da rede (no Vaultwarden) |
 

@@ -3,12 +3,14 @@
 Uso:  python gerar.py E:\
       (E: = pendrive gravado com o Rufus no modo ISO; ver ../README.md)
 
-Pede a senha da conta da TI e, se quiser, o Wi-Fi da empresa (os dois no
-Vaultwarden) e grava o arquivo na raiz do pendrive. Nada fica nesta pasta.
+Pede a senha da conta da TI, o nome da conta dos funcionários (sem senha) e,
+se quiser, o Wi-Fi da empresa (senhas no Vaultwarden) e grava o arquivo na
+raiz do pendrive. Nada fica nesta pasta.
 """
 import base64
 import getpass
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -68,6 +70,31 @@ def wifi_comando(rede, senha_wifi):
     return f"sh -c 'echo {b64} | base64 -d > {arquivo} && chmod 600 {arquivo}'"
 
 
+def hash_senha(s):
+    return subprocess.run(
+        [openssl(), "passwd", "-6", "-stdin"], input=s, capture_output=True, text=True, check=True
+    ).stdout.strip()
+
+
+def func_comando(nome):
+    """Comando que cria a conta dos funcionários no PC instalado: sem senha, com sudo."""
+    script = "\n".join([
+        # nopasswdlogin: a tela de login do GNOME entra sem pedir senha.
+        "groupadd -f nopasswdlogin",
+        f"useradd -m -s /bin/bash -G sudo,users,plugdev,nopasswdlogin -c {nome} {nome}",
+        f"passwd -d {nome}",
+        f"echo '{nome} ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-funcionarios",
+        "chmod 440 /etc/sudoers.d/90-funcionarios",
+        # Login automático nessa conta (POP-04 §4.3).
+        "sed -i -E 's/^#?[[:space:]]*AutomaticLoginEnable[[:space:]]*=.*/AutomaticLoginEnable = true/' /etc/gdm3/custom.conf",
+        f"sed -i -E 's/^#?[[:space:]]*AutomaticLogin[[:space:]]*=.*/AutomaticLogin = {nome}/' /etc/gdm3/custom.conf",
+        "",
+    ])
+    # Em base64 para nenhum caractere atrapalhar o comando.
+    b64 = base64.b64encode(script.encode("utf-8")).decode("ascii")
+    return f"sh -c 'echo {b64} | base64 -d > /target/tmp/ti-func.sh && curtin in-target -- sh /tmp/ti-func.sh; rm -f /target/tmp/ti-func.sh'"
+
+
 def main():
     if len(sys.argv) != 2:
         sys.exit(__doc__)
@@ -86,13 +113,15 @@ def main():
 
     usuario = input("Usuário da conta da TI [ti]: ").strip() or "ti"
     ti = senha("Senha da conta da TI: ", 12)
+    func = input("Usuário da conta dos funcionários [usuario]: ").strip() or "usuario"
+    if not re.fullmatch(r"[a-z][a-z0-9_-]{0,30}", func) or func == usuario:
+        sys.exit("Conta dos funcionários: minúsculas, números, - ou _, e diferente da conta da TI.")
+    comando_func = func_comando(func)
 
     rede = input("Wi-Fi da empresa, nome da rede [vazio = sem Wi-Fi]: ").strip()
     comando_wifi = wifi_comando(rede, senha("Senha do Wi-Fi: ", 8)) if rede else ""
 
-    hash_ti = subprocess.run(
-        [openssl(), "passwd", "-6", "-stdin"], input=ti, capture_output=True, text=True, check=True
-    ).stdout.strip()
+    hash_ti = hash_senha(ti)
 
     with open(os.path.join(AQUI, "autoinstall.modelo.yaml"), encoding="utf-8") as f:
         texto = f.read()
@@ -100,6 +129,7 @@ def main():
         "@@TI_USUARIO@@": usuario,
         "@@TI_SENHA_HASH@@": hash_ti,
         "@@CHAVE_SSH@@": chave,
+        "@@FUNC_COMANDO@@": comando_func,
     }.items():
         texto = texto.replace(marca, valor)
     if comando_wifi:
