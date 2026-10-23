@@ -38,7 +38,7 @@ sudo apt update && sudo apt install -y ansible sshpass git
 ```
 
 ```bash
-git clone -b ansible/linux-padrao https://github.com/vsautonomus/pop.git ~/repos/pop
+git clone -b ansible/linux-padrao https://github.com/trr-vale-da-serra/pop.git ~/repos/pop
 ```
 
 ```bash

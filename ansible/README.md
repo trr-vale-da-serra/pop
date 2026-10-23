@@ -35,7 +35,7 @@ Dentro do Ubuntu do WSL:
 
 ```bash
 sudo apt install -y ansible sshpass git
-git clone https://github.com/vsautonomus/pop.git ~/repos/pop
+git clone https://github.com/trr-vale-da-serra/pop.git ~/repos/pop
 cd ~/repos/pop/ansible
 ansible-galaxy collection install -r requirements.yml
 ssh-keygen -t ed25519 -C ansible-ti
