@@ -1,11 +1,76 @@
 ---
 # POP-TI §3.1: Dash to Panel (barra embaixo) e ArcMenu (menu Iniciar).
-- name: Extensões do GNOME
+- name: Programas para instalar as extensões
   ansible.builtin.apt:
-    name:
-      - gnome-shell-extension-dashtopanel
-      - gnome-shell-extension-arc-menu
+    name: [unzip, libglib2.0-bin]
     state: present
+
+- name: Versão do GNOME
+  ansible.builtin.command: gnome-shell --version
+  register: gnome_versao
+  changed_when: false
+
+- name: Procurar as extensões no extensions.gnome.org
+  ansible.builtin.uri:
+    url: "https://extensions.gnome.org/extension-info/?uuid={{ item }}&shell_version={{ gnome_versao.stdout.split()[-1].split('.')[0] }}"
+    return_content: true
+  loop: "{{ gnome_extensoes }}"
+  register: gnome_info
+
+- name: Pasta das extensões baixadas
+  ansible.builtin.file:
+    path: /var/cache/ti-extensoes
+    state: directory
+    mode: "0755"
+
+# O nome do arquivo tem a versão: só baixa de novo quando sai versão nova.
+- name: Baixar as extensões
+  ansible.builtin.get_url:
+    url: "https://extensions.gnome.org{{ item.json.download_url }}"
+    dest: "/var/cache/ti-extensoes/{{ item.item }}-v{{ item.json.version }}.zip"
+    mode: "0644"
+  loop: "{{ gnome_info.results }}"
+  loop_control:
+    label: "{{ item.item }} v{{ item.json.version }}"
+  register: gnome_zip
+
+- name: Apagar a versão antiga
+  ansible.builtin.file:
+    path: "/usr/share/gnome-shell/extensions/{{ item.item.item }}"
+    state: absent
+  loop: "{{ gnome_zip.results }}"
+  loop_control:
+    label: "{{ item.item.item }}"
+  when: item.changed
+
+- name: Pasta da extensão
+  ansible.builtin.file:
+    path: "/usr/share/gnome-shell/extensions/{{ item }}"
+    state: directory
+    mode: "0755"
+  loop: "{{ gnome_extensoes }}"
+
+- name: Instalar as extensões para todos os usuários
+  ansible.builtin.unarchive:
+    src: "{{ item.dest }}"
+    dest: "/usr/share/gnome-shell/extensions/{{ item.item.item }}"
+    remote_src: true
+    mode: "u=rwX,go=rX"
+  loop: "{{ gnome_zip.results }}"
+  loop_control:
+    label: "{{ item.item.item }}"
+  when: item.changed
+  notify: Pedir reinício
+
+- name: Compilar as configurações das extensões
+  ansible.builtin.shell: |
+    d=/usr/share/gnome-shell/extensions/{{ item.item.item }}/schemas
+    [ -d "$d" ] && glib-compile-schemas "$d" || true
+  loop: "{{ gnome_zip.results }}"
+  loop_control:
+    label: "{{ item.item.item }}"
+  when: item.changed
+  changed_when: true
 
 - name: Perfil do dconf com padrões da empresa
   ansible.builtin.copy:
@@ -23,6 +88,7 @@
     mode: "0755"
 
 # Vale para quem ainda não mudou essas opções; cada usuário novo já entra assim.
+# A barra e o menu aparecem depois de sair e entrar de novo (ou reiniciar).
 - name: Ligar Dash to Panel e ArcMenu, desligar o dock do Ubuntu
   ansible.builtin.copy:
     dest: /etc/dconf/db/local.d/00-ti-aparencia
@@ -31,4 +97,4 @@
       enabled-extensions=['dash-to-panel@jderose9.github.com', 'arcmenu@arcmenu.com']
       disabled-extensions=['ubuntu-dock@ubuntu.com']
     mode: "0644"
-  notify: Atualizar dconf
+  notify: [Atualizar dconf, Pedir reinício]

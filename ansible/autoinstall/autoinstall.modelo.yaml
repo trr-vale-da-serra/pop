@@ -47,5 +47,8 @@ autoinstall:
       sed -i "s/\bpc-novo\b/$nome/g" /target/etc/hosts'
     # ifconfig, para ver o IP do PC. Sem internet na instalação, só não instala.
     - sh -c 'curtin in-target -- apt-get install -y net-tools || true'
+    # Conta dos funcionários (POP-TI §3.1): a mesma em todo PC, com administrador
+    # (sudo) e SEM senha. Pelo SSH ela não entra (o SSH recusa senha vazia).
+    - "@@FUNC_COMANDO@@"
     # Wi-Fi da empresa, conecta sozinho. O gerar.py tira esta linha se não tiver Wi-Fi.
     - "@@WIFI_COMANDO@@"

@@ -1,0 +1,14 @@
+---
+# Modelo do inventário dos PCs (POP-04 §4.2, passo 7). O inventário de verdade é
+# inventario/hosts.yml, só no PC da TI (fora do git: o repositório é público).
+# O ./pc-novo.sh cria e preenche sozinho.
+# Nome = nome do computador (<EMPRESA>-PC-<patrimônio>), ansible_host = IP atual do PC (não precisa ser fixo; ver README, "PC novo").
+all:
+  children:
+    linux:
+      hosts: {}   # trocar {} pelos PCs, no formato abaixo
+        # TRR-PC-0012:
+        #   ansible_host: 10.10.10.101
+        #   anydesk: true   # só se recebe suporte de fornecedor (POP-TI §3.2)
+    windows:
+      hosts: {}

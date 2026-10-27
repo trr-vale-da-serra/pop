@@ -41,7 +41,7 @@
 | POP | Detalhe |
 |---|---|
 | POP-04 | Antes do roteiro de configuração: `sudo apt install openssh-server`. No instalador: "apagar o disco", sem criptografia. Ou o pendrive de instalação automática (`ansible/PRIMEIRO-PC.md`) |
-| POP-05 | Antes do roteiro de configuração: ligar o WinRM (comando guardado com o playbook). Criptografia que o Windows liga sozinho: BitLocker / Criptografia do dispositivo, desligar |
+| POP-05 | Pendrive com `autounattend.xml` (`ansible/autounattend/`): instala sem conta Microsoft, cria a conta da TI, liga o WinRM (acesso do Ansible) e impede o BitLocker / Criptografia do dispositivo. Sem o pendrive: ligar o WinRM à mão e desligar a criptografia |
 | POP-06 | Playbooks de atualização: `apt` (Linux) e `win_updates` (Windows) |
 
 ## 4. Programas dos PCs Linux

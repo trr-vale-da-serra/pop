@@ -1,0 +1,6 @@
+---
+# Extensões do GNOME para todos os usuários (POP-TI §3.1). O Ubuntu 26.04 não
+# tem pacote delas: vêm do site oficial, na versão feita para o GNOME do PC.
+gnome_extensoes:
+  - dash-to-panel@jderose9.github.com   # barra embaixo
+  - arcmenu@arcmenu.com                 # menu Iniciar

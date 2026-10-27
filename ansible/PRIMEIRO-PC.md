@@ -38,7 +38,7 @@ sudo apt update && sudo apt install -y ansible sshpass git
 ```
 
 ```bash
-git clone -b ansible/linux-padrao https://github.com/vsautonomus/pop.git ~/repos/pop
+git clone -b ansible/linux-padrao https://github.com/trr-vale-da-serra/pop.git ~/repos/pop
 ```
 
 ```bash
@@ -76,6 +76,7 @@ Ele pergunta:
 | Chave SSH pública | Enter (usa a chave do item 4) |
 | Usuário da conta da TI | `ti` (Enter) |
 | Senha da conta da TI | A senha do item 1 |
+| Usuário da conta dos funcionários | `usuario` (Enter). Fica com administrador e sem senha |
 | Wi-Fi da empresa, nome da rede | O nome da rede (no Vaultwarden). Vazio = sem Wi-Fi |
 | Senha do Wi-Fi | A senha da rede (no Vaultwarden) |
 
@@ -92,23 +93,17 @@ O pendrive está pronto e serve para todos os PCs. Ele tem a senha da TI (em has
 3. Esperar terminar. O PC reinicia sozinho.
 4. Pegar o IP do PC: no terminal do próprio PC, `ifconfig` (ou `hostname -I`), ou na lista de DHCP do roteador/OPNsense (nome `pc-novo-XXXX`).
 
-## 8. Rodar o Ansible (no Ubuntu do WSL)
+## 8. Rodar o Ansible
 
-1. Testar o acesso (trocar pelo IP do PC). Tem que entrar **sem pedir senha**:
+1. **No PC:** abrir o terminal (`Ctrl+Alt+T`) e ver o IP:
    ```bash
-   ssh ti@192.168.1.112
+   hostname -I
    ```
-2. Em `~/repos/pop/ansible/inventario/hosts.yml`, trocar `hosts: {}` pelo PC, com o nome definitivo (`<EMPRESA>-PC-<patrimônio>`):
-   ```yaml
-       linux:
-         hosts:
-           TRR-PC-0012:
-             ansible_host: 192.168.1.112
-   ```
-3. Rodar o playbook (pede a senha da conta da TI):
+2. **No Ubuntu do WSL**, com o nome definitivo do PC (`<EMPRESA>-PC-<patrimônio>`) e o IP do passo 1:
    ```bash
-   cd ~/repos/pop/ansible && ansible-playbook playbooks/linux-padrao.yml -l TRR-PC-0012 -K
+   cd ~/repos/pop && git pull && ansible/pc-novo.sh TRR-PC-0012 10.10.10.101
    ```
+   Pede a senha da conta da TI (`BECOME password`). O script põe o PC no inventário e roda o playbook, que troca o nome do PC, cria a conta dos funcionários (`usuario`) e configura tudo. No final o PC **reinicia sozinho** (o login automático e a barra nova só valem depois disso).
    Enquanto os servidores do MeshCentral, GLPI, Wazuh e UrBackup não estiverem no ar, o playbook pula esses agentes e avisa no final. Isso é esperado.
 
 ## 9. Ajustar a aparência
@@ -122,4 +117,4 @@ O pendrive está pronto e serve para todos os PCs. Ele tem a senha da TI (em has
 
 ## 10. Conferir
 
-Marcar a lista "Conferir no primeiro PC" do [README](README.md). Tudo certo: os outros PCs seguem o mesmo roteiro a partir do item 7.
+Marcar a lista "Conferir no primeiro PC" do [README](README.md). Tudo certo: os outros PCs seguem o mesmo roteiro a partir do item 7 (resumo em "PC novo" no README).

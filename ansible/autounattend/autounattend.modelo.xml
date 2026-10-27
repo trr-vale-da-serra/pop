@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Instalação automática do Windows 11 (POP-05 §4.1).
+  NÃO usar este arquivo direto: rodar gerar.py, que preenche a senha da TI e
+  a edição e grava o autounattend.xml na raiz do pendrive do Windows.
+  O arquivo gerado tem a senha da TI: nunca vai para o git.
+
+  O instalador para numa tela só: a escolha do disco. Lá, apagar as partições
+  do disco do PC e instalar no espaço livre. Isso evita apagar o disco errado.
+-->
+<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+
+  <settings pass="windowsPE">
+    <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <SetupUILanguage>
+        <UILanguage>pt-BR</UILanguage>
+      </SetupUILanguage>
+      <InputLocale>0416:00010416</InputLocale>
+      <SystemLocale>pt-BR</SystemLocale>
+      <UILanguage>pt-BR</UILanguage>
+      <UserLocale>pt-BR</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <UserData>
+        <AcceptEula>true</AcceptEula>
+        <!-- Chave genérica de instalação: só escolhe a edição. A ativação vem
+             da licença digital do PC. -->
+        <ProductKey>
+          <Key>@@CHAVE_EDICAO@@</Key>
+          <WillShowUI>OnError</WillShowUI>
+        </ProductKey>
+      </UserData>
+    </component>
+  </settings>
+
+  <settings pass="specialize">
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <TimeZone>E. South America Standard Time</TimeZone>
+    </component>
+    <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <RunSynchronous>
+        <!-- Sem criptografia de disco (POP-TI §3.3): o Windows 11 liga sozinho. -->
+        <RunSynchronousCommand wcm:action="add">
+          <Order>1</Order>
+          <Path>reg add HKLM\SYSTEM\CurrentControlSet\Control\BitLocker /v PreventDeviceEncryption /t REG_DWORD /d 1 /f</Path>
+        </RunSynchronousCommand>
+      </RunSynchronous>
+    </component>
+  </settings>
+
+  <settings pass="oobeSystem">
+    <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <InputLocale>0416:00010416</InputLocale>
+      <SystemLocale>pt-BR</SystemLocale>
+      <UILanguage>pt-BR</UILanguage>
+      <UserLocale>pt-BR</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <!-- Pula as telas do primeiro uso, inclusive a conta Microsoft. -->
+      <OOBE>
+        <HideEULAPage>true</HideEULAPage>
+        <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
+        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+        <ProtectYourPC>3</ProtectYourPC>
+      </OOBE>
+
+      <!-- Conta administradora da TI (POP-05 §4.1, passo 3). -->
+      <UserAccounts>
+        <LocalAccounts>
+          <LocalAccount wcm:action="add">
+            <Name>@@TI_USUARIO@@</Name>
+            <DisplayName>TI</DisplayName>
+            <Group>Administrators</Group>
+            <Password>
+              <Value>@@TI_SENHA@@</Value>
+              <PlainText>false</PlainText>
+            </Password>
+          </LocalAccount>
+          <!-- Conta dos funcionários (POP-TI §3.1): a mesma em todo PC,
+               com administrador e SEM senha. -->
+          <LocalAccount wcm:action="add">
+            <Name>@@FUNC_USUARIO@@</Name>
+            <DisplayName>@@FUNC_USUARIO@@</DisplayName>
+            <Group>Administrators</Group>
+            <Password>
+              <Value></Value>
+              <PlainText>true</PlainText>
+            </Password>
+          </LocalAccount>
+        </LocalAccounts>
+      </UserAccounts>
+
+      <!-- Entra uma vez sozinho para rodar os comandos abaixo. -->
+      <AutoLogon>
+        <Enabled>true</Enabled>
+        <LogonCount>1</LogonCount>
+        <Username>@@TI_USUARIO@@</Username>
+        <Password>
+          <Value>@@TI_SENHA@@</Value>
+          <PlainText>false</PlainText>
+        </Password>
+      </AutoLogon>
+
+      <FirstLogonCommands>
+        <!-- Desliga a criptografia se ela já tiver começado. -->
+        <SynchronousCommand wcm:action="add">
+          <Order>1</Order>
+          <CommandLine>cmd /c manage-bde -off C: &gt;nul 2&gt;&amp;1</CommandLine>
+        </SynchronousCommand>
+        <!-- Rede da empresa como "privada" (a pública bloqueia o acesso da TI). -->
+        <SynchronousCommand wcm:action="add">
+          <Order>2</Order>
+          <CommandLine>powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-NetConnectionProfile | Set-NetConnectionProfile -NetworkCategory Private"</CommandLine>
+        </SynchronousCommand>
+        <!-- WinRM: é por ele que o Ansible configura o Windows (POP-05 §4.2). -->
+        <SynchronousCommand wcm:action="add">
+          <Order>3</Order>
+          <CommandLine>powershell -NoProfile -ExecutionPolicy Bypass -Command "Enable-PSRemoting -Force -SkipNetworkProfileCheck"</CommandLine>
+        </SynchronousCommand>
+        <!-- Só aceita WinRM da mesma rede. -->
+        <SynchronousCommand wcm:action="add">
+          <Order>4</Order>
+          <CommandLine>powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-NetFirewallRule -Name 'WINRM-HTTP-In-TCP*' | Set-NetFirewallRule -RemoteAddress LocalSubnet -Enabled True"</CommandLine>
+        </SynchronousCommand>
+        <!-- Conta local administradora pode ser usada pelo WinRM. -->
+        <SynchronousCommand wcm:action="add">
+          <Order>5</Order>
+          <CommandLine>reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f</CommandLine>
+        </SynchronousCommand>
+        <!-- Desliga o login automático e apaga a senha guardada para ele. -->
+        <SynchronousCommand wcm:action="add">
+          <Order>6</Order>
+          <CommandLine>powershell -NoProfile -ExecutionPolicy Bypass -Command "$k='HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon'; Set-ItemProperty $k AutoAdminLogon '0'; Remove-ItemProperty $k DefaultPassword -ErrorAction SilentlyContinue"</CommandLine>
+        </SynchronousCommand>
+        <!-- Nome provisório PC-NOVO-<final do MAC>, para achar o IP no DHCP.
+             O Ansible troca para <EMPRESA>-PC-<patrimônio>. Reinicia no fim. -->
+        <SynchronousCommand wcm:action="add">
+          <Order>7</Order>
+          <CommandLine>powershell -NoProfile -ExecutionPolicy Bypass -Command "$m = (Get-NetAdapter -Physical | Where-Object Status -eq 'Up' | Select-Object -First 1).MacAddress; if ($m) { $m = $m -replace '-',''; Rename-Computer -NewName ('PC-NOVO-' + $m.Substring($m.Length - 4)) -Force }; shutdown /r /t 15"</CommandLine>
+        </SynchronousCommand>
+      </FirstLogonCommands>
+    </component>
+  </settings>
+</unattend>

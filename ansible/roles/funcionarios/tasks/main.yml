@@ -1,0 +1,44 @@
+---
+# Conta dos funcionários (POP-TI §3.1): a mesma em todo PC, com administrador
+# (sudo), SEM senha e com login automático. O pendrive já cria; aqui serve para
+# PC instalado antes ou à mão. Pelo SSH ela não entra (o SSH recusa senha vazia).
+- name: Grupo nopasswdlogin (a tela de login entra sem pedir senha)
+  ansible.builtin.group:
+    name: nopasswdlogin
+
+- name: Conta dos funcionários
+  ansible.builtin.user:
+    name: "{{ conta_funcionarios }}"
+    comment: "{{ conta_funcionarios }}"
+    shell: /bin/bash
+    groups: [sudo, users, plugdev, nopasswdlogin]
+    append: true
+
+- name: Ler a senha da conta
+  ansible.builtin.getent:
+    database: shadow
+    key: "{{ conta_funcionarios }}"
+
+- name: Conta sem senha
+  ansible.builtin.command: passwd -d {{ conta_funcionarios }}
+  when: ansible_facts.getent_shadow[conta_funcionarios][0] | length > 0
+  changed_when: true
+
+- name: Administrador sem pedir senha
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/90-funcionarios
+    content: "{{ conta_funcionarios }} ALL=(ALL) NOPASSWD:ALL\n"
+    mode: "0440"
+    validate: visudo -cf %s
+
+- name: Login automático na conta dos funcionários (POP-04 §4.3)
+  community.general.ini_file:
+    path: /etc/gdm3/custom.conf
+    section: daemon
+    option: "{{ item.opcao }}"
+    value: "{{ item.valor }}"
+    mode: "0644"
+  loop:
+    - { opcao: AutomaticLoginEnable, valor: "true" }
+    - { opcao: AutomaticLogin, valor: "{{ conta_funcionarios }}" }
+  notify: Pedir reinício

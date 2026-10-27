@@ -1,6 +1,6 @@
 # POP-05: Instalação padrão de computador Windows
 
-> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.3 · **Data:** 23/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -38,10 +38,11 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 7. Instalar o programa que exige Windows.
 8. Programa de suporte de fornecedor: instalar **só** se o PC recebe suporte de fornecedor (POP-TI §3.2).
 
-### 4.3 Usuário da pessoa
+### 4.3 Conta dos funcionários
 
-9. Criar o usuário local da pessoa **sem permissão de administrador** e **sem senha** (POP-TI §3.1): *Configurações → Contas → Outros usuários → Adicionar conta → Não tenho as informações de entrada → Adicionar usuário sem conta Microsoft*, deixando a senha **em branco**. Na tela de entrada, a pessoa só clica no próprio nome.
-10. **PC do gestor do departamento:** se o gestor quiser senha, ele mesmo cria a senha que escolheu, na entrega (POP-01 §4.5): *Ctrl+Alt+Del → Alterar uma senha*. A senha não vai para o cofre. Se ele esquecer, a TI troca com a conta administradora da TI: *Gerenciamento do computador → Usuários e grupos locais*.
+9. O pendrive de instalação já cria a **conta dos funcionários** (`usuario`), **com permissão de administrador** e **sem senha** (POP-TI §3.1). Não há conta por pessoa. Na tela de entrada, a pessoa só clica em `usuario`.
+   - Só se o PC foi instalado à mão: *Configurações → Contas → Outros usuários → Adicionar conta → Não tenho as informações de entrada → Adicionar usuário sem conta Microsoft*, nome `usuario`, senha **em branco**. Depois, na mesma tela, *Alterar tipo de conta → Administrador*.
+10. **PC do gestor do departamento:** se o gestor quiser senha, ele mesmo cria a senha que escolheu na conta dos funcionários, na entrega (POP-01 §4.5): *Ctrl+Alt+Del → Alterar uma senha*. A senha não vai para o cofre. Se ele esquecer, a TI troca com a conta administradora da TI: *Gerenciamento do computador → Usuários e grupos locais*.
 
 ### 4.4 Conferência
 

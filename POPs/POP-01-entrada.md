@@ -1,6 +1,6 @@
 # POP-01: Entrada de funcionário
 
-> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
+> **Versão:** 1.3 · **Data:** 23/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
 > Faz parte do [Plano de TI](../POP-TI.md). Formulários em [anexos/formularios.md](../anexos/formularios.md).
 
 ## 1. Objetivo
@@ -44,7 +44,7 @@ Garantir que todo funcionário novo conheça a empresa nos **dois primeiros dias
 9. **Petroshow / Infinitum / Orion:** criar os usuários aprovados, com o perfil da função (nunca copiar o perfil de outra pessoa sem conferir).
 10. **Computador** (se aprovado):
     - Preparar pela instalação padrão (POP-04 Linux ou POP-05 Windows).
-    - Criar o usuário local da pessoa, **sem permissão de administrador** e **sem senha** (POP-04/05 §4.3). Exceção: o gestor do departamento pode escolher uma senha para o próprio PC.
+    - A instalação padrão já cria a **conta dos funcionários**, a mesma em todo PC, sem senha (POP-04/05 §4.3). Não se cria conta por pessoa. Exceção: o gestor do departamento pode escolher uma senha para o próprio PC.
     - Registrar no **GLPI**: patrimônio, número de série, quem recebe.
 11. **Celular** (se aprovado):
     - Registrar o aparelho no **MDM**.

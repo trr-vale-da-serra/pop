@@ -72,6 +72,8 @@ Fontes: [Ubuntu 25.10 drops GNOME on Xorg](https://discourse.ubuntu.com/t/ubuntu
 | KeePassXC | ❌ Descartado | Arquivo local, ruim para compartilhar entre pessoas |
 | **Sem criptografia de disco** (PCs e servidor) | ✅ Escolhido (16/10/2026) | PCs de mesa em escritório, com os arquivos no backup. Evita a senha do disco a cada reinício (que travaria a atualização mensal, POP-06) e o risco de perder os dados se a senha se perder. Contra: PC ou disco roubado, descartado ou mandado para conserto pode ser lido por quem pegar |
 | LUKS (Linux) e BitLocker (Windows) com senha | ❌ Descartado | Alguém precisaria digitar a senha do disco a cada reinício |
+| **Conta única dos funcionários (`usuario`), com administrador e sem senha** | ✅ Escolhido (23/10/2026) | Criada pelo pendrive de instalação, igual em todo PC: nada a fazer por pessoa na entrada e na saída. Contra: não dá para saber quem fez o quê no PC, e qualquer um no PC instala programas (inclusive vírus) e muda configurações; o POP-08 vira regra, não bloqueio |
+| Uma conta por pessoa, sem administrador | ❌ Descartado (era o padrão até 22/10/2026) | Mais controle, mas uma conta para criar e apagar a cada entrada e saída |
 | Criptografia com desbloqueio pelo TPM | 🔁 Reavaliar se a empresa tiver notebooks | Liga sozinho e protege o disco tirado do PC. Não funciona em PC sem TPM |
 | **TI guarda todas as senhas, inclusive as pessoais** | ✅ Escolhido | A TI consegue entrar em qualquer conta (suporte, saída, incidente). Contra: perde-se a prova de quem fez o quê, porque a TI também sabe a senha |
 | Só o funcionário sabe a senha (senha provisória trocada no 1º acesso) | ❌ Descartado | |

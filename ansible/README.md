@@ -16,7 +16,8 @@ O playbook do Windows (POP-05) ainda não existe.
 | Role | O quê |
 |---|---|
 | `base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso horário, chave SSH da TI, atualizações e `unattended-upgrades` (diário, sem reinício automático) |
-| `desktop` | Dash to Panel e ArcMenu ligados para todos os usuários (dconf), dock do Ubuntu desligado |
+| `funcionarios` | Conta dos funcionários (`usuario`, com administrador, sem senha e login automático, POP-TI §3.1). O pendrive já cria; o playbook cria nos PCs instalados antes ou à mão |
+| `desktop` | Dash to Panel e ArcMenu (baixados do `extensions.gnome.org`, na versão do GNOME do PC, porque o Ubuntu 26.04 não tem pacote) ligados para todos os usuários (dconf), dock do Ubuntu desligado |
 | `apps` | LibreOffice em português, leitor de PDF e Firefox com o bloqueador de anúncios uBlock Origin (instalado à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
 | `clamav` | ClamAV com alertas no syslog (para o Wazuh) e varredura semanal da `/home` |
 | `agentes` | MeshCentral, GLPI Agent, Wazuh, UrBackup e AnyDesk (só com `anydesk: true` no host) |
@@ -35,7 +36,7 @@ Dentro do Ubuntu do WSL:
 
 ```bash
 sudo apt install -y ansible sshpass git
-git clone https://github.com/vsautonomus/pop.git ~/repos/pop
+git clone https://github.com/trr-vale-da-serra/pop.git ~/repos/pop
 cd ~/repos/pop/ansible
 ansible-galaxy collection install -r requirements.yml
 ssh-keygen -t ed25519 -C ansible-ti
@@ -45,7 +46,7 @@ Clonar **dentro do WSL** (`~/repos`), não usar `/mnt/c/...`: lá a pasta é abe
 
 ## Pendrive de instalação automática (POP-04 §4.1)
 
-Um pendrive só serve para todos os PCs. Ele instala o Ubuntu já com idioma, teclado ABNT2, fuso, conta da TI, SSH e a chave do Ansible. Quem está no PC só confirma que pode apagar o disco.
+Um pendrive só serve para todos os PCs. Ele instala o Ubuntu já com idioma, teclado ABNT2, fuso, conta da TI, a **conta dos funcionários** (`usuario`, com administrador, sem senha e com login automático, POP-TI §3.1), SSH e a chave do Ansible. Quem está no PC só confirma que pode apagar o disco.
 
 **Preparar o pendrive (uma vez, e de novo quando trocar a senha da TI):**
 
@@ -55,7 +56,7 @@ Um pendrive só serve para todos os PCs. Ele instala o Ubuntu já com idioma, te
    ```bash
    python autoinstall/gerar.py E:\
    ```
-   Ele pede a chave SSH pública do Ansible (copiar do WSL: `~/.ssh/id_ed25519.pub`), a senha da conta da TI e, se quiser, o nome e a senha do Wi-Fi da empresa (tudo no Vaultwarden). Com o Wi-Fi, o PC já conecta sozinho depois da instalação. A instalação também coloca o `net-tools` (`ifconfig`).
+   Ele pede a chave SSH pública do Ansible (copiar do WSL: `~/.ssh/id_ed25519.pub`), a senha da conta da TI, o nome da conta dos funcionários (Enter = `usuario`) e, se quiser, o nome e a senha do Wi-Fi da empresa (tudo no Vaultwarden). Com o Wi-Fi, o PC já conecta sozinho depois da instalação. A instalação também coloca o `net-tools` (`ifconfig`).
 
 O `autoinstall.yaml` do pendrive tem a senha da TI (em hash) e a do Wi-Fi: guardar o pendrive com a TI.
 
@@ -65,19 +66,58 @@ O `autoinstall.yaml` do pendrive tem a senha da TI (em hash) e a do Wi-Fi: guard
 2. Esperar terminar e reiniciar.
 3. O PC sobe com o nome `pc-novo-<4 últimos dígitos do MAC>`. Pegar o IP na lista de DHCP do OPNsense.
 
+## Pendrive de instalação automática do Windows (POP-05 §4.1)
+
+Mesma ideia do pendrive do Linux, com o arquivo `autounattend.xml`. Ele instala o Windows 11 em português, teclado ABNT2, fuso de Brasília, **sem conta Microsoft** e sem as telas do primeiro uso. Também cria a conta local da TI e a **conta dos funcionários** (`usuario`, com administrador e sem senha, POP-TI §3.1), impede a criptografia de disco e liga o WinRM, que é o acesso do Ansible. O playbook do Windows ainda não existe.
+
+**Preparar o pendrive (uma vez):**
+
+1. Criar o pendrive com a **Ferramenta de Criação de Mídia** da Microsoft (`microsoft.com/software-download/windows11`), em português. Se usar o Rufus, **desmarcar todas as opções** da janela "Windows User Experience": ele cria um arquivo próprio que conflita com o nosso.
+2. Gerar o `autounattend.xml` na raiz do pendrive. No WSL do PC principal:
+   ```bash
+   sudo mkdir -p /mnt/d && sudo mount -t drvfs D: /mnt/d
+   ```
+   ```bash
+   cd ~/repos/pop && git pull && python3 ansible/autounattend/gerar.py /mnt/d
+   ```
+   ```bash
+   sudo umount /mnt/d
+   ```
+   Ele pede a edição (**home** ou **pro**, a mesma que o PC já tinha, para a licença ativar sozinha), a senha da conta da TI e o nome da conta dos funcionários (Enter = `usuario`).
+
+O `autounattend.xml` tem a senha da TI só codificada (qualquer um decodifica): guardar o pendrive com a TI.
+
+**Em cada PC:**
+
+1. Iniciar pelo pendrive.
+2. **Única tela:** a escolha do disco. Apagar as partições do disco do PC e escolher o espaço livre. Fica manual de propósito, para nunca apagar o disco errado.
+3. Esperar. O Windows instala, entra uma vez sozinho na conta da TI, configura e reinicia.
+4. O PC sobe com o nome `PC-NOVO-<4 últimos dígitos do MAC>`. Pegar o IP com `ipconfig` ou na lista de DHCP do firewall.
+
 ## PC novo (POP-04 §4.2)
 
-1. Em `inventario/hosts.yml`, dentro de `linux`, incluir o PC com o nome definitivo e o IP:
-   ```yaml
-   TRR-PC-0012:
-     ansible_host: 192.168.1.112
-   ```
-2. Rodar (pede a senha do `sudo` da TI e a do vault):
+Depois que o PC terminou a instalação pelo pendrive e reiniciou:
+
+1. **No PC:** abrir o terminal (`Ctrl+Alt+T`) e ver o IP:
    ```bash
-   ansible-playbook playbooks/linux-padrao.yml -l TRR-PC-0012 -K --ask-vault-pass
+   hostname -I
    ```
-   Se o PC foi instalado à mão (sem o pendrive), instalar o SSH nele (`sudo apt install openssh-server`) e acrescentar `-k` na primeira vez.
-3. O playbook troca o nome do PC para o definitivo.
+2. **No Ubuntu do WSL** (PC da TI), com o nome definitivo (`<EMPRESA>-PC-<patrimônio>`) e o IP do passo 1:
+   ```bash
+   cd ~/repos/pop && git pull && ansible/pc-novo.sh TRR-PC-0003 10.10.10.123
+   ```
+   Pede a senha da conta da TI (`BECOME password`). O PC reinicia sozinho no final.
+
+O `pc-novo.sh`:
+- aceita a chave SSH do PC (e troca a antiga, se o PC foi reinstalado);
+- põe o PC no inventário `inventario/hosts.yml`, ou atualiza o IP se ele já estava lá;
+- roda o `linux-padrao.yml` só nele: troca o nome do PC para o definitivo, configura tudo e **reinicia se precisar** (atualização, nome, login automático, extensões).
+
+Com alguém usando o PC, acrescentar `-e reiniciar=false` no fim do comando e reiniciar depois. Se o PC foi instalado à mão (sem o pendrive), instalar o SSH nele (`sudo apt install openssh-server`) e acrescentar `-k` (pede a senha SSH).
+
+O IP **não precisa ser fixo**: só serve para achar o PC enquanto ele ainda tem o nome `pc-novo-XXXX`. Se mudar, rodar o `pc-novo.sh` de novo com o IP novo. Depois que o firewall registrar os nomes no DNS (pfSense: *Services → DNS Resolver → Register DHCP leases*), dá para apagar as linhas `ansible_host` e o Ansible acha os PCs pelo nome.
+
+O inventário (`inventario/hosts.yml`) fica **só no PC da TI**, fora do git: o repositório é público e o arquivo tem os IPs da rede. Modelo em `inventario/hosts.yml.exemplo`.
 
 ## Atualização mensal (POP-06)
 
@@ -100,10 +140,11 @@ A senha do vault vai para o Vaultwarden. `vault.yml` só entra no git criptograf
 
 ## Conferir no primeiro PC (POP-TI §9, passo 5)
 
-- [ ] Dash to Panel e ArcMenu funcionam no GNOME do Ubuntu 26.04 (pacotes do repositório `universe`).
+- [ ] Dash to Panel e ArcMenu funcionam no GNOME 50 do Ubuntu 26.04 (vêm do `extensions.gnome.org`).
 - [ ] O pacote `glpi-agent` do Ubuntu conversa com a versão do servidor GLPI. Se não, trocar pelo instalador oficial.
 - [ ] Respostas do instalador do UrBackup (`urbackup_respostas`).
 - [ ] Nome da conta da TI (`ansible_user`, hoje `ti`).
 - [ ] O instalador Desktop do 26.04 lê o `autoinstall.yaml` do pendrive gravado pelo Rufus, instala o SSH e aplica o nome `pc-novo-XXXX`.
 - [ ] O uBlock Origin aparece sozinho no Firefox (snap) e não dá para remover. Se não aparecer, conferir em `about:policies`.
+- [ ] Windows: o `autounattend.xml` pula tudo menos a escolha do disco, a conta da TI entra, o WinRM responde (`Test-WSMan <IP>` de outro Windows) e a criptografia fica desligada (`manage-bde -status`).
 - [ ] Acesso remoto do MeshCentral no Wayland (ALTERNATIVAS §1.2).

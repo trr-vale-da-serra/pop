@@ -7,15 +7,36 @@
 - name: Definir o nome do computador
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"
+  notify: Pedir reinício
 
 - name: Fuso horário
   community.general.timezone:
     name: "{{ fuso_horario }}"
 
+# Só com módulos do próprio Ansible (o authorized_key do ansible.posix dá aviso
+# de recurso obsoleto).
+- name: Pasta pessoal da conta da TI
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+  register: conta_ti
+
+- name: Pasta .ssh da conta da TI
+  ansible.builtin.file:
+    path: "{{ conta_ti.home }}/.ssh"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0700"
+  when: ti_chave_ssh_publica | length > 0
+
 - name: Chave SSH do servidor Ansible na conta da TI
-  ansible.posix.authorized_key:
-    user: "{{ ansible_user }}"
-    key: "{{ ti_chave_ssh_publica }}"
+  ansible.builtin.lineinfile:
+    path: "{{ conta_ti.home }}/.ssh/authorized_keys"
+    line: "{{ ti_chave_ssh_publica }}"
+    create: true
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0600"
   when: ti_chave_ssh_publica | length > 0
 
 - name: SSH só por chave

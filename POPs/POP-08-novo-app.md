@@ -1,11 +1,11 @@
 # POP-08: Solicitação de app novo (celular ou computador)
 
-> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.3 · **Data:** 23/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
 
-Só entram nos equipamentos da empresa programas e apps **conferidos pela TI**. O funcionário não instala nada por conta própria (não tem permissão de administrador no PC, e o celular só aceita apps da lista aprovada).
+Só entram nos equipamentos da empresa programas e apps **conferidos pela TI**. O funcionário não instala nada por conta própria. No PC a conta dos funcionários tem permissão de administrador (POP-TI §3.1), então isso é **regra**, não bloqueio: programa instalado sem a TI é removido. O celular só aceita apps da lista aprovada.
 
 ## 2. Quem faz o quê
 
