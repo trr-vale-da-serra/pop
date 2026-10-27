@@ -11,6 +11,9 @@ ssh_desativar_senha: false
 
 fuso_horario: America/Sao_Paulo
 
+# Conta dos funcionários (POP-TI §3.1): a mesma do pendrive (gerar.py).
+conta_funcionarios: usuario
+
 # --- Servidores dos agentes (POP-TI §5.2). Vazio = o agente é pulado. ---
 meshcentral_url: ""          # ex.: https://mesh.trrvaledaserra.com.br
 # meshcentral_meshid: no vault.yml (ID do grupo de dispositivos do MeshCentral)

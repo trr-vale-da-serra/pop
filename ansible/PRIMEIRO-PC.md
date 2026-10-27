@@ -97,19 +97,20 @@ O pendrive está pronto e serve para todos os PCs. Ele tem a senha da TI (em has
 
 1. Testar o acesso (trocar pelo IP do PC). Tem que entrar **sem pedir senha**:
    ```bash
-   ssh ti@192.168.1.112
+   ssh ti@10.10.10.101
    ```
 2. Em `~/repos/pop/ansible/inventario/hosts.yml`, trocar `hosts: {}` pelo PC, com o nome definitivo (`<EMPRESA>-PC-<patrimônio>`):
    ```yaml
        linux:
          hosts:
            TRR-PC-0012:
-             ansible_host: 192.168.1.112
+             ansible_host: 10.10.10.101
    ```
 3. Rodar o playbook (pede a senha da conta da TI):
    ```bash
    cd ~/repos/pop/ansible && ansible-playbook playbooks/linux-padrao.yml -l TRR-PC-0012 -K
    ```
+   O playbook troca o nome do PC e cria a conta dos funcionários (`usuario`) se ela ainda não existir. Reiniciar o PC no final para o login automático valer.
    Enquanto os servidores do MeshCentral, GLPI, Wazuh e UrBackup não estiverem no ar, o playbook pula esses agentes e avisa no final. Isso é esperado.
 
 ## 9. Ajustar a aparência

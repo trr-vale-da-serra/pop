@@ -16,6 +16,7 @@ O playbook do Windows (POP-05) ainda não existe.
 | Role | O quê |
 |---|---|
 | `base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso horário, chave SSH da TI, atualizações e `unattended-upgrades` (diário, sem reinício automático) |
+| `funcionarios` | Conta dos funcionários (`usuario`, com administrador, sem senha e login automático, POP-TI §3.1). O pendrive já cria; o playbook cria nos PCs instalados antes ou à mão |
 | `desktop` | Dash to Panel e ArcMenu ligados para todos os usuários (dconf), dock do Ubuntu desligado |
 | `apps` | LibreOffice em português, leitor de PDF e Firefox com o bloqueador de anúncios uBlock Origin (instalado à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
 | `clamav` | ClamAV com alertas no syslog (para o Wazuh) e varredura semanal da `/home` |
@@ -95,11 +96,12 @@ O `autounattend.xml` tem a senha da TI só codificada (qualquer um decodifica): 
 
 ## PC novo (POP-04 §4.2)
 
-1. Em `inventario/hosts.yml`, dentro de `linux`, incluir o PC com o nome definitivo e o IP:
+1. Em `inventario/hosts.yml`, dentro de `linux`, incluir o PC com o nome definitivo e o IP que ele pegou agora (lista de DHCP ou `hostname -I` no PC):
    ```yaml
    TRR-PC-0012:
-     ansible_host: 192.168.1.112
+     ansible_host: 10.10.10.101
    ```
+   O IP **não precisa ser fixo**: ele só serve para achar o PC enquanto ainda tem o nome `pc-novo-XXXX`. Depois que o firewall registrar os nomes no DNS (pfSense: *Services → DNS Resolver → Register DHCP leases*), apagar a linha `ansible_host` e o Ansible acha o PC pelo nome. Até lá, se o IP mudar, atualizar a linha.
 2. Rodar (pede a senha do `sudo` da TI e a do vault):
    ```bash
    ansible-playbook playbooks/linux-padrao.yml -l TRR-PC-0012 -K --ask-vault-pass
