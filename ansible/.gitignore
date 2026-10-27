@@ -1,3 +1,5 @@
 # vault.yml só entra no git criptografado (começa com $ANSIBLE_VAULT).
 .vault-senha
 *.retry
+# Inventário com os IPs da rede: só no PC da TI (modelo em hosts.yml.exemplo).
+inventario/hosts.yml

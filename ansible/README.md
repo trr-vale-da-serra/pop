@@ -96,18 +96,28 @@ O `autounattend.xml` tem a senha da TI só codificada (qualquer um decodifica): 
 
 ## PC novo (POP-04 §4.2)
 
-1. Em `inventario/hosts.yml`, dentro de `linux`, incluir o PC com o nome definitivo e o IP que ele pegou agora (lista de DHCP ou `hostname -I` no PC):
-   ```yaml
-   TRR-PC-0012:
-     ansible_host: 10.10.10.101
-   ```
-   O IP **não precisa ser fixo**: ele só serve para achar o PC enquanto ainda tem o nome `pc-novo-XXXX`. Depois que o firewall registrar os nomes no DNS (pfSense: *Services → DNS Resolver → Register DHCP leases*), apagar a linha `ansible_host` e o Ansible acha o PC pelo nome. Até lá, se o IP mudar, atualizar a linha.
-2. Rodar (pede a senha do `sudo` da TI e a do vault):
+Depois que o PC terminou a instalação pelo pendrive e reiniciou:
+
+1. **No PC:** abrir o terminal (`Ctrl+Alt+T`) e ver o IP:
    ```bash
-   ansible-playbook playbooks/linux-padrao.yml -l TRR-PC-0012 -K --ask-vault-pass
+   hostname -I
    ```
-   Se o PC foi instalado à mão (sem o pendrive), instalar o SSH nele (`sudo apt install openssh-server`) e acrescentar `-k` na primeira vez.
-3. O playbook troca o nome do PC para o definitivo e, no final, **reinicia o PC se precisar** (atualização, nome, login automático, extensões). Com alguém usando o PC, acrescentar `-e reiniciar=false` e reiniciar depois.
+2. **No Ubuntu do WSL** (PC da TI), com o nome definitivo (`<EMPRESA>-PC-<patrimônio>`) e o IP do passo 1:
+   ```bash
+   cd ~/repos/pop && git pull && ansible/pc-novo.sh TRR-PC-0003 10.10.10.123
+   ```
+   Pede a senha da conta da TI (`BECOME password`). O PC reinicia sozinho no final.
+
+O `pc-novo.sh`:
+- aceita a chave SSH do PC (e troca a antiga, se o PC foi reinstalado);
+- põe o PC no inventário `inventario/hosts.yml`, ou atualiza o IP se ele já estava lá;
+- roda o `linux-padrao.yml` só nele: troca o nome do PC para o definitivo, configura tudo e **reinicia se precisar** (atualização, nome, login automático, extensões).
+
+Com alguém usando o PC, acrescentar `-e reiniciar=false` no fim do comando e reiniciar depois. Se o PC foi instalado à mão (sem o pendrive), instalar o SSH nele (`sudo apt install openssh-server`) e acrescentar `-k` (pede a senha SSH).
+
+O IP **não precisa ser fixo**: só serve para achar o PC enquanto ele ainda tem o nome `pc-novo-XXXX`. Se mudar, rodar o `pc-novo.sh` de novo com o IP novo. Depois que o firewall registrar os nomes no DNS (pfSense: *Services → DNS Resolver → Register DHCP leases*), dá para apagar as linhas `ansible_host` e o Ansible acha os PCs pelo nome.
+
+O inventário (`inventario/hosts.yml`) fica **só no PC da TI**, fora do git: o repositório é público e o arquivo tem os IPs da rede. Modelo em `inventario/hosts.yml.exemplo`.
 
 ## Atualização mensal (POP-06)
 
