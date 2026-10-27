@@ -2,6 +2,9 @@
 # Conta administradora da TI (POP-04 §4.1, passo 5). Senha no Vaultwarden.
 ansible_user: ti
 ansible_become: true
+# Ubuntu 26.04 usa o sudo-rs, cuja pergunta de senha o Ansible não reconhece
+# (fica esperando e dá timeout). O sudo clássico continua instalado como sudo.ws.
+ansible_become_exe: sudo.ws
 
 # Chave pública do servidor Ansible, instalada na conta da TI no primeiro uso.
 ti_chave_ssh_publica: "{{ lookup('ansible.builtin.file', '~/.ssh/id_ed25519.pub', errors='warn') | default('', true) }}"
