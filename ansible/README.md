@@ -17,7 +17,7 @@ O playbook do Windows (POP-05) ainda não existe.
 |---|---|
 | `base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso horário, chave SSH da TI, atualizações e `unattended-upgrades` (diário, sem reinício automático) |
 | `funcionarios` | Conta dos funcionários (`usuario`, com administrador, sem senha e login automático, POP-TI §3.1). O pendrive já cria; o playbook cria nos PCs instalados antes ou à mão |
-| `desktop` | Dash to Panel e ArcMenu ligados para todos os usuários (dconf), dock do Ubuntu desligado |
+| `desktop` | Dash to Panel e ArcMenu (baixados do `extensions.gnome.org`, na versão do GNOME do PC, porque o Ubuntu 26.04 não tem pacote) ligados para todos os usuários (dconf), dock do Ubuntu desligado |
 | `apps` | LibreOffice em português, leitor de PDF e Firefox com o bloqueador de anúncios uBlock Origin (instalado à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
 | `clamav` | ClamAV com alertas no syslog (para o Wazuh) e varredura semanal da `/home` |
 | `agentes` | MeshCentral, GLPI Agent, Wazuh, UrBackup e AnyDesk (só com `anydesk: true` no host) |
@@ -130,7 +130,7 @@ A senha do vault vai para o Vaultwarden. `vault.yml` só entra no git criptograf
 
 ## Conferir no primeiro PC (POP-TI §9, passo 5)
 
-- [ ] Dash to Panel e ArcMenu funcionam no GNOME do Ubuntu 26.04 (pacotes do repositório `universe`).
+- [ ] Dash to Panel e ArcMenu funcionam no GNOME 50 do Ubuntu 26.04 (vêm do `extensions.gnome.org`).
 - [ ] O pacote `glpi-agent` do Ubuntu conversa com a versão do servidor GLPI. Se não, trocar pelo instalador oficial.
 - [ ] Respostas do instalador do UrBackup (`urbackup_respostas`).
 - [ ] Nome da conta da TI (`ansible_user`, hoje `ti`).
