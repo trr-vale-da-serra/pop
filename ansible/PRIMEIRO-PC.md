@@ -110,7 +110,7 @@ O pendrive está pronto e serve para todos os PCs. Ele tem a senha da TI (em has
    ```bash
    cd ~/repos/pop/ansible && ansible-playbook playbooks/linux-padrao.yml -l TRR-PC-0012 -K
    ```
-   O playbook troca o nome do PC e cria a conta dos funcionários (`usuario`) se ela ainda não existir. Reiniciar o PC no final para o login automático valer.
+   O playbook troca o nome do PC e cria a conta dos funcionários (`usuario`) se ela ainda não existir. No final o PC **reinicia sozinho** (o login automático e a barra nova só valem depois disso).
    Enquanto os servidores do MeshCentral, GLPI, Wazuh e UrBackup não estiverem no ar, o playbook pula esses agentes e avisa no final. Isso é esperado.
 
 ## 9. Ajustar a aparência

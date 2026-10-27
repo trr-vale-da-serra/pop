@@ -3,6 +3,8 @@
 # PC instalado pelo pendrive (autoinstall) já tem a chave SSH:
 #   ansible-playbook playbooks/linux-padrao.yml -l TRR-PC-0012 -K --ask-vault-pass
 # PC instalado à mão: acrescentar -k (senha SSH) na primeira vez.
+# No fim o PC reinicia sozinho se precisar (atualização, nome, login automático,
+# extensões). Com alguém usando o PC, rodar com -e reiniciar=false e reiniciar depois.
 - name: Configuração padrão do Linux
   hosts: linux
   roles:
@@ -12,3 +14,28 @@
     - apps
     - clamav
     - agentes
+
+  post_tasks:
+    - name: Verificar se precisa reiniciar
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: reinicio
+
+    - name: Reiniciar o PC
+      ansible.builtin.reboot:
+        msg: "Reinicio da configuracao da TI"
+        reboot_timeout: 900
+      when: reinicio.stat.exists and reiniciar | default(true) | bool
+
+    - name: Reinício pendente
+      ansible.builtin.debug:
+        msg: "O PC precisa reiniciar para terminar a configuração."
+      when: reinicio.stat.exists and not reiniciar | default(true) | bool
+
+  handlers:
+    # Mesmo arquivo que o Ubuntu cria quando uma atualização pede reinício.
+    - name: Pedir reinício
+      ansible.builtin.file:
+        path: /var/run/reboot-required
+        state: touch
+        mode: "0644"

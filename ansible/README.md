@@ -107,7 +107,7 @@ O `autounattend.xml` tem a senha da TI só codificada (qualquer um decodifica): 
    ansible-playbook playbooks/linux-padrao.yml -l TRR-PC-0012 -K --ask-vault-pass
    ```
    Se o PC foi instalado à mão (sem o pendrive), instalar o SSH nele (`sudo apt install openssh-server`) e acrescentar `-k` na primeira vez.
-3. O playbook troca o nome do PC para o definitivo.
+3. O playbook troca o nome do PC para o definitivo e, no final, **reinicia o PC se precisar** (atualização, nome, login automático, extensões). Com alguém usando o PC, acrescentar `-e reiniciar=false` e reiniciar depois.
 
 ## Atualização mensal (POP-06)
 

@@ -41,3 +41,4 @@
   loop:
     - { opcao: AutomaticLoginEnable, valor: "true" }
     - { opcao: AutomaticLogin, valor: "{{ conta_funcionarios }}" }
+  notify: Pedir reinício

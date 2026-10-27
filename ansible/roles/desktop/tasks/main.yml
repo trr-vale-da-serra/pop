@@ -60,6 +60,7 @@
   loop_control:
     label: "{{ item.item.item }}"
   when: item.changed
+  notify: Pedir reinício
 
 - name: Compilar as configurações das extensões
   ansible.builtin.shell: |
@@ -96,4 +97,4 @@
       enabled-extensions=['dash-to-panel@jderose9.github.com', 'arcmenu@arcmenu.com']
       disabled-extensions=['ubuntu-dock@ubuntu.com']
     mode: "0644"
-  notify: Atualizar dconf
+  notify: [Atualizar dconf, Pedir reinício]
