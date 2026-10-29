@@ -1,6 +1,6 @@
 # Alternativas e histórico das decisões de TI
 
-> **Data:** 15/10/2026 · **Responsável:** Lui Grosz (TI)
+> **Data:** 29/10/2026 · **Responsável:** Lui Grosz (TI)
 > Documento de consulta, **não vai para impressão**. Guarda as opções avaliadas, o motivo de cada escolha e o plano B de cada decisão.
 > O que vale está no [POP-TI.md](POP-TI.md).
 
@@ -55,10 +55,23 @@ Fontes: [Ubuntu 25.10 drops GNOME on Xorg](https://discourse.ubuntu.com/t/ubuntu
 
 | Opção | Situação | Por quê |
 |---|---|---|
-| **UrBackup + Restic (disco USB externo)** | ✅ Escolhido | Backup central dos PCs e cópia do próprio servidor para fora dele |
-| **Veeam Agent Free** | ❌ Descartado | Sem painel central na versão grátis |
-| **Só Restic** | ❌ Descartado | Linha de comando em cada máquina, mais trabalho |
-| Cópia do servidor no Google Drive | ❌ Descartado | 15 GB é pouco para imagens de disco |
+| **Sem backup dos PCs: arquivos só na nuvem da empresa** | ✅ Escolhido (29/10/2026) | O PC é refeito pelo pendrive e pelo Ansible em cerca de uma hora; só os arquivos importam. Contra: o que alguém salvar fora das pastas do servidor se perde com o PC, e programa instalado à mão fora da lista precisa ser reinstalado |
+| UrBackup (arquivos todo dia e imagem do disco toda semana) | ❌ Descartado (era o escolhido até 29/10/2026) | As imagens dos PCs ocupariam boa parte dos 4 TB, para proteger o que o Ansible já refaz |
+| **Espelho ZFS + snapshots (sanoid)** para os arquivos | ✅ Escolhido (29/10/2026) | Disco que morre não perde nada, e arquivo apagado ou estragado (inclusive por ransomware) volta do snapshot de uma hora, um dia ou um mês atrás |
+| RAID da própria gaveta USB | ❌ Descartado | Se a gaveta queima, os discos só abrem em outra igual |
+| mdadm (RAID do Linux) + ext4 | 🔁 Plano B | Se a gaveta USB derrubar discos do ZFS. Perde os snapshots e a conferência dos dados |
+| **Disco 3 só para backup, sem criptografia** (dumps dos bancos e cópia da VM) | ✅ Escolhido (29/10/2026) | Arquivos comuns, que abrem sem programa nem senha. Fica desmontado fora da hora do backup. Contra: o disco roubado pode ser lido |
+| Restic (criptografado) no disco 3 | ❌ Descartado | Criptografia sempre ligada, e sem a senha nada abre. O CheckVale continua com o restic dele para a nuvem (guia do servidor) |
+| Cópia dos arquivos da nuvem da empresa no disco 3 | ❌ Não adotado agora (risco aceito, 29/10/2026) | Se a gaveta queimar ou os dois discos do espelho morrerem juntos, os arquivos se perdem: o disco 3 está na mesma gaveta. Reavaliar com um disco externo em rodízio fora da empresa |
+| Cópia do servidor no Google Drive | ❌ Descartado | 15 GB é pouco, e regra: nada da empresa fora de equipamento da empresa |
+
+### 1.5.1 Nuvem da empresa
+
+| Opção | Situação | Por quê |
+|---|---|---|
+| **Samba (pastas de rede)** | ✅ Escolhido (29/10/2026) | Já vem no Windows e no Ubuntu, sem programa nos PCs e sem banco de dados para manter. Pasta pessoal com cota e pasta por departamento. "Versões anteriores" do Windows deixa a pessoa recuperar o arquivo sozinha. Contra: só funciona na rede da empresa (de fora, pela VPN) e sem cópia offline no PC |
+| Nextcloud | ❌ Descartado (29/10/2026) | Mais do que o necessário (só armazenamento): servidor web, banco, cache e atualizações de uma versão maior por vez. Reavaliar se precisar de acesso pelo celular, de fora sem VPN, ou link para gente de fora |
+| Seafile | ❌ Descartado | Mesma ideia do Nextcloud, com cliente próprio em cada PC |
 
 ### 1.6 Segurança e monitoramento
 
@@ -95,7 +108,9 @@ Fontes: [Ubuntu 25.10 drops GNOME on Xorg](https://discourse.ubuntu.com/t/ubuntu
 | Celular pessoal (BYOD) com perfil de trabalho | ❌ Descartado | Dados da empresa só em equipamento da empresa |
 | Modo quiosque (um app só) | ❌ Não adotado agora | Não há aparelho de função única hoje |
 | Bloquear transferência de arquivos por USB | ❌ Não adotado agora | A depuração USB já fica bloqueada |
-| Backup do WhatsApp com vídeos | ❌ Descartado | Aparelhos com muito uso passariam dos 15 GB grátis |
+| **Backup do WhatsApp no servidor** (backup local do aparelho + Syncthing) | ✅ Escolhido (29/10/2026) | Sem limite de 15 GB e sem depender do Google. Contra: o backup só chega quando o celular está na rede da empresa |
+| Backup do WhatsApp no Google Drive | ❌ Descartado (era o escolhido até 29/10/2026) | Limite de 15 GB grátis e fora do equipamento da empresa |
+| Backup do WhatsApp com vídeos | ❌ Descartado | Ocupa muito espaço sem necessidade |
 | Backup do WhatsApp sem criptografia | ❌ Descartado | Preferida a criptografia, com a senha no Vaultwarden |
 | **Google Drive + Documentos/Planilhas/Apresentações** para PDF e Office | ✅ Escolhido | Grátis, sem anúncios, usam o Gmail da empresa do aparelho |
 | Microsoft 365 (um app só) | ❌ Descartado | Empurra login Microsoft, Copilot e assinatura |
@@ -109,7 +124,7 @@ Fontes: [Ubuntu 25.10 drops GNOME on Xorg](https://discourse.ubuntu.com/t/ubuntu
 
 | Opção | Situação | Por quê |
 |---|---|---|
-| **PC de trabalho do Lui Grosz (Docker)** | ✅ Escolhido | Equipamento da empresa, sem custo extra |
+| **PC Ubuntu da empresa ligado 24h (VM para os sistemas, Docker)** | ✅ Escolhido | Equipamento da empresa, sem custo extra (guia do servidor) |
 | PC antigo dedicado | 🔁 Futuro | Migrar quando houver máquina sobrando. Com Docker, é copiar os volumes |
 | VM grátis em nuvem (Oracle Always Free) | ❌ Descartado | Regra: nenhum serviço da empresa fora de equipamento da empresa |
 | PC pessoal | ❌ Descartado | Mesma regra |

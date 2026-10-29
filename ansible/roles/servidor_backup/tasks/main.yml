@@ -1,0 +1,60 @@
+---
+# Backup no disco 3, sem criptografia (arquivos comuns, com data no nome):
+#   /backup/bancos/<banco>/<data>.dump|.sql.gz   toda noite, guarda backup_bancos_guarda
+#   /backup/vm/<vm>-<data>-<disco>               todo domingo, guarda backup_vm_guarda
+# Os dois scripts montam o disco, fazem o backup e desmontam. Um espera o outro (flock).
+- name: Pacotes do backup
+  ansible.builtin.apt:
+    name:
+      - curl
+      - sqlite3
+    state: present
+
+# Chave do root para entrar na VM e pedir o dump dos bancos que rodam lá.
+- name: Chave SSH do root
+  ansible.builtin.user:
+    name: root
+    generate_ssh_key: true
+    ssh_key_type: ed25519
+    ssh_key_comment: backup-servidor
+  register: root_ssh
+
+- name: Scripts de backup
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /usr/local/sbin/{{ item }}
+    mode: "0750"
+  loop:
+    - ti-backup-bancos
+    - ti-backup-vm
+
+- name: Serviços e timers do backup
+  ansible.builtin.template:
+    src: backup.unit.j2
+    dest: /etc/systemd/system/{{ item.nome }}.{{ tipo }}
+    mode: "0644"
+  vars:
+    tipo: "{{ item.tipo }}"
+  loop:
+    - { nome: ti-backup-bancos, tipo: service, descricao: "Backup dos bancos (TI)" }
+    - { nome: ti-backup-bancos, tipo: timer, descricao: "Backup dos bancos (TI)", quando: "*-*-* 02:00" }
+    - { nome: ti-backup-vm, tipo: service, descricao: "Backup semanal da VM (TI)" }
+    - { nome: ti-backup-vm, tipo: timer, descricao: "Backup semanal da VM (TI)", quando: "Sun 01:30" }
+
+- name: Ligar os timers do backup
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+    daemon_reload: true
+  loop:
+    - ti-backup-bancos.timer
+    - ti-backup-vm.timer
+
+- name: Chave para colocar na VM
+  ansible.builtin.debug:
+    msg: >-
+      Para o backup dos bancos da VM, colocar esta chave no ~/.ssh/authorized_keys da
+      conta usada em backup_bancos (ssh:), que precisa estar no grupo docker:
+      {{ root_ssh.ssh_public_key }}
+  when: backup_bancos | selectattr('ssh', 'defined') | list | length > 0

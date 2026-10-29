@@ -1,0 +1,137 @@
+---
+# Gaveta USB-C: discos 1 e 2 em espelho ZFS (/dados), disco 3 só para backup (/backup).
+# Nada é apagado sem -e preparar_discos=true.
+- name: Pacotes dos discos
+  ansible.builtin.apt:
+    name:
+      - zfsutils-linux    # espelho, snapshots e verificação mensal (scrub) já agendada
+      - sanoid            # snapshots automáticos
+      - smartmontools     # saúde dos discos
+    state: present
+
+- name: Conferir que os 3 discos estão ligados
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop:
+    - "{{ disco_nuvem_1 }}"
+    - "{{ disco_nuvem_2 }}"
+    - "{{ disco_backup }}"
+  register: discos
+
+- name: Discos encontrados
+  ansible.builtin.assert:
+    that: discos.results | rejectattr('stat.exists') | list | length == 0
+    fail_msg: >-
+      Disco não encontrado: {{ discos.results | rejectattr('stat.exists') | map(attribute='item') | join(', ') }}.
+      Conferir a gaveta ligada e os IDs com: ls -l /dev/disk/by-id/ | grep -v part
+
+# Sem isso o Linux pode pôr a gaveta para dormir e o disco cai do espelho.
+- name: USB sem economia de energia
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/90-ti-usb-sem-suspensao.rules
+    content: |
+      ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="on"
+    mode: "0644"
+  notify: Recarregar udev
+
+# Alertas de saúde no syslog (lido pelo painel de segurança). A gaveta USB precisa do -d sat.
+- name: Saúde dos discos (smartd)
+  ansible.builtin.copy:
+    dest: /etc/smartd.conf
+    content: |
+      # Gerado pelo Ansible (role servidor_discos).
+      # Teste curto todo dia às 02h e longo no dia 1 às 03h.
+      {% for d in [disco_nuvem_1, disco_nuvem_2, disco_backup] %}
+      {{ d }} -d sat -a -n standby -s (S/../.././02|L/../01/./03)
+      {% endfor %}
+    mode: "0644"
+  notify: Reiniciar smartd
+
+# --- Espelho (discos 1 e 2) ---
+- name: Espelho já existe?
+  ansible.builtin.command: zpool list -H -o name {{ zfs_pool }}
+  register: pool
+  changed_when: false
+  failed_when: false
+
+- name: Espelho ainda não criado
+  ansible.builtin.fail:
+    msg: >-
+      O espelho {{ zfs_pool }} não existe. Para criar, rodar de novo com
+      -e preparar_discos=true. ISSO APAGA {{ disco_nuvem_1 }} E {{ disco_nuvem_2 }}.
+  when: pool.rc != 0 and not preparar_discos | default(false) | bool
+
+- name: Criar o espelho (apaga os discos 1 e 2)
+  ansible.builtin.command: >-
+    zpool create -f -o ashift=12
+    -O compression=lz4 -O atime=off -O xattr=sa -O acltype=posixacl
+    -m /{{ zfs_pool }} {{ zfs_pool }}
+    mirror {{ disco_nuvem_1 }} {{ disco_nuvem_2 }}
+  when: pool.rc != 0
+  changed_when: true
+
+- name: Pastas do espelho
+  community.general.zfs:
+    name: "{{ zfs_pool }}/{{ item.nome }}"
+    state: present
+    extra_zfs_properties: "{{ item.propriedades | default({}) }}"
+  loop: "{{ zfs_datasets }}"
+
+- name: Snapshots automáticos (sanoid)
+  ansible.builtin.copy:
+    dest: /etc/sanoid/sanoid.conf
+    content: |
+      # Gerado pelo Ansible (role servidor_discos).
+      [{{ zfs_pool }}]
+        use_template = padrao
+        recursive = yes
+
+      [template_padrao]
+        hourly = {{ snapshots_hora }}
+        daily = {{ snapshots_dia }}
+        monthly = {{ snapshots_mes }}
+        autosnap = yes
+        autoprune = yes
+    mode: "0644"
+
+- name: Timer do sanoid ligado
+  ansible.builtin.systemd:
+    name: sanoid.timer
+    state: started
+    enabled: true
+
+# --- Disco 3 (backup) ---
+- name: Disco de backup já formatado?
+  ansible.builtin.command: blkid -L ti-backup
+  register: disco_backup_rotulo
+  changed_when: false
+  failed_when: false
+
+- name: Disco de backup ainda não formatado
+  ansible.builtin.fail:
+    msg: >-
+      O disco de backup não tem o rótulo ti-backup. Para formatar, rodar de novo com
+      -e preparar_discos=true. ISSO APAGA {{ disco_backup }}.
+  when: disco_backup_rotulo.rc != 0 and not preparar_discos | default(false) | bool
+
+- name: Formatar o disco de backup (apaga o disco 3)
+  community.general.filesystem:
+    dev: "{{ disco_backup }}"
+    fstype: ext4
+    opts: -L ti-backup -m 0
+    force: true
+  when: disco_backup_rotulo.rc != 0
+
+- name: Pasta do disco de backup
+  ansible.builtin.file:
+    path: /backup
+    state: directory
+    mode: "0700"
+
+# noauto: o disco só fica montado enquanto o backup roda (os scripts montam e desmontam).
+# Assim um vírus no servidor não vê o backup o resto do tempo.
+- name: Disco de backup no fstab (sem montar no boot)
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: '^LABEL=ti-backup '
+    line: LABEL=ti-backup /backup ext4 noauto,nofail,noatime 0 0

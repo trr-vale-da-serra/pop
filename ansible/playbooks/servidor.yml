@@ -1,0 +1,16 @@
+---
+# POP-TI §5.2: servidor (Ubuntu 26.04, ligado 24h) com a gaveta USB-C de 3 discos de 4 TB.
+#   Discos 1 e 2: espelho ZFS em /dados (pastas dos funcionários e departamentos, WhatsApp).
+#   Disco 3: só backup (bancos toda noite e a VM toda semana), montado em /backup só
+#   durante o backup.
+# Primeira vez (APAGA os 3 discos, conferir os IDs em group_vars/servidor/main.yml):
+#   ansible-playbook playbooks/servidor.yml -K --ask-vault-pass -e preparar_discos=true
+# Depois, sem o preparar_discos:
+#   ansible-playbook playbooks/servidor.yml -K --ask-vault-pass
+- name: Servidor (discos, pastas, WhatsApp e backup)
+  hosts: servidor
+  roles:
+    - servidor_discos
+    - arquivos
+    - whatsapp
+    - servidor_backup

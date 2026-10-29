@@ -1,6 +1,6 @@
 # POP-11: Funcionário ativo (mudanças durante o contrato)
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
+> **Versão:** 1.2 · **Data:** 29/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
 > Faz parte do [Plano de TI](../POP-TI.md). Formulários em [anexos/formularios.md](../anexos/formularios.md).
 
 ## 1. Objetivo
@@ -40,7 +40,7 @@ Vale para defeito, substituição por um mais novo, perda (ver também POP-03) o
 
 1. Abrir o chamado no GLPI (Formulário A, tipo **Troca de equipamento**) com o motivo.
 2. **TI** prepara o equipamento novo (POP-04/05 para PC; MDM com as políticas decididas para celular).
-3. **Antes de recolher o antigo:** copiar os dados de trabalho da pessoa para o novo (restaurando do **backup dos PCs**). Celular: o WhatsApp volta pelo backup do Gmail da empresa.
+3. **Antes de recolher o antigo:** conferir que os arquivos de trabalho estão na **nuvem da empresa** e ligar as pastas da pessoa no PC novo. Celular: o WhatsApp volta pela cópia no servidor (POP-03, passo 9).
 4. Entregar o novo e recolher o antigo **no mesmo momento**, com o **Formulário D: Termo de devolução** para o antigo e um novo **Formulário C** para o novo.
 5. Equipamento antigo:
    - **Celular:** remover do MDM só **depois** do wipe e conferir que saiu do painel.

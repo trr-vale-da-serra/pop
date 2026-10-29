@@ -1,6 +1,6 @@
 # POP-05: Instalação padrão de computador Windows
 
-> **Versão:** 1.3 · **Data:** 23/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.4 · **Data:** 29/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -34,7 +34,7 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
    - Atualizações do Windows.
    - Programas padrão.
    - Confere que o **antivírus** está ativo.
-   - Agentes: **acesso remoto**, **GLPI Agent**, **painel de segurança** e **backup dos PCs**.
+   - Agentes: **acesso remoto**, **GLPI Agent** e **painel de segurança**.
 7. Instalar o programa que exige Windows.
 8. Programa de suporte de fornecedor: instalar **só** se o PC recebe suporte de fornecedor (POP-TI §3.2).
 
@@ -47,7 +47,7 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 ### 4.4 Conferência
 
 11. O PC aparece no **acesso remoto**, no **GLPI** e no **painel de segurança**.
-12. O primeiro **backup dos PCs** terminou.
+12. A pasta pessoal e a do departamento, na **nuvem da empresa**, estão ligadas no PC (unidade de rede) com a conta de quem usa o PC e abrem.
 13. Registrar no GLPI: patrimônio, número de série, quem recebe e **por que é Windows**.
 
 ## 5. Registro

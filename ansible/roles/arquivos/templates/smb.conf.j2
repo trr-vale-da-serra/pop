@@ -1,0 +1,47 @@
+# Gerado pelo Ansible (role arquivos). Não editar aqui: mudar no repositório pop.
+[global]
+	server string = Servidor da TI
+	server role = standalone server
+	server min protocol = SMB3
+	smb ports = 445
+	disable netbios = yes
+	map to guest = never
+	restrict anonymous = 2
+	hosts allow = {{ (redes_internas + ['127.0.0.1']) | join(' ') }}
+	hosts deny = ALL
+	load printers = no
+	printing = bsd
+	printcap name = /dev/null
+	disable spoolss = yes
+	log level = 1
+	logging = syslog
+
+	# "Versões anteriores" a partir dos snapshots do sanoid (autosnap_<data>_<hora>_<tipo>).
+	vfs objects = shadow_copy2
+	shadow:snapdir = .zfs/snapshot
+	shadow:snapprefix = ^autosnap
+	shadow:delimiter = _
+	shadow:format = _%Y-%m-%d_%H:%M:%S
+	shadow:localtime = yes
+	shadow:sort = desc
+
+# Pasta pessoal: \\<IP>\<nome.sobrenome>, só a própria pessoa.
+[homes]
+	comment = Pasta pessoal
+	path = /{{ zfs_pool }}/usuarios/%S
+	valid users = %S
+	browseable = no
+	read only = no
+	create mask = 0600
+	directory mask = 0700
+{% for d in departamentos %}
+
+[{{ d }}]
+	comment = Pasta do departamento {{ d }}
+	path = /{{ zfs_pool }}/departamentos/{{ d }}
+	valid users = @{{ d }}
+	force group = {{ d }}
+	read only = no
+	create mask = 0660
+	directory mask = 2770
+{% endfor %}

@@ -1,6 +1,6 @@
 # Plano de TI: Gestão de Computadores e Celulares
 
-> **Versão:** 1.3 · **Data:** 23/10/2026 · **Responsável:** Lui Grosz (TI)
+> **Versão:** 1.4 · **Data:** 29/10/2026 · **Responsável:** Lui Grosz (TI)
 > Empresas: Postos Vale da Serra, Sertão Petróleo e TRR Vale da Serra.
 > **Regra geral:** todas as ferramentas são **gratuitas** (licença grátis ou open source, sem mensalidade).
 > **Regra de equipamento:** nenhum serviço ou dado da empresa roda em equipamento que não seja da empresa.
@@ -29,8 +29,8 @@ Os POPs falam da **função** de cada ferramenta (ex.: "cofre de senhas", "acess
 | **Painel de segurança** | Painel central de alertas de segurança de todas as máquinas |
 | **Antivírus** | Em cada máquina, com alertas enviados ao painel de segurança |
 | **Monitoramento** | Avisa quando o link, o servidor ou um serviço cai |
-| **Backup dos PCs** | Backup central de todos os PCs no servidor |
-| **Backup do servidor** | Cópia do próprio servidor para um disco USB externo |
+| **Nuvem da empresa** | Pasta pessoal de cada funcionário e pasta de cada departamento, no servidor. É o único lugar dos arquivos de trabalho |
+| **Backup do servidor** | Espelho de discos com snapshots, e cópia dos bancos e da VM dos sistemas para um disco só de backup |
 | **Cofre de senhas** | Guarda **todas** as senhas: da empresa e de cada funcionário |
 | **Firewall** | Firewall, VPN e troca automática para o link reserva |
 | **MDM dos celulares** | Políticas, bloqueio de apps, bloqueio e limpeza remotos |
@@ -78,12 +78,14 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 
 ### 3.5 Backup
 
+Os **PCs não têm backup**. Os arquivos de trabalho ficam só na **nuvem da empresa** (pasta pessoal e pasta do departamento). PC com defeito é reinstalado (POP-04/05) e as pastas são ligadas de novo. **Arquivo salvo fora da nuvem da empresa não tem backup**: a regra é explicada na entrada (POP-01).
+
 | O quê | Como | Frequência | Guarda |
 |---|---|---|---|
-| Arquivos dos PCs | Backup dos PCs | Toda noite | 30 dias |
-| Imagem completa do disco dos PCs | Backup dos PCs | Toda semana | 4 imagens |
-| Servidor inteiro (serviços, cofre, backups) | Backup do servidor, para disco USB externo | Toda noite | 30 dias |
-| WhatsApp dos celulares | Google Drive do Gmail do aparelho (§4.3) | Todo dia | Último backup |
+| Arquivos da empresa (nuvem da empresa) | Espelho de discos com snapshots | A cada hora, dia e mês | 24 horas, 30 dias, 6 meses |
+| Bancos dos sistemas | Cópia para o disco de backup | Toda noite | 30 dias |
+| VM dos sistemas | Cópia para o disco de backup | Toda semana | 2 cópias |
+| WhatsApp dos celulares | Backup local do aparelho, copiado para o servidor (§4.3) | Todo dia | Último backup + snapshots |
 | Caixa de e-mail de quem saiu | Download por IMAP para o servidor (POP-02) | Na saída | **Permanente** |
 
 **Teste de restauração todo mês** (POP-07). Backup que nunca foi testado não conta como backup.
@@ -131,20 +133,21 @@ Só aparelhos da empresa. **Celular pessoal não é gerenciado** e não recebe d
 | **Google Planilhas** | Abrir **Excel** (.xlsx), sem anúncios |
 | **Google Documentos** | Abrir **Word** (.docx), sem anúncios |
 | **Google Apresentações** | Abrir **PowerPoint** (.pptx), sem anúncios |
+| **Syncthing** | Envia o backup do WhatsApp para o servidor (§4.3). Só a TI mexe |
 
 Os apps do Google usam o Gmail da empresa do aparelho (§4.1). Qualquer outro app segue o POP-08.
 
 ### 4.3 Backup do WhatsApp
 
-O WhatsApp é a principal ferramenta de trabalho, então as conversas precisam de backup:
+O WhatsApp é a principal ferramenta de trabalho, então as conversas precisam de backup. O backup fica **no servidor da empresa**, não no Google Drive:
 
-1. WhatsApp → Configurações → Conversas → Backup → conta: o **Gmail da empresa do aparelho**.
-2. Frequência: **diária**. **Sem vídeos** no backup.
-3. Configurações → Armazenamento e dados → download automático de **vídeos desligado** (Wi-Fi e dados móveis).
-4. Ligar o **backup com criptografia de ponta a ponta**. A senha vai para o cofre de senhas, no item do aparelho. **Sem essa senha ninguém restaura o backup.**
-5. Todo mês a TI confere a data e o tamanho do último backup (POP-07). Se passar de **12 GB** (o limite grátis é 15 GB), limpar arquivos grandes antigos em "Gerenciar armazenamento".
+1. WhatsApp → Configurações → Conversas → Backup → Fazer backup no Google Drive: **Nunca**. O WhatsApp continua fazendo sozinho, toda madrugada, o **backup local** no próprio celular.
+2. Configurações → Armazenamento e dados → download automático de **vídeos desligado** (Wi-Fi e dados móveis).
+3. Ligar o **backup com criptografia de ponta a ponta**. A senha vai para o cofre de senhas, no item do aparelho. **Sem essa senha ninguém restaura o backup.**
+4. O MDM instala o **Syncthing**. A TI liga nele a pasta do WhatsApp do aparelho (`Android/media/com.whatsapp.w4b/WhatsApp`) **só para enviar**, sem a pasta de vídeos, para o servidor, que guarda em `/dados/whatsapp/<aparelho>`. O envio acontece sozinho quando o celular está na rede da empresa.
+5. Todo mês a TI confere que a cópia de cada aparelho no servidor é de ontem ou hoje (POP-07).
 
-O backup só restaura em aparelho com o **mesmo número**. Quando o aparelho troca de mãos, o histórico continua no Gmail da empresa.
+**Restaurar** (aparelho novo, mesmo número): **antes de abrir o WhatsApp**, copiar a pasta do servidor para `Android/media/com.whatsapp.w4b/WhatsApp` no aparelho novo. Depois entrar com o número e escolher restaurar o backup (pede a senha do cofre). O backup só restaura em aparelho com o **mesmo número**.
 
 ---
 
@@ -161,10 +164,10 @@ O **firewall** troca para o link reserva automaticamente quando o link principal
 
 ### 5.2 Servidor
 
-- Roda no **PC de trabalho do Lui Grosz**, dentro da empresa, ligado 24h, com todos os serviços em **contêineres**.
+- Roda num **PC Ubuntu da empresa**, dentro da empresa, ligado 24h. Os sistemas da empresa ficam numa máquina virtual, e os serviços da TI em **contêineres**.
+- Discos: uma **gaveta USB-C com 3 discos de 4 TB**. Dois formam um **espelho** (se um disco morre, nada se perde), com a nuvem da empresa, o WhatsApp e as pastas do servidor, e snapshots a cada hora. O terceiro é **só para backup** (bancos toda noite, VM toda semana), sem criptografia, e fica desmontado fora da hora do backup.
 - Reinícios e manutenção **só fora do horário de trabalho**: se esse PC para, param juntos o acesso remoto, o MDM, o GLPI, o painel de segurança, o cofre de senhas e o backup.
 - O PC também é usado no dia a dia, então: 2FA em todos os painéis e atualizações em dia.
-- O servidor é copiado toda noite para um **disco USB externo** da empresa (backup do servidor).
 
 ### 5.3 O que fica exposto na internet
 
@@ -219,9 +222,9 @@ Padrão de endereço `nome.sobrenome@`, assinatura em imagem padronizada feita p
 
 ## 9. Ordem de implantação
 
-1. Preparar o servidor no PC do Lui Grosz: contêineres e disco USB para o backup do servidor.
+1. Preparar o servidor: contêineres, gaveta de discos (espelho e disco de backup), nuvem da empresa e backup dos celulares.
 2. Firewall: troca automática para o link reserva e VPN.
 3. Cofre de senhas (precisa existir antes de criar as outras senhas).
-4. Acesso remoto, GLPI, painel de segurança, backup dos PCs e monitoramento.
+4. Acesso remoto, GLPI, painel de segurança e monitoramento.
 5. Primeiro PC Linux pelo POP-04: conferir a ferramenta de acesso remoto e o programa de suporte de fornecedor no Linux padrão. Depois, os demais PCs.
 6. MDM e o primeiro celular: conferir todas as políticas do §4.2. Depois, os demais celulares.

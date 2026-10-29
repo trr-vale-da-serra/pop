@@ -16,4 +16,3 @@ fuso_horario: America/Sao_Paulo
 
 # Agentes (servidores em group_vars/all).
 wazuh_grupo: linux
-urbackup_respostas: "y\n"   # respostas do instalador; conferir no primeiro PC

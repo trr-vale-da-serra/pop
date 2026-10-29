@@ -1,6 +1,6 @@
 # POP-06: Atualizações mensais
 
-> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.3 · **Data:** 29/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -23,7 +23,7 @@ Entre uma janela e outra:
 
 ### 3.1 No dia (até o fim do expediente)
 
-1. Conferir no backup dos PCs que cada PC tem backup recente.
+1. Conferir que o backup dos bancos da noite anterior terminou bem (POP-07 §4).
 
 ### 3.2 Depois do expediente (TI)
 

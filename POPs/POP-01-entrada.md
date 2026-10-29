@@ -1,6 +1,6 @@
 # POP-01: Entrada de funcionário
 
-> **Versão:** 1.3 · **Data:** 23/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
+> **Versão:** 1.4 · **Data:** 29/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
 > Faz parte do [Plano de TI](../POP-TI.md). Formulários em [anexos/formularios.md](../anexos/formularios.md).
 
 ## 1. Objetivo
@@ -46,11 +46,12 @@ Garantir que todo funcionário novo conheça a empresa nos **dois primeiros dias
     - Preparar pela instalação padrão (POP-04 Linux ou POP-05 Windows).
     - A instalação padrão já cria a **conta dos funcionários**, a mesma em todo PC, sem senha (POP-04/05 §4.3). Não se cria conta por pessoa. Exceção: o gestor do departamento pode escolher uma senha para o próprio PC.
     - Registrar no **GLPI**: patrimônio, número de série, quem recebe.
+    - **Nuvem da empresa:** criar a conta da pessoa (`nome.sobrenome`, senha no cofre), com a pasta pessoal e acesso à pasta do departamento (README do Ansible, "Servidor"). Ligar as duas pastas no PC com a conta da pessoa. Na entrega, explicar a regra: **arquivo de trabalho só nas pastas do servidor**; o que fica fora delas não tem backup (POP-TI §3.5).
 11. **Celular** (se aprovado):
     - Registrar o aparelho no **MDM**.
     - Entrar com o **Gmail da empresa daquele aparelho** (`celularNN.<empresa>@gmail.com`, senha no cofre de senhas). Se o aparelho é novo, a TI cria a conta antes, com e-mail de recuperação `lui.grosz@trrvaledaserra.com.br` e telefone de recuperação do celular corporativo do Lui Grosz (POP-TI §4.1). O funcionário não usa Gmail pessoal no aparelho.
     - Conferir que o aparelho recebeu os **apps padrão** e todas as políticas do POP-TI §4.2 (bloqueio de apps, PIN, bloqueio de reset, bloqueio e wipe remotos, Wi-Fi, localização desativada).
-12. **WhatsApp corporativo** (se aprovado): número da empresa no celular corporativo, nome no padrão da empresa e **foto de perfil** = a foto editada pelo RH, incluir nos grupos de trabalho aprovados. Configurar o **backup diário** no Gmail da empresa, sem vídeos e com criptografia (POP-TI §4.3).
+12. **WhatsApp corporativo** (se aprovado): número da empresa no celular corporativo, nome no padrão da empresa e **foto de perfil** = a foto editada pelo RH, incluir nos grupos de trabalho aprovados. Configurar o **backup do WhatsApp para o servidor**, sem vídeos e com criptografia (POP-TI §4.3).
 13. Preencher no GLPI a ficha **Formulário B: Checklist de acessos** com cada conta criada (sistema, usuário, data, quem criou) e salvar cada senha no **cofre de senhas**, na pasta do funcionário.
 
 ### 4.4 Integração: dias 1 e 2 (RH + gestor)

@@ -1,5 +1,5 @@
 ---
-# POP-05 §4.2: MeshCentral, GLPI Agent, Wazuh e UrBackup.
+# POP-05 §4.2: MeshCentral, GLPI Agent e Wazuh.
 # Cada agente só é instalado quando o servidor dele está configurado (group_vars).
 - name: Pasta dos instaladores
   ansible.windows.win_file:
@@ -47,19 +47,6 @@
         start_mode: auto
         state: started
 
-- name: UrBackup
-  when: urbackup_instalar | bool
-  block:
-    - name: Baixar o cliente UrBackup
-      ansible.windows.win_get_url:
-        url: "https://hndl.urbackup.org/Client/{{ urbackup_versao }}/UrBackup%20Client%20{{ urbackup_versao }}.exe"
-        dest: C:\ProgramData\TI\instaladores\urbackup.exe
-
-    - name: Instalar o cliente UrBackup
-      ansible.windows.win_command:
-        cmd: C:\ProgramData\TI\instaladores\urbackup.exe /S
-        creates: C:\Program Files\UrBackup\UrBackupClientBackend.exe
-
 - name: AnyDesk (só PCs com suporte de fornecedor, POP-TI §3.2)
   when: anydesk | bool
   chocolatey.chocolatey.win_chocolatey:
@@ -73,6 +60,5 @@
     pulados: >-
       {{ (['MeshCentral'] if meshcentral_url | length == 0 or (meshcentral_meshid | default('')) | length == 0 else [])
          + (['GLPI'] if glpi_url | length == 0 or glpi_agent_versao | length == 0 else [])
-         + (['Wazuh'] if wazuh_manager | length == 0 or wazuh_versao | length == 0 else [])
-         + (['UrBackup'] if not urbackup_instalar | bool else []) }}
+         + (['Wazuh'] if wazuh_manager | length == 0 or wazuh_versao | length == 0 else []) }}
   when: pulados | length > 0

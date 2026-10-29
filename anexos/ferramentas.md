@@ -1,6 +1,6 @@
 # Anexo: Ferramentas atuais da TI
 
-> **Versão:** 1.2 · **Data:** 20/10/2026 · **Responsável:** Lui Grosz (TI)
+> **Versão:** 1.3 · **Data:** 29/10/2026 · **Responsável:** Lui Grosz (TI)
 > Faz parte do [Plano de TI](../POP-TI.md).
 > **Este é o único lugar que diz qual programa a TI usa em cada função.** Os POPs falam só da função (ex.: "cofre de senhas"), para não precisarem mudar quando uma ferramenta for trocada. Trocou a ferramenta: atualizar esta tabela e a data acima. Opções avaliadas e plano B de cada uma: [ALTERNATIVAS.md](../ALTERNATIVAS.md).
 
@@ -17,8 +17,10 @@
 | Painel de segurança | **Wazuh** | Recebe os alertas dos antivírus |
 | Antivírus | **Microsoft Defender** (Windows) e **ClamAV** (Linux) | |
 | Monitoramento | **Uptime Kuma** | Alertas no e-mail da TI |
-| Backup dos PCs | **UrBackup** | |
-| Backup do servidor | **Restic** | Para o disco USB externo |
+| Nuvem da empresa | **Samba** (pastas de rede) | No servidor: pasta pessoal por funcionário, com cota, e pasta por departamento. "Versões anteriores" do Windows mostra os snapshots |
+| Discos do servidor | **ZFS** (espelho) + **sanoid** (snapshots) | Gaveta USB-C com 3 discos de 4 TB: 2 em espelho, 1 só para backup |
+| Backup do servidor | **Scripts próprios** (`pg_dump` / `sqlite3` e cópia da VM) | Para o disco de backup, sem criptografia. Playbook `ansible/playbooks/servidor.yml` |
+| Backup do WhatsApp | **Syncthing** (no celular e no servidor) | Envia o backup local do WhatsApp para o servidor |
 | Cofre de senhas | **Vaultwarden** | |
 | Firewall | **OPNsense** | Também faz a troca automática para o link reserva |
 | VPN | **WireGuard** (no firewall) | |
@@ -66,7 +68,6 @@ Tudo o que o roteiro de configuração padrão (POP-04) instala em todo PC Linux
 | Agente do **MeshCentral** | Acesso remoto | |
 | Agente do **Wazuh** | Painel de segurança | Versão segurada, atualiza junto com o servidor |
 | **ClamAV** | Antivírus | Varredura semanal da pasta `/home` |
-| Cliente do **UrBackup** | Backup dos PCs | |
 | **AnyDesk** | Programa de suporte de fornecedor | Só nos PCs que recebem suporte de fornecedor (POP-TI §3.2) |
 | **unattended-upgrades** | Atualização de segurança diária | Sem reinício automático (o reinício fica para o POP-06) |
 | **OpenSSH** | Acesso do roteiro de configuração em massa | Só a TI usa |
@@ -90,6 +91,6 @@ Tudo o que o roteiro de configuração padrão (POP-05) instala em todo PC Windo
 |---|---|---|
 | **Microsoft Defender** | Antivírus | Vem com o Windows; o roteiro confere que está ligado |
 | **Chocolatey** | Instala e atualiza os programas | Só a TI usa |
-| **GLPI Agent**, agente do **MeshCentral**, agente do **Wazuh**, cliente do **UrBackup** | Inventário, acesso remoto, painel de segurança, backup dos PCs | Só depois que o servidor de cada um estiver no ar |
+| **GLPI Agent**, agente do **MeshCentral**, agente do **Wazuh** | Inventário, acesso remoto, painel de segurança | Só depois que o servidor de cada um estiver no ar |
 | **AnyDesk** | Programa de suporte de fornecedor | Só nos PCs que recebem suporte de fornecedor (POP-TI §3.2) |
 | **WinRM** | Acesso do roteiro de configuração em massa | Ligado pelo pendrive; só aceita da mesma rede |

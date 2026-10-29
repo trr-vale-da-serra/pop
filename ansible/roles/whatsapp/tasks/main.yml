@@ -1,0 +1,49 @@
+---
+# Recebe a pasta do WhatsApp de cada celular (POP-TI §4.3) em /dados/whatsapp/<aparelho>,
+# pelo Syncthing. O celular só envia; o servidor só recebe.
+- name: Syncthing
+  ansible.builtin.apt:
+    name: syncthing
+    state: present
+
+- name: Conta do Syncthing
+  ansible.builtin.user:
+    name: syncthing
+    system: true
+    shell: /usr/sbin/nologin
+    home: /var/lib/syncthing
+    create_home: true
+
+- name: Pasta do WhatsApp
+  ansible.builtin.file:
+    path: /{{ zfs_pool }}/whatsapp
+    state: directory
+    owner: syncthing
+    group: syncthing
+    mode: "0750"
+
+# Painel na rede (só a TI, com usuário e senha definidos no primeiro acesso).
+- name: Painel do Syncthing na rede
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/syncthing@syncthing.service.d/ti.conf
+    content: |
+      [Service]
+      Environment=STGUIADDRESS=0.0.0.0:{{ syncthing_porta_painel }}
+    mode: "0644"
+  register: syncthing_override
+
+- name: Syncthing ligado
+  ansible.builtin.systemd:
+    name: syncthing@syncthing
+    state: "{{ 'restarted' if syncthing_override.changed else 'started' }}"
+    enabled: true
+    daemon_reload: "{{ syncthing_override.changed }}"
+
+- name: Syncthing liberado para a rede interna (ufw)
+  community.general.ufw:
+    rule: allow
+    port: "{{ item.0 }}"
+    proto: "{{ item.1 }}"
+    from_ip: "{{ item.2 }}"
+    comment: WhatsApp dos celulares (Syncthing)
+  loop: "{{ [['22000', 'tcp'], ['22000', 'udp'], [syncthing_porta_painel | string, 'tcp']] | product(redes_internas) | map('flatten') | list }}"

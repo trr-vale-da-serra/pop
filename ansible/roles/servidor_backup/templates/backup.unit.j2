@@ -1,0 +1,20 @@
+# Gerado pelo Ansible (role servidor_backup).
+[Unit]
+Description={{ item.descricao }}
+{% if item.tipo == 'service' %}
+
+[Service]
+Type=oneshot
+Nice=10
+IOSchedulingClass=idle
+# Os dois backups usam o mesmo disco: um espera o outro terminar.
+ExecStart=/usr/bin/flock /run/ti-backup.lock /usr/local/sbin/{{ item.nome }}
+{% else %}
+
+[Timer]
+OnCalendar={{ item.quando }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+{% endif %}

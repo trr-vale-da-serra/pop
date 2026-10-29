@@ -1,6 +1,6 @@
 # POP-09: Incidente de segurança
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.2 · **Data:** 29/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -41,7 +41,7 @@ Agir rápido e de forma organizada quando acontece algo como vírus, invasão de
 
 ### 4.3 Resolver
 
-7. PC com vírus ou ransomware: **reinstalar** pelo POP-04 ou POP-05 e restaurar os arquivos do backup dos PCs de **antes** do incidente.
+7. PC com vírus ou ransomware: **reinstalar** pelo POP-04 ou POP-05. Se o ransomware alterou arquivos da **nuvem da empresa**, restaurar as pastas afetadas do snapshot de **antes** do incidente (POP-07 §5.1) antes de reconectar o PC.
 8. Conferir se outras máquinas foram afetadas.
 9. Corrigir a causa (atualização pendente, senha fraca, app não aprovado, falha de processo).
 
