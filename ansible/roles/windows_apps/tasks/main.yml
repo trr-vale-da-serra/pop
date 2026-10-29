@@ -1,0 +1,40 @@
+---
+# Programas padrão (POP-05 §4.2). Programa novo segue o POP-08 e entra em
+# windows_choco (group_vars/windows). PDF: o Edge já abre.
+- name: Programas padrão (Chocolatey)
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ item.name }}"
+    package_params: "{{ item.params | default(omit) }}"
+    state: present
+  loop: "{{ windows_choco }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+# uBlock Origin em todo Firefox, instalado à força (mesmas políticas do Linux).
+- name: Pasta de políticas do Firefox
+  ansible.windows.win_file:
+    path: C:\Program Files\Mozilla Firefox\distribution
+    state: directory
+
+- name: Políticas do Firefox (bloqueador de anúncios)
+  ansible.windows.win_copy:
+    dest: C:\Program Files\Mozilla Firefox\distribution\policies.json
+    content: "{{ firefox_politicas | to_nice_json }}"
+
+# Edge e Chrome só aceitam o uBlock Origin Lite. Vale mesmo se o Chrome for
+# instalado depois; o funcionário não consegue remover.
+- name: uBlock Origin Lite no Edge e no Chrome
+  ansible.windows.win_regedit:
+    path: "{{ item.chave }}"
+    name: "1"
+    data: "{{ item.extensao }}"
+    type: string
+  loop:
+    - navegador: Edge
+      chave: HKLM:\SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallForcelist
+      extensao: cimighlppcgcoapaliogpjjdehbnofhn;https://edge.microsoft.com/extensionwebstorebase/v1/crx
+    - navegador: Chrome
+      chave: HKLM:\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist
+      extensao: ddkjiahejlhfcafbddmgiahcphecmpfh;https://clients2.google.com/service/update2/crx
+  loop_control:
+    label: "{{ item.navegador }}"

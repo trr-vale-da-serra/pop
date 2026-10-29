@@ -1,0 +1,78 @@
+---
+# POP-05 §4.2: MeshCentral, GLPI Agent, Wazuh e UrBackup.
+# Cada agente só é instalado quando o servidor dele está configurado (group_vars).
+- name: Pasta dos instaladores
+  ansible.windows.win_file:
+    path: C:\ProgramData\TI\instaladores
+    state: directory
+
+# Mesmo instalador do botão "Adicionar agente > Windows" do painel do MeshCentral.
+- name: MeshCentral
+  when: meshcentral_url | length > 0 and (meshcentral_meshid | default('')) | length > 0
+  block:
+    - name: Baixar o agente MeshCentral
+      ansible.windows.win_get_url:
+        url: "{{ meshcentral_url }}/meshagents?id=4&meshid={{ meshcentral_meshid }}&installflags=0"
+        dest: C:\ProgramData\TI\instaladores\meshagent.exe
+      no_log: true
+
+    - name: Instalar o agente MeshCentral
+      ansible.windows.win_command:
+        cmd: C:\ProgramData\TI\instaladores\meshagent.exe -fullinstall
+        creates: C:\Program Files\Mesh Agent\MeshAgent.exe
+
+- name: GLPI Agent
+  when: glpi_url | length > 0 and glpi_agent_versao | length > 0
+  ansible.windows.win_package:
+    path: "https://github.com/glpi-project/glpi-agent/releases/download/{{ glpi_agent_versao }}/GLPI-Agent-{{ glpi_agent_versao }}-x64.msi"
+    arguments: >-
+      /quiet SERVER={{ glpi_url }} TAG={{ inventory_hostname.split('-')[0] }}
+      RUNNOW=1 EXECMODE=1
+    creates_path: C:\Program Files\GLPI-Agent
+
+- name: Wazuh
+  when: wazuh_manager | length > 0 and wazuh_versao | length > 0
+  block:
+    - name: Agente Wazuh
+      ansible.windows.win_package:
+        path: "https://packages.wazuh.com/4.x/windows/wazuh-agent-{{ wazuh_versao }}-1.msi"
+        arguments: >-
+          /q WAZUH_MANAGER={{ wazuh_manager }}
+          WAZUH_AGENT_NAME={{ inventory_hostname }} WAZUH_AGENT_GROUP={{ wazuh_grupo }}
+        creates_path: C:\Program Files (x86)\ossec-agent\wazuh-agent.exe
+
+    - name: Agente Wazuh ligado
+      ansible.windows.win_service:
+        name: WazuhSvc
+        start_mode: auto
+        state: started
+
+- name: UrBackup
+  when: urbackup_instalar | bool
+  block:
+    - name: Baixar o cliente UrBackup
+      ansible.windows.win_get_url:
+        url: "https://hndl.urbackup.org/Client/{{ urbackup_versao }}/UrBackup%20Client%20{{ urbackup_versao }}.exe"
+        dest: C:\ProgramData\TI\instaladores\urbackup.exe
+
+    - name: Instalar o cliente UrBackup
+      ansible.windows.win_command:
+        cmd: C:\ProgramData\TI\instaladores\urbackup.exe /S
+        creates: C:\Program Files\UrBackup\UrBackupClientBackend.exe
+
+- name: AnyDesk (só PCs com suporte de fornecedor, POP-TI §3.2)
+  when: anydesk | bool
+  chocolatey.chocolatey.win_chocolatey:
+    name: anydesk.install
+    state: present
+
+- name: Agentes pulados
+  ansible.builtin.debug:
+    msg: "Ainda sem servidor configurado: {{ pulados | join(', ') }}"
+  vars:
+    pulados: >-
+      {{ (['MeshCentral'] if meshcentral_url | length == 0 or (meshcentral_meshid | default('')) | length == 0 else [])
+         + (['GLPI'] if glpi_url | length == 0 or glpi_agent_versao | length == 0 else [])
+         + (['Wazuh'] if wazuh_manager | length == 0 or wazuh_versao | length == 0 else [])
+         + (['UrBackup'] if not urbackup_instalar | bool else []) }}
+  when: pulados | length > 0

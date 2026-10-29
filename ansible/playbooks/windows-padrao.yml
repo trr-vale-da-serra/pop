@@ -1,0 +1,37 @@
+---
+# POP-05 §4.2: configuração padrão de PC Windows 11.
+# PC instalado pelo pendrive (autounattend.xml) já tem o WinRM ligado:
+#   ansible-playbook playbooks/windows-padrao.yml -l TRR-PC-0012 -k
+# (-k = senha da conta da TI). Ou ./pc-novo.sh, que acha o Windows sozinho.
+# No fim o PC reinicia sozinho se precisar (atualização, nome). Com alguém
+# usando o PC, rodar com -e reiniciar=false e reiniciar depois.
+- name: Configuração padrão do Windows
+  hosts: windows
+  roles:
+    - windows_base
+    - windows_funcionarios
+    - windows_apps
+    - windows_agentes
+
+  post_tasks:
+    - name: Verificar se precisa reiniciar
+      ansible.windows.win_powershell:
+        script: |
+          $k = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion'
+          $nome = 'HKLM:\SYSTEM\CurrentControlSet\Control\ComputerName'
+          $Ansible.Result = (Test-Path "$k\Component Based Servicing\RebootPending") -or
+            (Test-Path "$k\WindowsUpdate\Auto Update\RebootRequired") -or
+            ((Get-ItemProperty "$nome\ComputerName").ComputerName -ne (Get-ItemProperty "$nome\ActiveComputerName").ComputerName)
+          $Ansible.Changed = $false
+      register: reinicio
+
+    - name: Reiniciar o PC
+      ansible.windows.win_reboot:
+        msg: "Reinicio da configuracao da TI"
+        reboot_timeout: 1800
+      when: reinicio.result and reiniciar | default(true) | bool
+
+    - name: Reinício pendente
+      ansible.builtin.debug:
+        msg: "O PC precisa reiniciar para terminar a configuração."
+      when: reinicio.result and not reiniciar | default(true) | bool
