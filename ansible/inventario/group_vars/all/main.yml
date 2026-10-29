@@ -1,0 +1,25 @@
+---
+# Valem para Linux e Windows. O que é de um só fica em group_vars/linux ou windows.
+
+# Conta dos funcionários (POP-TI §3.1): a mesma dos pendrives (gerar.py).
+conta_funcionarios: usuario
+
+# --- Servidores dos agentes (POP-TI §5.2). Vazio = o agente é pulado. ---
+meshcentral_url: ""          # ex.: https://mesh.trrvaledaserra.com.br
+# meshcentral_meshid: no vault.yml (ID do grupo de dispositivos do MeshCentral)
+glpi_url: ""                 # ex.: http://192.168.1.10:8080/
+wazuh_manager: ""            # ex.: 192.168.1.10
+urbackup_versao: "2.5.25"
+urbackup_instalar: false     # ligar depois que o servidor UrBackup estiver no ar
+
+# AnyDesk só nos PCs que recebem suporte de fornecedor (marcar no host).
+anydesk: false
+
+# Políticas do Firefox: https://mozilla.github.io/policy-templates/
+# uBlock Origin instalado à força: o funcionário não consegue remover.
+firefox_politicas:
+  policies:
+    ExtensionSettings:
+      uBlock0@raymondhill.net:
+        installation_mode: force_installed
+        install_url: https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi

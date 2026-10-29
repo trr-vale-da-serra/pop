@@ -117,4 +117,7 @@ O pendrive está pronto e serve para todos os PCs. Ele tem a senha da TI (em has
 
 ## 10. Conferir
 
-Marcar a lista "Conferir no primeiro PC" do [README](README.md). Tudo certo: os outros PCs seguem o mesmo roteiro a partir do item 7 (resumo em "PC novo" no README).
+Marcar a lista "Conferir no primeiro PC" do [README](README.md).
+
+**Windows:** o mesmo `pc-novo.sh` serve. Instalar o PC com o pendrive do Windows (README, "Pendrive de instalação automática do Windows"), ver o IP com `ipconfig` e rodar o mesmo comando do item 8. Ele percebe que é Windows e pede a senha da conta da TI como `SSH password`. Uma vez no WSL antes: `sudo apt install -y python3-winrm`.
+ Tudo certo: os outros PCs seguem o mesmo roteiro a partir do item 7 (resumo em "PC novo" no README).

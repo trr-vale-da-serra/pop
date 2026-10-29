@@ -14,18 +14,6 @@ ssh_desativar_senha: false
 
 fuso_horario: America/Sao_Paulo
 
-# Conta dos funcionários (POP-TI §3.1): a mesma do pendrive (gerar.py).
-conta_funcionarios: usuario
-
-# --- Servidores dos agentes (POP-TI §5.2). Vazio = o agente é pulado. ---
-meshcentral_url: ""          # ex.: https://mesh.trrvaledaserra.com.br
-# meshcentral_meshid: no vault.yml (ID do grupo de dispositivos do MeshCentral)
-glpi_url: ""                 # ex.: http://192.168.1.10:8080/
-wazuh_manager: ""            # ex.: 192.168.1.10
+# Agentes (servidores em group_vars/all).
 wazuh_grupo: linux
-urbackup_versao: "2.5.25"
-urbackup_instalar: false     # ligar depois que o servidor UrBackup estiver no ar
-urbackup_respostas: "y\\n"   # respostas do instalador; conferir no primeiro PC
-
-# AnyDesk só nos PCs que recebem suporte de fornecedor (marcar no host).
-anydesk: false
+urbackup_respostas: "y\n"   # respostas do instalador; conferir no primeiro PC
