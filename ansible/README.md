@@ -8,6 +8,7 @@ Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no
 |---|---|---|
 | `playbooks/linux-padrao.yml` | POP-04 §4.2 | Deixa um PC Ubuntu 26.04 no padrão da empresa |
 | `playbooks/linux-atualizacao.yml` | POP-06 §3.2 | Atualização mensal (`apt` e `snap`) e reinício se precisar |
+| `playbooks/servidor.yml` | POP-TI §5.2, POP-07 | Discos do servidor, nuvem da empresa e backup (ver "Servidor" abaixo) |
 
 O playbook do Windows (POP-05) ainda não existe.
 
@@ -18,9 +19,9 @@ O playbook do Windows (POP-05) ainda não existe.
 | `base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, sistema com o disco inteiro, fuso horário, chave SSH da TI, atualizações e `unattended-upgrades` (diário, sem reinício automático) |
 | `funcionarios` | Conta dos funcionários (`usuario`, com administrador, sem senha e login automático, POP-TI §3.1). O pendrive já cria; o playbook cria nos PCs instalados antes ou à mão |
 | `desktop` | Dash to Panel e ArcMenu (baixados do `extensions.gnome.org`, na versão do GNOME do PC, porque o Ubuntu 26.04 não tem pacote) ligados para todos os usuários (dconf), dock do Ubuntu desligado |
-| `apps` | LibreOffice em português, leitor de PDF e Firefox com o bloqueador de anúncios uBlock Origin (instalado à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
+| `apps` | LibreOffice em português, leitor de PDF, cliente da nuvem da empresa (Nextcloud) e Firefox com o bloqueador de anúncios uBlock Origin (instalado à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
 | `clamav` | ClamAV com alertas no syslog (para o Wazuh) e varredura semanal da `/home` |
-| `agentes` | MeshCentral, GLPI Agent, Wazuh, UrBackup e AnyDesk (só com `anydesk: true` no host) |
+| `agentes` | MeshCentral, GLPI Agent, Wazuh e AnyDesk (só com `anydesk: true` no host) |
 
 Cada agente **só é instalado depois que o servidor dele estiver configurado** em `inventario/group_vars/linux/main.yml`. Enquanto o campo estiver vazio, o playbook pula o agente e avisa no final.
 
@@ -119,6 +120,57 @@ O IP **não precisa ser fixo**: só serve para achar o PC enquanto ele ainda tem
 
 O inventário (`inventario/hosts.yml`) fica **só no PC da TI**, fora do git: o repositório é público e o arquivo tem os IPs da rede. Modelo em `inventario/hosts.yml.exemplo`.
 
+## Servidor (POP-TI §5.2)
+
+O servidor é o PC Ubuntu ligado 24h descrito no guia do servidor (host + VM `prod` com os sistemas). Os discos ficam numa **gaveta USB-C com 3 discos de 4 TB**:
+
+| Disco | Uso | Onde |
+|---|---|---|
+| 1 e 2 | **Espelho ZFS** (4 TB úteis): se um disco morre, nada se perde. Snapshots automáticos a cada hora (24), dia (30) e mês (6) | `/dados` |
+| 3 | **Só backup**, sem criptografia: dump de cada banco toda noite (30 dias) e cópia da VM `prod` todo domingo (2 cópias). Fica desmontado fora do backup | `/backup` |
+
+| Role | O quê |
+|---|---|
+| `servidor_discos` | Confere os 3 discos, tira a economia de energia do USB, liga o aviso de saúde dos discos (smartd, no syslog), cria o espelho e as pastas (`usuarios`, `departamentos`, `whatsapp`, `emails-ex-funcionarios`, `apps-empresa`), os snapshots (sanoid) e formata o disco 3 |
+| `arquivos` | **Nuvem da empresa** (Samba): uma conta e uma pasta pessoal por funcionário, com cota, e uma pasta por departamento. "Versões anteriores" do Windows mostra os snapshots |
+| `whatsapp` | **Syncthing**: recebe a pasta do WhatsApp de cada celular em `/dados/whatsapp/<aparelho>`. Painel em `http://<IP>:47921` |
+| `servidor_backup` | `ti-backup-bancos` (todo dia às 02:00) e `ti-backup-vm` (domingo à 01:30, desliga a VM por alguns minutos). Avisa o monitoramento (Uptime Kuma, monitor "Push") quando termina bem |
+
+**Primeira vez:**
+
+1. Gaveta no modo **JBOD** (discos separados), nunca no RAID da própria gaveta. Ligar no servidor e anotar os IDs:
+   ```bash
+   ls -l /dev/disk/by-id/ | grep -v part
+   ```
+   Cada disco precisa ter um ID (número de série) diferente.
+2. No PC da TI: pôr o servidor no inventário (grupo `servidor`, modelo em `inventario/hosts.yml.exemplo`) e preencher `inventario/group_vars/servidor/main.yml`: IDs dos discos, `nuvem_endereco`, `departamentos` e `usuarios_samba`.
+3. Senhas das pastas (uma por funcionário, geradas no cofre):
+   ```bash
+   cp inventario/group_vars/servidor/vault.yml.exemplo inventario/group_vars/servidor/vault.yml
+   ```
+   ```bash
+   ansible-vault encrypt inventario/group_vars/servidor/vault.yml
+   ```
+4. Rodar com `preparar_discos=true`. **Apaga os 3 discos** (só na primeira vez; sem a opção, o playbook para e avisa em vez de apagar):
+   ```bash
+   ansible-playbook playbooks/servidor.yml -K --ask-vault-pass -e preparar_discos=true
+   ```
+5. O playbook mostra a chave SSH do root do servidor. Colocar no `~/.ssh/authorized_keys` da conta `ti` da VM `prod` (no grupo `docker`), para o backup pedir o dump dos bancos de lá.
+6. Abrir `http://<IP>:47921` (Syncthing) e **definir usuário e senha do painel** antes de tudo.
+7. Testar o backup na hora e conferir o resultado:
+   ```bash
+   sudo systemctl start ti-backup-bancos && journalctl -t ti-backup -n 20
+   ```
+8. No Uptime Kuma: criar um monitor "Push" com intervalo de 25 horas e pôr a URL em `backup_push_url`.
+
+**Funcionário novo ou que saiu:** acrescentar (ou marcar `ativo: false`) em `usuarios_samba`, a senha em `senhas_samba` no vault, e rodar o playbook sem o `preparar_discos`. Trocar senha: mudar no vault e rodar de novo. Sistema novo com banco: acrescentar um item em `backup_bancos`.
+
+**Ligar a pasta no PC** (POP-04/05, conferência), com a conta da pessoa:
+- Windows: Explorador de Arquivos → *Este Computador* → *Mapear unidade de rede*, `\<IP>\<nome.sobrenome>`, marcar *Reconectar ao entrar* e *Usar credenciais diferentes*, e salvar a senha. Repetir para a pasta do departamento.
+- Ubuntu: *Arquivos* → *Outros locais* → `smb://<IP>/<nome.sobrenome>`, usuário e senha da pessoa, *Lembrar para sempre*. Depois *Adicionar aos favoritos* (barra lateral). Repetir para a pasta do departamento.
+
+**Disco com defeito:** `zpool status dados` mostra qual. Trocar o disco na gaveta e rodar `sudo zpool replace dados <ID antigo> <ID novo>`. O espelho se refaz sozinho, e o servidor continua no ar durante a troca.
+
 ## Atualização mensal (POP-06)
 
 ```bash
@@ -142,9 +194,9 @@ A senha do vault vai para o Vaultwarden. `vault.yml` só entra no git criptograf
 
 - [ ] Dash to Panel e ArcMenu funcionam no GNOME 50 do Ubuntu 26.04 (vêm do `extensions.gnome.org`).
 - [ ] O pacote `glpi-agent` do Ubuntu conversa com a versão do servidor GLPI. Se não, trocar pelo instalador oficial.
-- [ ] Respostas do instalador do UrBackup (`urbackup_respostas`).
 - [ ] Nome da conta da TI (`ansible_user`, hoje `ti`).
 - [ ] O instalador Desktop do 26.04 lê o `autoinstall.yaml` do pendrive gravado pelo Rufus, instala o SSH e aplica o nome `pc-novo-XXXX`.
 - [ ] O uBlock Origin aparece sozinho no Firefox (snap) e não dá para remover. Se não aparecer, conferir em `about:policies`.
 - [ ] Windows: o `autounattend.xml` pula tudo menos a escolha do disco, a conta da TI entra, o WinRM responde (`Test-WSMan <IP>` de outro Windows) e a criptografia fica desligada (`manage-bde -status`).
 - [ ] Acesso remoto do MeshCentral no Wayland (ALTERNATIVAS §1.2).
+- [ ] Servidor: "Versões anteriores" do Windows mostra os snapshots numa pasta do servidor (configuração `shadow:` do `smb.conf`).

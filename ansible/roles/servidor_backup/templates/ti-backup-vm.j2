@@ -1,0 +1,69 @@
+#!/bin/bash
+# Gerado pelo Ansible (role servidor_backup). Não editar aqui: mudar no repositório pop.
+# Cópia semanal da VM {{ backup_vm_nome }} para /backup/vm, sem criptografia.
+# Desliga a VM por alguns minutos (domingo de madrugada) para copiar o disco parado e liga
+# de novo, mesmo se a cópia falhar. Guarda as {{ backup_vm_guarda }} cópias mais novas.
+set -uo pipefail
+
+VM={{ backup_vm_nome | quote }}
+DESTINO=/backup/vm
+DIA=$(date +%F)
+GUARDA={{ backup_vm_guarda }}
+
+log() { logger -t ti-backup "vm: $*"; echo "$*"; }
+
+if ! virsh dominfo "$VM" >/dev/null 2>&1; then
+  log "AVISO: a VM $VM não existe neste servidor, nada a copiar"
+  exit 0
+fi
+
+if ! mountpoint -q /backup; then
+  mount /backup || { log "ERRO: o disco de backup não montou (gaveta desligada?)"; exit 1; }
+fi
+
+estava_ligada=false
+[ "$(virsh domstate "$VM")" = "running" ] && estava_ligada=true
+
+fim() {
+  if $estava_ligada && [ "$(virsh domstate "$VM")" != "running" ]; then
+    virsh start "$VM" >/dev/null && log "VM ligada de novo" || log "ERRO: a VM não ligou de novo"
+  fi
+  sync; cd /; umount /backup || log "AVISO: não consegui desmontar /backup"
+}
+trap fim EXIT
+
+if $estava_ligada; then
+  virsh shutdown "$VM" >/dev/null
+  for _ in $(seq 60); do
+    [ "$(virsh domstate "$VM")" = "shut off" ] && break
+    sleep 5
+  done
+  if [ "$(virsh domstate "$VM")" != "shut off" ]; then
+    log "ERRO: a VM não desligou em 5 minutos; backup cancelado (a VM continua ligada)"
+    estava_ligada=false
+    exit 1
+  fi
+fi
+
+mkdir -p "$DESTINO"
+virsh dumpxml "$VM" > "$DESTINO/$VM-$DIA.xml"
+falhou=false
+while read -r disco; do
+  arq="$DESTINO/$VM-$DIA-$(basename "$disco")"
+  if cp --sparse=always "$disco" "$arq.parcial"; then
+    mv "$arq.parcial" "$arq"
+    log "$(basename "$disco"): ok, $(du -h "$arq" | cut -f1)"
+  else
+    rm -f "$arq.parcial"
+    log "ERRO: falhou a cópia de $disco"
+    falhou=true
+  fi
+done < <(virsh domblklist "$VM" --details | awk '$2 == "disk" {print $4}')
+
+$falhou && exit 1
+
+# Apaga as cópias mais antigas, mantendo as $GUARDA mais novas.
+ls -1 "$DESTINO"/"$VM"-*.xml | sort | head -n -"$GUARDA" | while read -r xml; do
+  rm -f "${xml%.xml}"*
+done
+log "concluído"

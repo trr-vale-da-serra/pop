@@ -1,0 +1,60 @@
+#!/bin/bash
+# Gerado pelo Ansible (role servidor_backup). Não editar aqui: mudar no repositório pop.
+# Dump de cada banco para /backup/bancos/<banco>/<data>, sem criptografia.
+# Guarda os {{ backup_bancos_guarda }} mais novos de cada banco. Resultado no syslog (tag ti-backup).
+set -uo pipefail
+
+DESTINO=/backup/bancos
+DIA=$(date +%F)
+GUARDA={{ backup_bancos_guarda }}
+PUSH={{ backup_push_url | quote }}
+falhas=0
+
+log() { logger -t ti-backup "bancos: $*"; echo "$*"; }
+
+if ! mountpoint -q /backup; then
+  mount /backup || { log "ERRO: o disco de backup não montou (gaveta desligada?)"; exit 1; }
+fi
+trap 'sync; cd /; umount /backup || log "AVISO: não consegui desmontar /backup"' EXIT
+
+# salvar <banco> <extensão> <comando>: roda o comando e guarda a saída, só se der certo.
+salvar() {
+  local nome=$1 ext=$2 cmd=$3
+  local pasta="$DESTINO/$nome" arq="$DESTINO/$nome/$DIA.$ext"
+  mkdir -p "$pasta"
+  if bash -o pipefail -c "$cmd" > "$arq.parcial" && [ -s "$arq.parcial" ]; then
+    mv "$arq.parcial" "$arq"
+    log "$nome: ok, $(du -h "$arq" | cut -f1)"
+    # Apaga os mais antigos, mantendo os $GUARDA mais novos (nunca apaga tudo).
+    ls -1t "$pasta"/*."$ext" | tail -n +$((GUARDA + 1)) | xargs -r rm -f
+  else
+    rm -f "$arq.parcial"
+    log "ERRO: $nome: o dump falhou"
+    falhas=$((falhas + 1))
+  fi
+}
+
+{% for b in backup_bancos %}
+{%   if b.tipo == 'postgres' %}
+{%     set cmd = 'docker compose -f ' ~ b.compose ~ ' exec -T ' ~ b.servico ~ ' pg_dump -Fc -U ' ~ b.usuario ~ ' ' ~ b.banco %}
+{%     set ext = 'dump' %}
+{%   else %}
+{%     set cmd = 'sqlite3 -readonly ' ~ b.arquivo ~ ' .dump' %}
+{%     set ext = 'sql.gz' %}
+{%   endif %}
+{%   if b.ssh is defined %}
+{%     set cmd = 'ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new ' ~ b.ssh ~ ' ' ~ (cmd | quote) %}
+{%   endif %}
+{%   if b.tipo != 'postgres' %}
+{%     set cmd = cmd ~ ' | gzip' %}
+{%   endif %}
+salvar {{ b.nome | quote }} {{ ext }} {{ cmd | quote }}
+{% endfor %}
+
+if [ "$falhas" -eq 0 ]; then
+  log "concluído"
+  [ -n "$PUSH" ] && curl -fsS -m 15 -o /dev/null "$PUSH?status=up&msg=OK"
+  exit 0
+fi
+log "ERRO: $falhas banco(s) sem backup hoje"
+exit 1

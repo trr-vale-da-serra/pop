@@ -1,6 +1,6 @@
 # POP-08: Solicitação de app novo (celular ou computador)
 
-> **Versão:** 1.3 · **Data:** 23/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.4 · **Data:** 29/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -37,7 +37,7 @@ App feito pela empresa ou por fornecedor contratado, que não está na Play Stor
 2. **TI** confere:
    - O APK está **assinado com a chave da empresa**, a mesma das versões anteriores. A chave é da empresa e fica no cofre de senhas. Fornecedor que desenvolve o app usa essa chave ou entrega o código para a TI gerar o APK.
    - As permissões que o app pede fazem sentido para o uso (mesmos critérios do passo 2 da seção 3).
-3. **TI** guarda o APK no servidor, na pasta `apps-empresa/<app>/<versão>/`, que entra no backup do servidor.
+3. **TI** guarda o APK no servidor, na pasta `apps-empresa/<app>/<versão>/`, no espelho de discos do servidor, com snapshots (backup do servidor).
 4. **TI** instala pelo MDM num **celular de teste** e confere que o app abre e faz o que deve.
 5. **TI** libera pelo MDM para o grupo de aparelhos. A versão anterior fica guardada para voltar se der problema.
 

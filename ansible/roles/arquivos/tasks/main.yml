@@ -1,0 +1,104 @@
+---
+# Nuvem da empresa: pastas no servidor pela rede (Samba), no espelho de discos.
+#   \\<IP>\<nome.sobrenome>   pasta pessoal: só a pessoa (e a TI, pelo servidor)
+#   \\<IP>\<departamento>     pasta do departamento: só quem está nele
+# "Versões anteriores" (Windows) mostra os snapshots do espelho: a pessoa mesma recupera
+# um arquivo apagado ou estragado.
+- name: Samba
+  ansible.builtin.apt:
+    name: samba
+    state: present
+
+- name: Grupo de cada departamento
+  ansible.builtin.group:
+    name: "{{ item }}"
+  loop: "{{ departamentos }}"
+
+# Conta só para as pastas: sem login no servidor.
+- name: Conta de cada funcionário
+  ansible.builtin.user:
+    name: "{{ item.nome }}"
+    groups: "{{ item.departamentos | default([]) }}"
+    append: false
+    shell: /usr/sbin/nologin
+    create_home: false
+    home: /{{ zfs_pool }}/usuarios/{{ item.nome }}
+  loop: "{{ usuarios_samba }}"
+  loop_control:
+    label: "{{ item.nome }}"
+
+- name: Pasta pessoal de cada funcionário
+  ansible.builtin.file:
+    path: /{{ zfs_pool }}/usuarios/{{ item.nome }}
+    state: directory
+    owner: "{{ item.nome }}"
+    group: "{{ item.nome }}"
+    mode: "0700"
+  loop: "{{ usuarios_samba }}"
+  loop_control:
+    label: "{{ item.nome }}"
+
+- name: Cota de cada funcionário
+  community.general.zfs:
+    name: "{{ zfs_pool }}/usuarios"
+    state: present
+    extra_zfs_properties: "{{ cotas_usuarios }}"
+  when: usuarios_samba | length > 0
+
+# setgid (2770): o que for criado dentro fica do grupo do departamento.
+- name: Pasta de cada departamento
+  ansible.builtin.file:
+    path: /{{ zfs_pool }}/departamentos/{{ item }}
+    state: directory
+    owner: root
+    group: "{{ item }}"
+    mode: "2770"
+  loop: "{{ departamentos }}"
+
+- name: Configuração do Samba
+  ansible.builtin.template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    mode: "0644"
+    validate: testparm -s %s
+  notify: Recarregar samba
+
+- name: Contas que já existem no Samba
+  ansible.builtin.command: pdbedit -L
+  register: contas_samba
+  changed_when: false
+
+# A senha vem do vault: rodar de novo depois de trocar uma senha no vault.yml.
+- name: Senha de cada funcionário no Samba
+  ansible.builtin.shell:
+    cmd: printf '%s\n%s\n' "$SENHA" "$SENHA" | smbpasswd -s -a {{ item.nome | quote }}
+  environment:
+    SENHA: "{{ senhas_samba[item.nome] }}"
+  loop: "{{ usuarios_samba }}"
+  loop_control:
+    label: "{{ item.nome }}"
+  no_log: true
+  changed_when: (item.nome ~ ':') not in contas_samba.stdout
+
+- name: Conta ativa ou desativada (quem saiu, POP-02)
+  ansible.builtin.command: smbpasswd {{ '-e' if item.ativo | default(true) else '-d' }} {{ item.nome | quote }}
+  loop: "{{ usuarios_samba }}"
+  loop_control:
+    label: "{{ item.nome }}"
+  changed_when: false
+
+- name: Samba ligado
+  ansible.builtin.service:
+    name: smbd
+    state: started
+    enabled: true
+
+# O servidor usa o ufw em negação padrão (guia do servidor): libera as pastas só para a rede interna.
+- name: Pastas liberadas para a rede interna (ufw)
+  community.general.ufw:
+    rule: allow
+    port: "445"
+    proto: tcp
+    from_ip: "{{ item }}"
+    comment: pastas do servidor (Samba)
+  loop: "{{ redes_internas }}"

@@ -23,9 +23,6 @@ meshcentral_url: ""          # ex.: https://mesh.trrvaledaserra.com.br
 glpi_url: ""                 # ex.: http://192.168.1.10:8080/
 wazuh_manager: ""            # ex.: 192.168.1.10
 wazuh_grupo: linux
-urbackup_versao: "2.5.25"
-urbackup_instalar: false     # ligar depois que o servidor UrBackup estiver no ar
-urbackup_respostas: "y\\n"   # respostas do instalador; conferir no primeiro PC
 
 # AnyDesk só nos PCs que recebem suporte de fornecedor (marcar no host).
 anydesk: false

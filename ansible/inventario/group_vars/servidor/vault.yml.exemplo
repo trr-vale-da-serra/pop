@@ -1,0 +1,5 @@
+---
+# Copiar para vault.yml e criptografar (ver README, "Senhas"). Valores no Vaultwarden.
+# Senha da pasta do servidor de cada funcionário (mesmo nome de usuarios_samba).
+senhas_samba: {}
+  # joao.silva: TROCAR

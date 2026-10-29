@@ -12,3 +12,7 @@ all:
         #   anydesk: true   # só se recebe suporte de fornecedor (POP-TI §3.2)
     windows:
       hosts: {}
+    servidor:
+      hosts: {}   # o servidor (POP-TI §5.2), playbooks/servidor.yml
+        # servidor:
+        #   ansible_host: 10.10.10.10

@@ -1,6 +1,6 @@
 # POP-04: Instalação padrão de computador Linux
 
-> **Versão:** 1.3 · **Data:** 23/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.4 · **Data:** 29/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -14,7 +14,7 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 
 ## 3. Antes de começar
 
-1. Copiar os arquivos de trabalho do PC, se tiver (backup dos PCs ou cópia manual).
+1. Se o PC tem arquivos de trabalho fora da **nuvem da empresa**, passar para a nuvem antes. O PC não tem backup.
 2. Pendrive com o **Linux padrão** na versão do [anexo de ferramentas](../anexos/ferramentas.md) §2, baixado do site oficial.
 3. Número de patrimônio do PC.
 
@@ -36,7 +36,7 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
    - Aparência parecida com o Windows (barra de tarefas embaixo e menu Iniciar).
    - Programas padrão (navegador, LibreOffice, leitor de PDF).
    - **Antivírus**.
-   - Agentes: **acesso remoto**, **GLPI Agent**, **painel de segurança** e **backup dos PCs**.
+   - Agentes: **acesso remoto**, **GLPI Agent** e **painel de segurança**.
 8. Programa de suporte de fornecedor: instalar **só** se o PC recebe suporte de fornecedor (POP-TI §3.2).
 
 ### 4.3 Conta dos funcionários
@@ -50,7 +50,7 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 11. O PC aparece no **acesso remoto** e abre a tela remota.
 12. O PC aparece no **GLPI** com o hardware e o software corretos.
 13. O PC aparece no **painel de segurança** como ativo.
-14. O primeiro **backup dos PCs** terminou.
+14. A pasta pessoal e a do departamento, na **nuvem da empresa**, estão ligadas no PC com a conta de quem usa o PC e abrem (README do Ansible, "Servidor").
 15. Registrar no GLPI: patrimônio, número de série e quem recebe.
 
 ## 5. Registro

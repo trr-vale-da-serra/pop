@@ -1,6 +1,6 @@
 # POP-02: Saída de funcionário
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
+> **Versão:** 1.2 · **Data:** 29/10/2026 · **Responsáveis:** TI: Lui Grosz · RH: Camila Faverao
 > Faz parte do [Plano de TI](../POP-TI.md). Formulários em [anexos/formularios.md](../anexos/formularios.md).
 
 ## 1. Objetivo
@@ -32,7 +32,7 @@ O RH avisa a TI **com antecedência**. No caso de justa causa, o aviso é sigilo
 1. **RH** abre o chamado no GLPI (Formulário A), tipo **Saída**: data e hora, tipo de saída, gestor.
 2. **Gestor** informa: quem recebe os e-mails, quem fica com o WhatsApp corporativo, para onde vão os arquivos.
 3. **TI** abre no GLPI o Formulário B (checklist de acessos) da pessoa. Ele é a lista do que bloquear.
-4. **TI** confere que o PC tem backup recente no **backup dos PCs** e copia os arquivos de trabalho para quem assume.
+4. **TI** confere que não ficou arquivo de trabalho fora da **nuvem da empresa** no PC (se ficou, passa para a nuvem) e copia o que for de trabalho da pasta pessoal da pessoa para a pasta de quem assume ou do departamento. Depois, desativa a conta da pessoa na nuvem (os arquivos dela ficam no servidor).
 
 ### 4.2 Bloqueio (no horário da tabela da seção 3)
 
@@ -42,7 +42,7 @@ Seguir o Formulário B item por item e marcar cada um como bloqueado no GLPI, co
    - Trocar a senha no painel da hospedagem (a pessoa perde o acesso na hora) e atualizar no cofre de senhas.
 6. **Sistema VS:** desativar o usuário (não excluir: o histórico de quem fez o quê precisa continuar).
 7. **Petroshow / Infinitum / Orion:** desativar os usuários (não excluir, pelo mesmo motivo).
-8. **WhatsApp corporativo:** o número é da empresa. Conferir que o backup do dia foi feito (POP-TI §4.3), recolher o aparelho, passar o atendimento para quem assume e trocar o nome/foto do perfil.
+8. **WhatsApp corporativo:** o número é da empresa. Conferir que o backup do dia chegou ao servidor (POP-TI §4.3), recolher o aparelho, passar o atendimento para quem assume e trocar o nome/foto do perfil.
 9. **Grupos de WhatsApp pessoais de trabalho:** se a pessoa estava em grupos de trabalho com o número pessoal, removê-la.
 10. **Acesso remoto:** remover a pessoa da **ferramenta de acesso remoto** e da **VPN**, se tinha acesso.
 
@@ -58,7 +58,7 @@ Seguir o Formulário B item por item e marcar cada um como bloqueado no GLPI, co
 ### 4.4 Depois da saída
 
 16. **Após 90 dias:**
-    - **Backup permanente da caixa:** baixar a caixa de e-mail inteira (todas as pastas: entrada, enviados, arquivadas) por IMAP para o servidor, na pasta `emails-ex-funcionarios/<nome.sobrenome>/`. Abrir alguns e-mails do backup para conferir. **Esse backup nunca é apagado** e entra na cópia noturna do servidor (backup do servidor).
+    - **Backup permanente da caixa:** baixar a caixa de e-mail inteira (todas as pastas: entrada, enviados, arquivadas) por IMAP para o servidor, na pasta `emails-ex-funcionarios/<nome.sobrenome>/`. Abrir alguns e-mails do backup para conferir. **Esse backup nunca é apagado** e fica no espelho de discos do servidor, com snapshots (backup do servidor).
     - Só depois do backup conferido: **excluir a conta de e-mail** (libera a licença na hospedagem).
 17. Fechar o chamado no GLPI com o Formulário B todo marcado. Arquivar o Formulário D (papel) na pasta do funcionário no RH.
 

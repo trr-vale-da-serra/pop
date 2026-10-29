@@ -1,6 +1,6 @@
 # POP-03: Celular perdido ou roubado
 
-> **Versão:** 1.1 · **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
+> **Versão:** 1.2 · **Data:** 29/10/2026 · **Responsável:** TI: Lui Grosz
 > Faz parte do [Plano de TI](../POP-TI.md).
 
 ## 1. Objetivo
@@ -40,7 +40,7 @@ Assim que o funcionário perceber. **Não esperar** "para ver se aparece": o blo
 ### 4.4 Reposição (TI)
 
 8. Preparar um aparelho novo pelo POP-11 §4 (troca de equipamento), com o chip novo.
-9. No aparelho novo, entrar no WhatsApp com o mesmo número e **restaurar o backup** do Gmail da empresa (senha do backup no cofre de senhas).
+9. No aparelho novo, **antes de abrir o WhatsApp**, copiar a pasta do aparelho antigo do servidor (`/dados/whatsapp/<aparelho>`) para a pasta do WhatsApp no aparelho novo (POP-TI §4.3). Depois entrar no WhatsApp com o mesmo número e **restaurar o backup** (senha do backup no cofre de senhas).
 10. Atualizar o inventário no GLPI: aparelho antigo como "perdido" ou "roubado".
 
 ## 5. Se o aparelho aparecer
