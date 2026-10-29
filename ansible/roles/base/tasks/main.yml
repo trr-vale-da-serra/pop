@@ -49,6 +49,18 @@
   when: ssh_desativar_senha | bool
   notify: Reiniciar ssh
 
+# O instalador do Ubuntu dava só ~100 GB ao sistema e deixava o resto do disco
+# parado. Aumenta o sistema até o disco inteiro, com o PC ligado (sem reinstalar).
+- name: Sistema com o disco inteiro
+  community.general.lvol:
+    vg: ubuntu-vg
+    lv: ubuntu-lv
+    size: +100%FREE
+    resizefs: true
+  when:
+    - "'ubuntu-vg' in ((ansible_facts.lvm | default({})).vgs | default({}))"
+    - ansible_facts.lvm.vgs['ubuntu-vg'].free_g | float > 1
+
 - name: Atualizar o sistema
   ansible.builtin.apt:
     update_cache: true

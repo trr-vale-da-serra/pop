@@ -22,9 +22,11 @@ autoinstall:
     password: "@@TI_SENHA_HASH@@"
 
   # Apaga o maior disco. Sem criptografia de disco (decisão da TI, out/2026).
+  # sizing-policy all: o sistema fica com o disco inteiro (o padrão dá só ~100 GB).
   storage:
     layout:
       name: lvm
+      sizing-policy: all
 
   ssh:
     install-server: true
