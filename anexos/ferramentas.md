@@ -44,6 +44,7 @@
 |---|---|
 | POP-04 | Antes do roteiro de configuração: `sudo apt install openssh-server`. No instalador: "apagar o disco", sem criptografia. Ou o pendrive de instalação automática (`ansible/PRIMEIRO-PC.md`) |
 | POP-05 | Pendrive com `autounattend.xml` (`ansible/autounattend/`): instala sem conta Microsoft, cria a conta da TI, liga o WinRM (acesso do Ansible) e impede o BitLocker / Criptografia do dispositivo. Sem o pendrive: ligar o WinRM à mão e desligar a criptografia |
+| POP-05 | Configuração em massa: `ansible/playbooks/windows-padrao.yml` (ou `ansible/pc-novo.sh`) |
 | POP-06 | Playbooks de atualização: `apt` (Linux) e `win_updates` (Windows) |
 
 ## 4. Programas dos PCs Linux
@@ -71,3 +72,25 @@ Tudo o que o roteiro de configuração padrão (POP-04) instala em todo PC Linux
 | **unattended-upgrades** | Atualização de segurança diária | Sem reinício automático (o reinício fica para o POP-06) |
 | **OpenSSH** | Acesso do roteiro de configuração em massa | Só a TI usa |
 | Pacotes de idioma português, `curl`, `perl`, `net-tools` | Base do sistema | |
+
+## 5. Programas dos PCs Windows
+
+Tudo o que o roteiro de configuração padrão (POP-05) instala em todo PC Windows. Programa fora desta lista só entra pelo POP-08. Mudou a lista: atualizar aqui e no roteiro (`windows_choco` em `ansible/inventario/group_vars/windows/main.yml`).
+
+### 5.1 Para o funcionário usar
+
+| Programa | Para quê | Observação |
+|---|---|---|
+| **Firefox** | Navegador | Com o **uBlock Origin**, instalado à força |
+| **Edge** | Navegador (vem com o Windows) e abrir PDF | Com o **uBlock Origin Lite**, instalado à força. No Chrome, se alguém instalar, também |
+| **LibreOffice** | Documentos, planilhas e apresentações | |
+
+### 5.2 Da TI, rodando por trás
+
+| Programa | Função (nome usado nos POPs) | Observação |
+|---|---|---|
+| **Microsoft Defender** | Antivírus | Vem com o Windows; o roteiro confere que está ligado |
+| **Chocolatey** | Instala e atualiza os programas | Só a TI usa |
+| **GLPI Agent**, agente do **MeshCentral**, agente do **Wazuh** | Inventário, acesso remoto, painel de segurança | Só depois que o servidor de cada um estiver no ar |
+| **AnyDesk** | Programa de suporte de fornecedor | Só nos PCs que recebem suporte de fornecedor (POP-TI §3.2) |
+| **WinRM** | Acesso do roteiro de configuração em massa | Ligado pelo pendrive; só aceita da mesma rede |

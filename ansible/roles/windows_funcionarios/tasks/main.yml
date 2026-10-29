@@ -1,0 +1,22 @@
+---
+# Conta dos funcionários (POP-TI §3.1): a mesma em todo PC, com administrador
+# e SEM senha. O pendrive já cria; aqui serve para PC instalado antes ou à mão.
+# Sem senha, o Windows não deixa a conta entrar pela rede (só no próprio PC).
+# O grupo vai pelo SID (S-1-5-32-544): no Windows em português ele se chama
+# "Administradores".
+- name: Conta dos funcionários, sem senha e com administrador
+  ansible.windows.win_powershell:
+    script: |
+      $n = '{{ conta_funcionarios }}'
+      $Ansible.Changed = $false
+      if (-not (Get-LocalUser -Name $n -ErrorAction SilentlyContinue)) {
+        New-LocalUser -Name $n -FullName $n -NoPassword | Out-Null
+        $Ansible.Changed = $true
+      }
+      Set-LocalUser -Name $n -PasswordNeverExpires $true
+      net user $n /passwordreq:no | Out-Null
+      $admins = Get-LocalGroupMember -SID S-1-5-32-544 | ForEach-Object { $_.Name.Split('\')[-1] }
+      if ($admins -notcontains $n) {
+        Add-LocalGroupMember -SID S-1-5-32-544 -Member $n
+        $Ansible.Changed = $true
+      }

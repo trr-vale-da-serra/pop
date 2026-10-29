@@ -1,0 +1,23 @@
+---
+# POP-06 §3.2, passo 3: atualização mensal do Windows (2ª quarta-feira, depois do expediente, nos PCs ligados).
+#   ansible-playbook playbooks/windows-atualizacao.yml -k
+- name: Atualização mensal do Windows
+  hosts: windows
+  serial: 5
+  tasks:
+    # Reinicia sozinho quantas vezes precisar e continua.
+    - name: Atualizações do Windows
+      ansible.windows.win_updates:
+        category_names:
+          - SecurityUpdates
+          - CriticalUpdates
+          - UpdateRollups
+          - DefinitionUpdates
+          - Updates
+        reboot: true
+        reboot_timeout: 3600
+
+    - name: Atualizar os programas (Chocolatey)
+      chocolatey.chocolatey.win_chocolatey:
+        name: all
+        state: latest

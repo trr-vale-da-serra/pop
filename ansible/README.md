@@ -9,8 +9,8 @@ Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no
 | `playbooks/linux-padrao.yml` | POP-04 §4.2 | Deixa um PC Ubuntu 26.04 no padrão da empresa |
 | `playbooks/linux-atualizacao.yml` | POP-06 §3.2 | Atualização mensal (`apt` e `snap`) e reinício se precisar |
 | `playbooks/servidor.yml` | POP-TI §5.2, POP-07 | Discos do servidor, nuvem da empresa e backup (ver "Servidor" abaixo) |
-
-O playbook do Windows (POP-05) ainda não existe.
+| `playbooks/windows-padrao.yml` | POP-05 §4.2 | Deixa um PC Windows 11 no padrão da empresa |
+| `playbooks/windows-atualizacao.yml` | POP-06 §3.2 | Atualização mensal (Windows Update e programas) com reinício |
 
 ## O que o `linux-padrao.yml` faz
 
@@ -23,7 +23,18 @@ O playbook do Windows (POP-05) ainda não existe.
 | `clamav` | ClamAV com alertas no syslog (para o Wazuh) e varredura semanal da `/home` |
 | `agentes` | MeshCentral, GLPI Agent, Wazuh e AnyDesk (só com `anydesk: true` no host) |
 
-Cada agente **só é instalado depois que o servidor dele estiver configurado** em `inventario/group_vars/linux/main.yml`. Enquanto o campo estiver vazio, o playbook pula o agente e avisa no final.
+## O que o `windows-padrao.yml` faz
+
+| Role | O quê |
+|---|---|
+| `windows_base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso de Brasília, Windows Update sem reinício no horário de trabalho (7h às 19h) nem com alguém usando o PC, atualizações do Windows e confere que o **Microsoft Defender** está ligado |
+| `windows_funcionarios` | Conta dos funcionários (`usuario`, com administrador e sem senha, POP-TI §3.1). O pendrive já cria; o playbook confere e cria nos PCs instalados à mão |
+| `windows_apps` | Firefox e LibreOffice pelo **Chocolatey** (lista em `windows_choco`, `inventario/group_vars/windows/main.yml`). uBlock Origin à força no Firefox e **uBlock Origin Lite** à força no Edge e no Chrome (os dois não aceitam mais o uBlock Origin completo). PDF: o Edge abre |
+| `windows_agentes` | MeshCentral, GLPI Agent, Wazuh e AnyDesk (só com `anydesk: true` no host) |
+
+No fim, reinicia o PC se precisar (atualização ou nome novo).
+
+Cada agente **só é instalado depois que o servidor dele estiver configurado** em `inventario/group_vars/all/main.yml` (no Windows, também a versão do GLPI Agent e do Wazuh, em `group_vars/windows`). Enquanto o campo estiver vazio, o playbook pula o agente e avisa no final.
 
 ## Onde roda
 
@@ -36,14 +47,14 @@ wsl --install -d Ubuntu
 Dentro do Ubuntu do WSL:
 
 ```bash
-sudo apt install -y ansible sshpass git
+sudo apt install -y ansible sshpass git python3-winrm
 git clone https://github.com/trr-vale-da-serra/pop.git ~/repos/pop
 cd ~/repos/pop/ansible
 ansible-galaxy collection install -r requirements.yml
 ssh-keygen -t ed25519 -C ansible-ti
 ```
 
-Clonar **dentro do WSL** (`~/repos`), não usar `/mnt/c/...`: lá a pasta é aberta para todos e o Ansible ignora o `ansible.cfg` por segurança.
+`python3-winrm` é o acesso aos PCs Windows. Clonar **dentro do WSL** (`~/repos`), não usar `/mnt/c/...`: lá a pasta é aberta para todos e o Ansible ignora o `ansible.cfg` por segurança.
 
 ## Pendrive de instalação automática (POP-04 §4.1)
 
@@ -69,7 +80,7 @@ O `autoinstall.yaml` do pendrive tem a senha da TI (em hash) e a do Wi-Fi: guard
 
 ## Pendrive de instalação automática do Windows (POP-05 §4.1)
 
-Mesma ideia do pendrive do Linux, com o arquivo `autounattend.xml`. Ele instala o Windows 11 em português, teclado ABNT2, fuso de Brasília, **sem conta Microsoft** e sem as telas do primeiro uso. Também cria a conta local da TI e a **conta dos funcionários** (`usuario`, com administrador e sem senha, POP-TI §3.1), impede a criptografia de disco e liga o WinRM, que é o acesso do Ansible. O playbook do Windows ainda não existe.
+Mesma ideia do pendrive do Linux, com o arquivo `autounattend.xml`. Ele instala o Windows 11 em português, teclado ABNT2, fuso de Brasília, **sem conta Microsoft** e sem as telas do primeiro uso. Também cria a conta local da TI e a **conta dos funcionários** (`usuario`, com administrador e sem senha, POP-TI §3.1), impede a criptografia de disco e liga o WinRM, que é o acesso do Ansible.
 
 **Preparar o pendrive (uma vez):**
 
@@ -97,24 +108,22 @@ O `autounattend.xml` tem a senha da TI só codificada (qualquer um decodifica): 
 
 ## PC novo (POP-04 §4.2)
 
-Depois que o PC terminou a instalação pelo pendrive e reiniciou:
+Linux ou Windows, o mesmo comando. Depois que o PC terminou a instalação pelo pendrive e reiniciou:
 
-1. **No PC:** abrir o terminal (`Ctrl+Alt+T`) e ver o IP:
-   ```bash
-   hostname -I
-   ```
+1. **No PC:** ver o IP. No Linux, abrir o terminal (`Ctrl+Alt+T`) e rodar `hostname -I`. No Windows, abrir o Prompt de Comando e rodar `ipconfig` (linha "Endereço IPv4").
 2. **No Ubuntu do WSL** (PC da TI), com o nome definitivo (`<EMPRESA>-PC-<patrimônio>`) e o IP do passo 1:
    ```bash
    cd ~/repos/pop && git pull && ansible/pc-novo.sh TRR-PC-0003 10.10.10.123
    ```
-   Pede a senha da conta da TI (`BECOME password`). O PC reinicia sozinho no final.
+   Pede a senha da conta da TI (no Linux aparece `BECOME password`, no Windows `SSH password`). O PC reinicia sozinho no final.
 
 O `pc-novo.sh`:
-- aceita a chave SSH do PC (e troca a antiga, se o PC foi reinstalado);
-- põe o PC no inventário `inventario/hosts.yml`, ou atualiza o IP se ele já estava lá;
-- roda o `linux-padrao.yml` só nele: troca o nome do PC para o definitivo, configura tudo e **reinicia se precisar** (atualização, nome, login automático, extensões).
+- descobre se o PC é Linux (responde no SSH) ou Windows (responde no WinRM);
+- no Linux, aceita a chave SSH do PC (e troca a antiga, se o PC foi reinstalado);
+- põe o PC no grupo certo do inventário `inventario/hosts.yml`, ou atualiza o IP se ele já estava lá;
+- roda o `linux-padrao.yml` ou o `windows-padrao.yml` só nele: troca o nome do PC para o definitivo, configura tudo e **reinicia se precisar**.
 
-Com alguém usando o PC, acrescentar `-e reiniciar=false` no fim do comando e reiniciar depois. Se o PC foi instalado à mão (sem o pendrive), instalar o SSH nele (`sudo apt install openssh-server`) e acrescentar `-k` (pede a senha SSH).
+Com alguém usando o PC, acrescentar `-e reiniciar=false` no fim do comando e reiniciar depois. Linux instalado à mão (sem o pendrive): instalar o SSH nele (`sudo apt install openssh-server`) e acrescentar `-k` (pede a senha SSH). Windows instalado à mão: ligar o WinRM (comandos 2 a 5 do `autounattend.modelo.xml`, no PowerShell como administrador).
 
 O IP **não precisa ser fixo**: só serve para achar o PC enquanto ele ainda tem o nome `pc-novo-XXXX`. Se mudar, rodar o `pc-novo.sh` de novo com o IP novo. Depois que o firewall registrar os nomes no DNS (pfSense: *Services → DNS Resolver → Register DHCP leases*), dá para apagar as linhas `ansible_host` e o Ansible acha os PCs pelo nome.
 
@@ -177,6 +186,10 @@ O servidor é o PC Ubuntu ligado 24h descrito no guia do servidor (host + VM `pr
 ansible-playbook playbooks/linux-atualizacao.yml -K
 ```
 
+```bash
+ansible-playbook playbooks/windows-atualizacao.yml -k
+```
+
 Atualiza de 5 em 5 PCs e reinicia só os que precisam. PC desligado ou fora da empresa aparece como `UNREACHABLE` e os outros seguem normalmente. Quando ele voltar à rede (POP-06 §3.3), rodar só nele com `--limit <nome-do-pc>`. O agente Wazuh fica **segurado** (`hold`) para não ficar mais novo que o servidor: atualizar junto com o servidor Wazuh.
 
 ## Senhas
@@ -184,8 +197,8 @@ Atualiza de 5 em 5 PCs e reinicia só os que precisam. PC desligado ou fora da e
 O ID do grupo do MeshCentral fica criptografado com `ansible-vault`:
 
 ```bash
-cp inventario/group_vars/linux/vault.yml.exemplo inventario/group_vars/linux/vault.yml
-ansible-vault encrypt inventario/group_vars/linux/vault.yml
+cp inventario/group_vars/all/vault.yml.exemplo inventario/group_vars/all/vault.yml
+ansible-vault encrypt inventario/group_vars/all/vault.yml
 ```
 
 A senha do vault vai para o Vaultwarden. `vault.yml` só entra no git criptografado. Ao rodar, acrescentar `--ask-vault-pass`.
@@ -198,5 +211,7 @@ A senha do vault vai para o Vaultwarden. `vault.yml` só entra no git criptograf
 - [ ] O instalador Desktop do 26.04 lê o `autoinstall.yaml` do pendrive gravado pelo Rufus, instala o SSH e aplica o nome `pc-novo-XXXX`.
 - [ ] O uBlock Origin aparece sozinho no Firefox (snap) e não dá para remover. Se não aparecer, conferir em `about:policies`.
 - [ ] Windows: o `autounattend.xml` pula tudo menos a escolha do disco, a conta da TI entra, o WinRM responde (`Test-WSMan <IP>` de outro Windows) e a criptografia fica desligada (`manage-bde -status`).
+- [ ] Windows: o `windows-padrao.yml` roda até o fim. Conferir: `usuario` é administrador, Firefox e LibreOffice em português, uBlock no Firefox (`about:policies`) e uBlock Origin Lite no Edge (`edge://policy`), PC reinicia com o nome novo.
+- [ ] Windows Home: conferir se o Windows Update respeita o "sem reinício com alguém usando o PC" (é política, e o Home pode ignorar).
 - [ ] Acesso remoto do MeshCentral no Wayland (ALTERNATIVAS §1.2).
 - [ ] Servidor: "Versões anteriores" do Windows mostra os snapshots numa pasta do servidor (configuração `shadow:` do `smb.conf`).

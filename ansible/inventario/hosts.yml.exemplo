@@ -11,7 +11,7 @@ all:
         #   ansible_host: 10.10.10.101
         #   anydesk: true   # só se recebe suporte de fornecedor (POP-TI §3.2)
     windows:
-      hosts: {}
+      hosts: {}   # mesmo formato do linux (o ./pc-novo.sh põe no grupo certo)
     servidor:
       hosts: {}   # o servidor (POP-TI §5.2), playbooks/servidor.yml
         # servidor:
