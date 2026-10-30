@@ -12,6 +12,21 @@
     dest: /usr/local/sbin/glpi-etiqueta
     mode: "0750"
 
+# O módulo usblp do kernel segura a Zebra e o CUPS não consegue tirar ("Failed to
+# detach usblp"): sem ele, o CUPS fala com a impressora direto pelo USB.
+- name: Bloquear o módulo usblp
+  ansible.builtin.copy:
+    dest: /etc/modprobe.d/ti-sem-usblp.conf
+    content: |
+      # Gerado pelo Ansible (role ferramentas_ti): o CUPS usa a Zebra direto pelo USB.
+      blacklist usblp
+    mode: "0644"
+
+- name: Tirar o usblp, se carregado
+  community.general.modprobe:
+    name: usblp
+    state: absent
+
 - name: Procurar a Zebra no USB
   ansible.builtin.shell: lpinfo -v | awk '$2 ~ /^usb:\/\/Zebra/ { print $2; exit }'
   register: zebra_usb
