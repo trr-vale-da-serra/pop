@@ -34,6 +34,16 @@
     - SetUpdateNotificationLevel
     - UpdateNotificationLevel
 
+# Nenhum aviso na tela (decisão da TI, out/2026). É uma opção de cada conta:
+# vale para todas porque roda a cada entrada no Windows. Se alguém religar em
+# Configurações, desliga de novo na próxima entrada.
+- name: Sem avisos na tela, para todas as contas
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+    name: TI-SemAvisos
+    data: reg add HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications /v ToastEnabled /t REG_DWORD /d 0 /f
+    type: string
+
 - name: Horário de trabalho (o Windows Update não reinicia nesse intervalo)
   ansible.windows.win_regedit:
     path: HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings

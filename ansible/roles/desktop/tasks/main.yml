@@ -99,12 +99,17 @@
     mode: "0644"
   notify: [Atualizar dconf, Pedir reinício]
 
-# Avisos de atualização, de firmware/driver e de erro não aparecem para o
-# funcionário: a TI atualiza pelo unattended-upgrades e pela janela mensal (POP-06).
-- name: Sem avisos de atualização para o funcionário
+# Nenhum aviso aparece na tela do funcionário (decisão da TI, out/2026): modo
+# "Não perturbe" travado. Os avisos ficam guardados no menu do relógio.
+# Atualização, firmware/driver e erro também saem da fila: a TI atualiza pelo
+# unattended-upgrades e pela janela mensal (POP-06).
+- name: Sem avisos na tela do funcionário
   ansible.builtin.copy:
     dest: /etc/dconf/db/local.d/01-ti-avisos
     content: |
+      [org/gnome/desktop/notifications]
+      show-banners=false
+
       [org/gnome/software]
       allow-updates=false
       download-updates=false
@@ -128,6 +133,7 @@
   ansible.builtin.copy:
     dest: /etc/dconf/db/local.d/locks/01-ti-avisos
     content: |
+      /org/gnome/desktop/notifications/show-banners
       /org/gnome/software/allow-updates
       /org/gnome/software/download-updates
       /org/gnome/software/download-updates-notify
