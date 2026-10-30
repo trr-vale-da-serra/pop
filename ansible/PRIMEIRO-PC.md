@@ -2,6 +2,8 @@
 
 > **Data:** 17/10/2026 · **Responsável:** TI: Lui Grosz
 > Roteiro único para preparar o servidor Ansible, o pendrive e instalar o primeiro PC (POP-TI §9, passo 5). Detalhes de cada parte no [README](README.md).
+>
+> **Atualização 30/10/2026:** este roteiro foi escrito para o PC antigo da TI (Windows, Ansible no WSL). Hoje o Ansible roda direto no servidor TRR-PC-0003 (README, "Onde roda"): pular o item 3, rodar o item 4 no próprio servidor e, onde aparece "Ubuntu do WSL", usar o terminal dele.
 
 ## 1. O que precisa
 

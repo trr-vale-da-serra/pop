@@ -38,13 +38,7 @@ Cada agente **só é instalado depois que o servidor dele estiver configurado** 
 
 ## Onde roda
 
-O Ansible não roda direto no Windows. No servidor (PC do Lui Grosz, POP-TI §5.2) ele roda no **WSL2 com Ubuntu**, que o Docker Desktop já usa.
-
-```bash
-wsl --install -d Ubuntu
-```
-
-Dentro do Ubuntu do WSL:
+Desde 30/10/2026 o Ansible roda direto no servidor, que também é o PC da TI (TRR-PC-0003, Ubuntu 26.04, POP-TI §5.2; ver "O servidor é também o PC da TI"). Não precisa mais do WSL.
 
 ```bash
 sudo apt install -y ansible sshpass git python3-winrm
@@ -54,7 +48,9 @@ ansible-galaxy collection install -r requirements.yml
 ssh-keygen -t ed25519 -C ansible-ti
 ```
 
-`python3-winrm` é o acesso aos PCs Windows. Clonar **dentro do WSL** (`~/repos`), não usar `/mnt/c/...`: lá a pasta é aberta para todos e o Ansible ignora o `ansible.cfg` por segurança.
+`python3-winrm` é o acesso aos PCs Windows. Rodar os comandos de dentro de `~/repos/pop/ansible`: o Ansible só lê o `ansible.cfg` (inventário e roles) da pasta onde é chamado.
+
+O PC antigo da TI (Windows, Ansible no WSL) saiu de uso. Os passos que ainda falam em `D:` e `/mnt/d` eram dele: no Ubuntu, o pendrive aparece sozinho em `/media/$USER/<nome do pendrive>`.
 
 ## Pendrive de instalação automática (POP-04 §4.1)
 
@@ -111,7 +107,7 @@ O `autounattend.xml` tem a senha da TI só codificada (qualquer um decodifica): 
 Linux ou Windows, o mesmo comando. Depois que o PC terminou a instalação pelo pendrive e reiniciou:
 
 1. **No PC:** ver o IP. No Linux, abrir o terminal (`Ctrl+Alt+T`) e rodar `hostname -I`. No Windows, abrir o Prompt de Comando e rodar `ipconfig` (linha "Endereço IPv4").
-2. **No Ubuntu do WSL** (PC da TI), com o nome definitivo (`<EMPRESA>-PC-<patrimônio>`) e o IP do passo 1:
+2. **No PC da TI** (TRR-PC-0003), com o nome definitivo (`<EMPRESA>-PC-<patrimônio>`) e o IP do passo 1:
    ```bash
    cd ~/repos/pop && git pull && ansible/pc-novo.sh TRR-PC-0003 10.10.10.123
    ```
@@ -211,6 +207,11 @@ Rodam no servidor em contêineres (`/srv/ferramentas-ti`), com os dados em `/srv
      ```bash
      sudo mkdir -p /srv/vaultwarden && sudo tar xzf /media/$USER/PENDRIVE/vaultwarden-data.tgz -C /srv/vaultwarden
      ```
+   - Sem pendrive, pela rede (o servidor aceita SSH com a senha da conta `ti`), no PC antigo (WSL):
+     ```bash
+     cd ~/vaultwarden && docker compose down && sudo tar czf /tmp/vaultwarden-data.tgz data && sudo chown $USER /tmp/vaultwarden-data.tgz && scp /tmp/vaultwarden-data.tgz ti@<IP do servidor>: && rm /tmp/vaultwarden-data.tgz
+     ```
+     E no servidor: `sudo mkdir -p /srv/vaultwarden && sudo tar xzf /home/ti/vaultwarden-data.tgz -C /srv/vaultwarden && sudo rm /home/ti/vaultwarden-data.tgz`.
    - **Apagar o `vaultwarden-data.tgz` do pendrive** (é o cofre inteiro). A pasta antiga fica parada no PC antigo até tudo ser conferido.
 5. Rodar:
    ```bash
