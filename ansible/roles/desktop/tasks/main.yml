@@ -98,3 +98,79 @@
       disabled-extensions=['ubuntu-dock@ubuntu.com']
     mode: "0644"
   notify: [Atualizar dconf, Pedir reinício]
+
+# Nenhum aviso aparece na tela do funcionário (decisão da TI, out/2026): modo
+# "Não perturbe" travado. Os avisos ficam guardados no menu do relógio.
+# Atualização, firmware/driver e erro também saem da fila: a TI atualiza pelo
+# unattended-upgrades e pela janela mensal (POP-06).
+- name: Sem avisos na tela do funcionário
+  ansible.builtin.copy:
+    dest: /etc/dconf/db/local.d/01-ti-avisos
+    content: |
+      [org/gnome/desktop/notifications]
+      show-banners=false
+
+      [org/gnome/software]
+      allow-updates=false
+      download-updates=false
+      download-updates-notify=false
+
+      [com/ubuntu/update-notifier]
+      auto-launch=false
+      no-show-notifications=true
+      show-apport-crashes=false
+    mode: "0644"
+  notify: Atualizar dconf
+
+- name: Pasta de travas do dconf
+  ansible.builtin.file:
+    path: /etc/dconf/db/local.d/locks
+    state: directory
+    mode: "0755"
+
+# Travado: o funcionário não consegue ligar os avisos de novo.
+- name: Travar os avisos desligados
+  ansible.builtin.copy:
+    dest: /etc/dconf/db/local.d/locks/01-ti-avisos
+    content: |
+      /org/gnome/desktop/notifications/show-banners
+      /org/gnome/software/allow-updates
+      /org/gnome/software/download-updates
+      /org/gnome/software/download-updates-notify
+      /com/ubuntu/update-notifier/auto-launch
+      /com/ubuntu/update-notifier/no-show-notifications
+      /com/ubuntu/update-notifier/show-apport-crashes
+    mode: "0644"
+  notify: Atualizar dconf
+
+# Janela "o Ubuntu encontrou um erro interno".
+- name: Ver se o relatório de erros (apport) está instalado
+  ansible.builtin.stat:
+    path: /etc/default/apport
+  register: apport
+
+- name: Sem janela de relatório de erros
+  ansible.builtin.lineinfile:
+    path: /etc/default/apport
+    regexp: '^enabled='
+    line: enabled=0
+  when: apport.stat.exists
+
+- name: Relatório de erros desligado
+  ansible.builtin.service:
+    name: apport
+    state: stopped
+    enabled: false
+  when: apport.stat.exists
+
+# Os snaps (Firefox, Bitwarden) se atualizam à noite, com os programas fechados:
+# sem o aviso "feche o programa para atualizar".
+- name: Ler o horário de atualização dos snaps
+  ansible.builtin.command: snap get system refresh.timer
+  register: snap_horario
+  changed_when: false
+  failed_when: false
+
+- name: Snaps atualizam à noite
+  ansible.builtin.command: snap set system refresh.timer={{ snap_horario_atualizacao }}
+  when: snap_horario.stdout | trim != snap_horario_atualizacao

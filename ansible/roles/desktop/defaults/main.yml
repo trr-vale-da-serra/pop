@@ -4,3 +4,6 @@
 gnome_extensoes:
   - dash-to-panel@jderose9.github.com   # barra embaixo
   - arcmenu@arcmenu.com                 # menu Iniciar
+
+# Horário em que os snaps se atualizam (formato do snapd), fora do expediente.
+snap_horario_atualizacao: "20:00-23:59"
