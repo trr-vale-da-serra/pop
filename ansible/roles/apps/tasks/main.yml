@@ -5,12 +5,12 @@
     name: "{{ apps_apt }}"
     state: present
 
-- name: Navegador (snap)
+- name: Programas padrão (snap)
   community.general.snap:
-    name: firefox
+    name: "{{ apps_snap }}"
     state: present
 
-# uBlock Origin em todo Firefox, instalado à força: o usuário não consegue remover.
+# uBlock Origin e Bitwarden em todo Firefox, instalados à força: o usuário não consegue remover.
 # O Firefox (snap) lê as políticas de /etc/firefox/policies.
 - name: Pasta de políticas do Firefox
   ansible.builtin.file:
@@ -18,7 +18,7 @@
     state: directory
     mode: "0755"
 
-- name: Políticas do Firefox (bloqueador de anúncios)
+- name: Políticas do Firefox (extensões)
   ansible.builtin.copy:
     dest: /etc/firefox/policies/policies.json
     content: "{{ firefox_politicas | to_nice_json }}"

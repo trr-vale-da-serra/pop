@@ -19,7 +19,7 @@ Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no
 | `base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, sistema com o disco inteiro, fuso horário, chave SSH da TI, atualizações e `unattended-upgrades` (diário, sem reinício automático) |
 | `funcionarios` | Conta dos funcionários (`usuario`, com administrador, sem senha e login automático, POP-TI §3.1). O pendrive já cria; o playbook cria nos PCs instalados antes ou à mão |
 | `desktop` | Dash to Panel e ArcMenu (baixados do `extensions.gnome.org`, na versão do GNOME do PC, porque o Ubuntu 26.04 não tem pacote) ligados para todos os usuários (dconf), dock do Ubuntu desligado |
-| `apps` | LibreOffice em português, leitor de PDF, cliente da nuvem da empresa (Nextcloud) e Firefox com o bloqueador de anúncios uBlock Origin (instalado à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
+| `apps` | LibreOffice em português, leitor de PDF, cliente da nuvem da empresa (Nextcloud) Bitwarden (cofre de senhas) e Firefox com o bloqueador de anúncios uBlock Origin e a extensão do Bitwarden (instalados à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
 | `clamav` | ClamAV com alertas no syslog (para o Wazuh) e varredura semanal da `/home` |
 | `agentes` | MeshCentral, GLPI Agent, Wazuh e AnyDesk (só com `anydesk: true` no host) |
 
@@ -29,7 +29,7 @@ Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no
 |---|---|
 | `windows_base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso de Brasília, Windows Update sem reinício no horário de trabalho (7h às 19h) nem com alguém usando o PC, atualizações do Windows e confere que o **Microsoft Defender** está ligado |
 | `windows_funcionarios` | Conta dos funcionários (`usuario`, com administrador e sem senha, POP-TI §3.1). O pendrive já cria; o playbook confere e cria nos PCs instalados à mão |
-| `windows_apps` | Firefox e LibreOffice pelo **Chocolatey** (lista em `windows_choco`, `inventario/group_vars/windows/main.yml`). uBlock Origin à força no Firefox e **uBlock Origin Lite** à força no Edge e no Chrome (os dois não aceitam mais o uBlock Origin completo). PDF: o Edge abre |
+| `windows_apps` | Firefox, LibreOffice e Bitwarden pelo **Chocolatey** (lista em `windows_choco`, `inventario/group_vars/windows/main.yml`). uBlock Origin e Bitwarden à força no Firefox e **uBlock Origin Lite** à força no Edge e no Chrome (os dois não aceitam mais o uBlock Origin completo). PDF: o Edge abre |
 | `windows_agentes` | MeshCentral, GLPI Agent, Wazuh e AnyDesk (só com `anydesk: true` no host) |
 
 No fim, reinicia o PC se precisar (atualização ou nome novo).
@@ -209,7 +209,7 @@ A senha do vault vai para o Vaultwarden. `vault.yml` só entra no git criptograf
 - [ ] O pacote `glpi-agent` do Ubuntu conversa com a versão do servidor GLPI. Se não, trocar pelo instalador oficial.
 - [ ] Nome da conta da TI (`ansible_user`, hoje `ti`).
 - [ ] O instalador Desktop do 26.04 lê o `autoinstall.yaml` do pendrive gravado pelo Rufus, instala o SSH e aplica o nome `pc-novo-XXXX`.
-- [ ] O uBlock Origin aparece sozinho no Firefox (snap) e não dá para remover. Se não aparecer, conferir em `about:policies`.
+- [ ] O uBlock Origin e o Bitwarden aparecem sozinhos no Firefox (snap) e não dá para remover. Se não aparecer, conferir em `about:policies`.
 - [ ] Windows: o `autounattend.xml` pula tudo menos a escolha do disco, a conta da TI entra, o WinRM responde (`Test-WSMan <IP>` de outro Windows) e a criptografia fica desligada (`manage-bde -status`).
 - [ ] Windows: o `windows-padrao.yml` roda até o fim. Conferir: `usuario` é administrador, Firefox e LibreOffice em português, uBlock no Firefox (`about:policies`) e uBlock Origin Lite no Edge (`edge://policy`), PC reinicia com o nome novo.
 - [ ] Windows Home: conferir se o Windows Update respeita o "sem reinício com alguém usando o PC" (é política, e o Home pode ignorar).

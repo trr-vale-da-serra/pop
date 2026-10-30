@@ -10,13 +10,13 @@
   loop_control:
     label: "{{ item.name }}"
 
-# uBlock Origin em todo Firefox, instalado à força (mesmas políticas do Linux).
+# uBlock Origin e Bitwarden em todo Firefox, instalados à força (mesmas políticas do Linux).
 - name: Pasta de políticas do Firefox
   ansible.windows.win_file:
     path: C:\Program Files\Mozilla Firefox\distribution
     state: directory
 
-- name: Políticas do Firefox (bloqueador de anúncios)
+- name: Políticas do Firefox (extensões)
   ansible.windows.win_copy:
     dest: C:\Program Files\Mozilla Firefox\distribution\policies.json
     content: "{{ firefox_politicas | to_nice_json }}"
