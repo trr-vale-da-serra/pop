@@ -1,0 +1,35 @@
+---
+# Etiquetas de patrimônio do GLPI na Zebra ZD220, ligada no USB do servidor.
+# A fila é "raw": o glpi-etiqueta manda ZPL pronto e o CUPS só repassa.
+- name: CUPS
+  ansible.builtin.apt:
+    name: cups
+    state: present
+
+- name: Comando glpi-etiqueta
+  ansible.builtin.template:
+    src: glpi-etiqueta.j2
+    dest: /usr/local/sbin/glpi-etiqueta
+    mode: "0750"
+
+- name: Procurar a Zebra no USB
+  ansible.builtin.shell: lpinfo -v | awk '$2 ~ /^usb:\/\/Zebra/ { print $2; exit }'
+  register: zebra_usb
+  changed_when: false
+
+- name: Fila atual
+  ansible.builtin.command: lpstat -v {{ etiqueta_fila }}
+  register: zebra_fila
+  changed_when: false
+  failed_when: false
+
+- name: Fila da Zebra no CUPS
+  ansible.builtin.command: >-
+    lpadmin -p {{ etiqueta_fila }} -E -v {{ zebra_usb.stdout | quote }} -m raw
+    -D "Zebra ZD220 (etiquetas do GLPI)"
+  when: zebra_usb.stdout | length > 0 and zebra_usb.stdout not in zebra_fila.stdout
+
+- name: Aviso da Zebra
+  ansible.builtin.debug:
+    msg: "Zebra não achada no USB: ligar e rodar de novo com --tags ferramentas_ti para criar a fila {{ etiqueta_fila }}."
+  when: zebra_usb.stdout | length == 0

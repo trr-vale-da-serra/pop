@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+# Gerado pelo Ansible (role ferramentas_ti). Não editar aqui: mudar no repositório pop.
+# Etiqueta de patrimônio na Zebra ZD220 (50 x 25 mm, 203 dpi): QR que abre o item no
+# GLPI, nome e patrimônio. Lê o banco do GLPI direto (só leitura), por isso roda com sudo.
+#   sudo glpi-etiqueta TRR-PC-0012 TRR-MON-0003   pelo nome ou pelo patrimônio
+#   sudo glpi-etiqueta --todos --tipo computer    todos os computadores
+#   sudo glpi-etiqueta --teste                    etiqueta de teste, sem o GLPI
+#   sudo glpi-etiqueta --calibrar                 mede o rolo (etiqueta torta ou pulando)
+#   --arquivo x.zpl grava em vez de imprimir; --copias N imprime N de cada.
+import argparse
+import re
+import subprocess
+import sys
+
+GLPI = "https://{{ glpi_endereco }}"
+COMPOSE = "{{ ferramentas_pasta }}/compose.yml"
+FILA = "{{ etiqueta_fila }}"
+
+# Tipo do GLPI -> tabela no banco e página do item.
+TIPOS = {
+    "computer": ("glpi_computers", "computer"),
+    "monitor": ("glpi_monitors", "monitor"),
+    "printer": ("glpi_printers", "printer"),
+    "networkequipment": ("glpi_networkequipments", "networkequipment"),
+    "peripheral": ("glpi_peripherals", "peripheral"),
+    "phone": ("glpi_phones", "phone"),
+}
+
+
+def consultar(sql):
+    cmd = ["docker", "compose", "-f", COMPOSE, "exec", "-T", "glpi-db", "sh", "-c",
+           'mariadb -uglpi -p"$MARIADB_PASSWORD" glpi -B -N']
+    r = subprocess.run(cmd, input=sql, capture_output=True, text=True)
+    if r.returncode != 0:
+        sys.exit(f"Erro ao ler o banco do GLPI: {r.stderr.strip()}")
+    return [linha.split("\t") for linha in r.stdout.splitlines() if linha]
+
+
+def buscar(tipos, termos):
+    itens = []
+    for tipo in tipos:
+        tabela, pagina = TIPOS[tipo]
+        sql = f"SELECT id, name, otherserial FROM {tabela} WHERE is_deleted = 0 AND is_template = 0"
+        if termos:
+            lista = ", ".join(f"'{t}'" for t in termos)
+            sql += f" AND (name IN ({lista}) OR otherserial IN ({lista}))"
+        for id_, nome, patrimonio in consultar(sql + " ORDER BY name;"):
+            itens.append({
+                "nome": "" if nome == "NULL" else nome,
+                "patrimonio": "" if patrimonio == "NULL" else patrimonio,
+                "url": f"{GLPI}/front/{pagina}.form.php?id={id_}",
+            })
+    return itens
+
+
+def limpar(texto):
+    # ^ e ~ são comandos no ZPL.
+    return texto.replace("^", "").replace("~", "")
+
+
+def zpl(item, copias):
+    # 400 x 200 pontos. QR (modelo 2, aumento 4, correção L) à esquerda, texto à direita.
+    linhas = [
+        "^XA^CI28^PW400^LL200^LH0,0",
+        f"^FO16,24^BQN,2,4^FDLA,{item['url']}^FS",
+        f"^FO170,40^A0N,34,30^FB222,2,4,L^FD{limpar(item['nome'])}^FS",
+    ]
+    if item["patrimonio"]:
+        linhas.append(f"^FO170,128^A0N,26,24^FB222,1,0,L^FDPat. {limpar(item['patrimonio'])}^FS")
+    linhas.append(f"^PQ{copias}^XZ")
+    return "\n".join(linhas) + "\n"
+
+
+def main():
+    p = argparse.ArgumentParser(description="Etiqueta de patrimônio do GLPI na Zebra ZD220.")
+    p.add_argument("termos", nargs="*", help="nome ou patrimônio do item (ex.: TRR-PC-0012)")
+    p.add_argument("--todos", action="store_true", help="todos os itens (com --tipo, só daquele tipo)")
+    p.add_argument("--tipo", choices=sorted(TIPOS), help="só este tipo de item")
+    p.add_argument("--teste", action="store_true", help="etiqueta de teste, sem ler o GLPI")
+    p.add_argument("--calibrar", action="store_true", help="mede o tamanho da etiqueta do rolo")
+    p.add_argument("--copias", type=int, default=1, help="cópias de cada etiqueta (padrão 1)")
+    p.add_argument("--arquivo", help="grava o ZPL neste arquivo em vez de imprimir")
+    a = p.parse_args()
+
+    if a.calibrar:
+        itens, dados = [], "~JC\n"
+    elif a.teste:
+        itens = [{"nome": "TRR-PC-0000", "patrimonio": "0000", "url": f"{GLPI}/front/computer.form.php?id=0"}]
+    else:
+        if not a.termos and not a.todos:
+            p.error("diga o nome ou patrimônio do item, ou use --todos")
+        for t in a.termos:
+            if not re.fullmatch(r"[\w.\- ]+", t):
+                p.error(f"caractere não aceito em: {t}")
+        itens = buscar([a.tipo] if a.tipo else list(TIPOS), a.termos)
+        achados = {i["nome"] for i in itens} | {i["patrimonio"] for i in itens}
+        for t in a.termos:
+            if t not in achados:
+                print(f"Não achei no GLPI: {t}", file=sys.stderr)
+        if not itens:
+            sys.exit("Nenhum item achado no GLPI.")
+
+    if itens:
+        dados = "".join(zpl(i, max(1, a.copias)) for i in itens)
+    if a.arquivo:
+        with open(a.arquivo, "w", encoding="utf-8") as f:
+            f.write(dados)
+    else:
+        r = subprocess.run(["lp", "-d", FILA, "-o", "raw"], input=dados.encode(), capture_output=True)
+        if r.returncode != 0:
+            sys.exit(f"Erro ao imprimir na fila {FILA}: {r.stderr.decode().strip()} "
+                     "(a Zebra está ligada no USB? rodar o servidor.yml com ela ligada cria a fila)")
+    for i in itens:
+        print(f"{i['nome']}  {i['patrimonio']}  {i['url']}")
+
+
+if __name__ == "__main__":
+    main()

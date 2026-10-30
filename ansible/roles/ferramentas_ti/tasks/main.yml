@@ -91,6 +91,9 @@
     comment: ferramentas da TI (Vaultwarden e GLPI)
   loop: "{{ redes_internas }}"
 
+- name: Etiquetas do GLPI (Zebra)
+  ansible.builtin.import_tasks: etiquetas.yml
+
 - name: Endereços
   ansible.builtin.debug:
     msg:

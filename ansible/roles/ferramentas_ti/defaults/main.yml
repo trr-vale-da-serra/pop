@@ -14,3 +14,6 @@ caddy_versao: 2.11.7
 # Portas internas (só 127.0.0.1; a rede chega pelo Caddy, na 443).
 vaultwarden_porta: 47914
 glpi_porta: 47915
+
+# Fila do CUPS da Zebra ZD220 das etiquetas do GLPI (comando glpi-etiqueta).
+etiqueta_fila: Zebra-ZD220
