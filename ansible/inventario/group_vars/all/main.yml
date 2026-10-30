@@ -4,6 +4,12 @@
 # Conta dos funcionários (POP-TI §3.1): a mesma dos pendrives (gerar.py).
 conta_funcionarios: usuario
 
+# PC da TI (o servidor, que também é a estação de trabalho da TI): a conta dos
+# funcionários fica, mas com senha para entrar e para o sudo e sem login automático;
+# avisos na tela e reinício de segurança às 04:00. Marcar no host do inventário:
+# pc_da_ti: true.
+pc_da_ti: false
+
 # --- Servidores dos agentes (POP-TI §5.2). Vazio = o agente é pulado. ---
 meshcentral_url: ""          # ex.: https://mesh.trrvaledaserra.com.br
 # meshcentral_meshid: no vault.yml (ID do grupo de dispositivos do MeshCentral)

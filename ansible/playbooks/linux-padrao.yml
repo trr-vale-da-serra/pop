@@ -9,7 +9,10 @@
   hosts: linux
   roles:
     - base
-    - funcionarios
+    - role: funcionarios
+      when: not pc_da_ti | bool
+    - role: pc_da_ti
+      when: pc_da_ti | bool
     - desktop
     - apps
     - clamav

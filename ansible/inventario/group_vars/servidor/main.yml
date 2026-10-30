@@ -29,6 +29,20 @@ snapshots_hora: 24
 snapshots_dia: 30
 snapshots_mes: 6
 
+# --- Ferramentas da TI (guia do servidor, infra §3): Vaultwarden e GLPI ---
+# Domínio da empresa com o DNS na Cloudflare. Os nomes apontam para o IP interno
+# do servidor (de fora não abrem) e o certificado vem do Let's Encrypt pelo DNS.
+# Token da Cloudflare e senha do banco do GLPI: no vault.yml.
+ti_dominio: ""                     # ex.: trrvaledaserra.com.br
+vaultwarden_nome: cofre
+glpi_nome: glpi
+vaultwarden_endereco: "{{ vaultwarden_nome }}.{{ ti_dominio }}"
+glpi_endereco: "{{ glpi_nome }}.{{ ti_dominio }}"
+servidor_ip: "{{ nuvem_endereco }}"
+ti_email: ""                       # avisos do Let's Encrypt (opcional)
+# Cadastro aberto no Vaultwarden: true só enquanto a TI cria as contas.
+vaultwarden_cadastro_aberto: false
+
 # --- Nuvem da empresa (pastas compartilhadas, Samba) ---
 # IP do servidor na rede da empresa: \\<IP>\<pasta> no Windows, smb://<IP>/<pasta> no Ubuntu.
 nuvem_endereco: TROCAR-IP-DO-SERVIDOR
@@ -71,7 +85,7 @@ backup_vm_nome: prod               # VM dos sistemas (checkvale/docs/infra.md)
 # Vazio = sem alerta.
 backup_push_url: ""
 
-# Um item por banco. tipo: postgres (pg_dump) ou sqlite (.dump).
+# Um item por banco. tipo: postgres (pg_dump), mariadb (mariadb-dump) ou sqlite (.dump).
 # ssh: conta@IP da VM, quando o banco roda nela. Sem ssh = roda no próprio servidor.
 # A chave SSH do root do servidor precisa estar na conta da VM (o playbook mostra a chave).
 backup_bancos:
@@ -82,8 +96,25 @@ backup_bancos:
     servico: postgres
     usuario: checkvale
     banco: checkvale
+  # Ferramentas da TI, no próprio servidor (role ferramentas_ti).
+  - nome: vaultwarden
+    tipo: sqlite
+    arquivo: /srv/vaultwarden/data/db.sqlite3
+  - nome: glpi
+    tipo: mariadb
+    compose: /srv/ferramentas-ti/compose.yml
+    servico: glpi-db
   # VS Autonomus: entra quando migrar para a VM (/srv/vs). Enquanto for SQLite:
   # - nome: vs-plataforma
   #   tipo: sqlite
   #   ssh: ti@192.168.122.10
   #   arquivo: /srv/vs/plataforma/plataforma.db
+
+# Pastas copiadas junto com os bancos (/backup/bancos/<nome>/<data>.tar.gz).
+# Vaultwarden: chaves e anexos. GLPI: a glpicrypt.key (sem ela as senhas guardadas
+# no GLPI não abrem mais), os anexos e os plugins.
+backup_pastas:
+  - nome: vaultwarden-pasta
+    caminho: /srv/vaultwarden/data
+  - nome: glpi-pasta
+    caminho: /srv/glpi/var

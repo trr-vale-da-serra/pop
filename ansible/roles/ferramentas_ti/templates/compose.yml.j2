@@ -1,0 +1,52 @@
+# Gerado pelo Ansible (role ferramentas_ti). Não editar aqui: mudar no repositório pop.
+name: ferramentas-ti
+
+services:
+  # Entrada da rede: HTTPS na 443 para os dois sistemas. network_mode host para o
+  # ufw filtrar quem chega (o Docker passa por fora do ufw nas portas publicadas).
+  caddy:
+    build: ./caddy
+    restart: unless-stopped
+    network_mode: host
+    env_file: caddy.env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - /srv/caddy:/data
+
+  vaultwarden:
+    image: {{ vaultwarden_imagem }}
+    restart: unless-stopped
+    environment:
+      DOMAIN: "https://{{ vaultwarden_endereco }}"
+      SIGNUPS_ALLOWED: "{{ 'true' if vaultwarden_cadastro_aberto | bool else 'false' }}"
+    volumes:
+      - /srv/vaultwarden/data:/data
+    ports:
+      - "127.0.0.1:{{ vaultwarden_porta }}:80"
+
+  glpi:
+    image: {{ glpi_imagem }}
+    restart: unless-stopped
+    env_file: glpi.env
+    environment:
+      GLPI_DB_HOST: glpi-db
+      GLPI_DB_PORT: "3306"
+      GLPI_DB_NAME: glpi
+      GLPI_DB_USER: glpi
+    volumes:
+      - /srv/glpi/var:/var/glpi
+    depends_on:
+      - glpi-db
+    ports:
+      - "127.0.0.1:{{ glpi_porta }}:80"
+
+  glpi-db:
+    image: {{ mariadb_imagem }}
+    restart: unless-stopped
+    env_file: glpi.env
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+      MARIADB_DATABASE: glpi
+      MARIADB_USER: glpi
+    volumes:
+      - /srv/glpi/mariadb:/var/lib/mysql

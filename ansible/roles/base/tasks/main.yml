@@ -88,9 +88,11 @@
     mode: "0644"
 
 # O reinício fica para a janela mensal (POP-06), nunca no meio do expediente.
-- name: Sem reinício automático pelo unattended-upgrades
+# No PC da TI (o servidor), reinício de segurança às 04:00 (guia do servidor, infra §1).
+- name: Reinício do unattended-upgrades
   ansible.builtin.copy:
     dest: /etc/apt/apt.conf.d/52ti-unattended
     content: |
-      Unattended-Upgrade::Automatic-Reboot "false";
+      Unattended-Upgrade::Automatic-Reboot "{{ 'true' if pc_da_ti | bool else 'false' }}";
+      Unattended-Upgrade::Automatic-Reboot-Time "04:00";
     mode: "0644"

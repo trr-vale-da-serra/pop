@@ -1,0 +1,41 @@
+---
+# PC da TI (pc_da_ti: true): o servidor, que também é a estação da TI. Guarda o
+# cofre de senhas e a chave SSH de todos os PCs, então ninguém entra nele sem senha.
+# A conta dos funcionários continua (com tudo o que já tem nela): só passa a pedir
+# senha para entrar e para o sudo.
+- name: Ler a senha da conta
+  ansible.builtin.getent:
+    database: shadow
+    key: "{{ conta_funcionarios }}"
+    fail_key: false
+
+# Sem senha, tirar o login automático deixaria a conta sem jeito de entrar.
+- name: Conferir que a conta já tem senha
+  ansible.builtin.assert:
+    that: ansible_facts.getent_shadow[conta_funcionarios][0] | length > 1
+    fail_msg: >-
+      A conta {{ conta_funcionarios }} ainda não tem senha. No PC, rodar
+      "sudo passwd {{ conta_funcionarios }}", escolher uma senha (guardar no
+      Vaultwarden) e rodar o playbook de novo.
+  when: ansible_facts.getent_shadow[conta_funcionarios] is not none
+
+- name: Tela de login pede senha
+  ansible.builtin.command: gpasswd -d {{ conta_funcionarios }} nopasswdlogin
+  register: tirar_grupo
+  changed_when: tirar_grupo.rc == 0
+  failed_when: false
+
+- name: Sem login automático
+  community.general.ini_file:
+    path: /etc/gdm3/custom.conf
+    section: daemon
+    option: AutomaticLoginEnable
+    value: "false"
+    mode: "0644"
+  notify: Pedir reinício
+
+# Continua administrador (grupo sudo), mas o sudo pede a senha.
+- name: Sudo pede senha
+  ansible.builtin.file:
+    path: /etc/sudoers.d/90-funcionarios
+    state: absent

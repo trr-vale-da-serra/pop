@@ -1,0 +1,98 @@
+---
+# Guia do servidor (infra §3): Vaultwarden e GLPI no host, dados em /srv, entrada
+# só pela rede interna, pelo Caddy (HTTPS) na 443.
+- name: Conferir o domínio e as senhas
+  ansible.builtin.assert:
+    that:
+      - cloudflare_token | default('') | length > 0
+      - glpi_banco_senha | default('') | length >= 16
+    fail_msg: >-
+      Faltam cloudflare_token ou glpi_banco_senha (16 caracteres ou mais) no
+      vault.yml do servidor. Ver README, "Ferramentas da TI".
+
+- name: Docker
+  ansible.builtin.apt:
+    name: [docker.io, docker-compose-v2, docker-buildx]
+    state: present
+
+- name: Docker ligado
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+# Dono de cada pasta = usuário dentro do contêiner (GLPI: www-data, 33; MariaDB: 999).
+- name: Pastas dos dados em /srv
+  ansible.builtin.file:
+    path: "{{ item.caminho }}"
+    state: directory
+    owner: "{{ item.dono | default('root') }}"
+    group: "{{ item.dono | default('root') }}"
+    mode: "{{ item.modo | default('0750') }}"
+  loop:
+    - { caminho: "{{ ferramentas_pasta }}" }
+    - { caminho: "{{ ferramentas_pasta }}/caddy", modo: "0755" }
+    - { caminho: /srv/caddy, modo: "0700" }
+    - { caminho: /srv/vaultwarden/data, modo: "0700" }
+    - { caminho: /srv/glpi }
+    - { caminho: /srv/glpi/var, dono: "33" }
+    - { caminho: /srv/glpi/mariadb, dono: "999" }
+
+- name: Configuração do compose
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ ferramentas_pasta }}/{{ item.dest }}"
+    mode: "{{ item.modo | default('0644') }}"
+  loop:
+    - { src: compose.yml.j2, dest: compose.yml }
+    - { src: caddy.Dockerfile.j2, dest: caddy/Dockerfile }
+    - { src: caddy.env.j2, dest: caddy.env, modo: "0600" }
+    - { src: glpi.env.j2, dest: glpi.env, modo: "0600" }
+  loop_control:
+    label: "{{ item.dest }}"
+  diff: false   # caddy.env e glpi.env têm senhas
+
+- name: Endereços no Caddy
+  ansible.builtin.template:
+    src: Caddyfile.j2
+    dest: "{{ ferramentas_pasta }}/Caddyfile"
+    mode: "0644"
+  notify: Recarregar o Caddy
+
+# O nome aponta para o IP do servidor na rede interna (de fora não abre).
+- name: Nomes no DNS da Cloudflare
+  community.general.cloudflare_dns:
+    zone: "{{ ti_dominio }}"
+    record: "{{ item }}"
+    type: A
+    value: "{{ servidor_ip }}"
+    proxied: false
+    api_token: "{{ cloudflare_token }}"
+  loop:
+    - "{{ vaultwarden_nome }}"
+    - "{{ glpi_nome }}"
+  when: servidor_ip is match('^[0-9]+(\.[0-9]+){3}$')
+
+- name: Subir as ferramentas
+  community.docker.docker_compose_v2:
+    project_src: "{{ ferramentas_pasta }}"
+    build: policy
+    state: present
+    wait: true
+    wait_timeout: 300
+
+# Só a rede interna chega na 443 (o ufw fica em negação padrão).
+- name: HTTPS liberado para a rede interna (ufw)
+  community.general.ufw:
+    rule: allow
+    port: "443"
+    proto: tcp
+    from_ip: "{{ item }}"
+    comment: ferramentas da TI (Vaultwarden e GLPI)
+  loop: "{{ redes_internas }}"
+
+- name: Endereços
+  ansible.builtin.debug:
+    msg:
+      - "Vaultwarden: https://{{ vaultwarden_endereco }}"
+      - "GLPI: https://{{ glpi_endereco }} (primeiro acesso: trocar as senhas das contas padrão glpi, tech, normal e post-only)"

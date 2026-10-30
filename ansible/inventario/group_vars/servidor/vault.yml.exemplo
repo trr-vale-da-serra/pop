@@ -3,3 +3,9 @@
 # Senha da pasta do servidor de cada funcionário (mesmo nome de usuarios_samba).
 senhas_samba: {}
   # joao.silva: TROCAR
+
+# Token da Cloudflare só com "Zone > DNS > Edit" no domínio da empresa (ti_dominio):
+# cria os nomes e prova ao Let's Encrypt que o domínio é nosso.
+cloudflare_token: ""
+# Senha do banco do GLPI (openssl rand -hex 24).
+glpi_banco_senha: ""
