@@ -17,3 +17,6 @@ glpi_porta: 47915
 
 # Fila do CUPS da Zebra ZD220 das etiquetas do GLPI (comando glpi-etiqueta).
 etiqueta_fila: Zebra-ZD220
+# Onde a etiqueta de 50 mm começa na cabeça da Zebra, em pontos (8 por mm). Medido com
+# o rolo de 50 x 25 mm: se o lado esquerdo cortar, aumentar; se sobrar espaço, diminuir.
+etiqueta_margem: 360
