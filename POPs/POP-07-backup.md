@@ -47,7 +47,7 @@ O disco de backup fica desmontado fora da hora do backup e **não tem criptograf
 
 3. **Arquivo da nuvem:** escolher uma pasta e restaurar a versão de 7 dias atrás de um snapshot para uma pasta temporária. Abrir alguns arquivos e confirmar que estão bons. Apagar a pasta temporária.
    ```bash
-   ls /dados/nextcloud/.zfs/snapshot/
+   ls /dados/departamentos/.zfs/snapshot/
    ```
 4. **Banco:** restaurar o dump mais recente de um banco diferente a cada mês num banco descartável e conferir que as tabelas têm dados. O CheckVale tem teste próprio (`deploy/backup/restore-test.sh` no repositório dele).
 5. **A cada 3 meses:** ligar a cópia da VM do disco de backup numa máquina de teste, **sem rede**, e conferir que os sistemas sobem. Nunca ligar a cópia com rede: os celulares sincronizariam com ela.

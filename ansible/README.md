@@ -19,7 +19,7 @@ Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no
 | `base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, sistema com o disco inteiro, fuso horário, chave SSH da TI, atualizações e `unattended-upgrades` (diário, sem reinício automático) |
 | `funcionarios` | Conta dos funcionários (`usuario`, com administrador, sem senha e login automático, POP-TI §3.1). O pendrive já cria; o playbook cria nos PCs instalados antes ou à mão |
 | `desktop` | Dash to Panel e ArcMenu (baixados do `extensions.gnome.org`, na versão do GNOME do PC, porque o Ubuntu 26.04 não tem pacote) ligados para todos os usuários (dconf), dock do Ubuntu desligado. **Nenhum aviso na tela** do funcionário ("Não perturbe" travado; ficam no menu do relógio), sem avisos de atualização, firmware/driver e erro, snaps atualizam à noite |
-| `apps` | LibreOffice em português, leitor de PDF, cliente da nuvem da empresa (Nextcloud) Bitwarden (cofre de senhas) e Firefox com o bloqueador de anúncios uBlock Origin e a extensão do Bitwarden (instalados à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
+| `apps` | LibreOffice em português, leitor de PDF, Bitwarden (cofre de senhas) e Firefox com o bloqueador de anúncios uBlock Origin e a extensão do Bitwarden (instalados à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
 | `clamav` | ClamAV com alertas no syslog (para o Wazuh) e varredura semanal da `/home` |
 | `agentes` | MeshCentral, GLPI Agent, Wazuh e AnyDesk (só com `anydesk: true` no host) |
 
