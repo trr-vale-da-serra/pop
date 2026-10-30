@@ -8,12 +8,15 @@
 #   ansible-playbook playbooks/servidor.yml -K --ask-vault-pass -e preparar_discos=true
 # Depois, sem o preparar_discos:
 #   ansible-playbook playbooks/servidor.yml -K --ask-vault-pass
+# Só uma parte (ex.: as ferramentas da TI antes de os discos chegarem):
+#   ansible-playbook playbooks/servidor.yml -K --ask-vault-pass --tags ferramentas_ti
 - name: Servidor (discos, pastas, WhatsApp, Vaultwarden e GLPI, backup)
   hosts: servidor
   roles:
-    - servidor_discos
-    - arquivos
-    - whatsapp
+    - { role: servidor_discos, tags: servidor_discos }
+    - { role: arquivos, tags: arquivos }
+    - { role: whatsapp, tags: whatsapp }
     - role: ferramentas_ti        # só depois de preencher ti_dominio
       when: ti_dominio | length > 0
-    - servidor_backup
+      tags: ferramentas_ti
+    - { role: servidor_backup, tags: servidor_backup }

@@ -33,7 +33,7 @@ snapshots_mes: 6
 # Domínio da empresa com o DNS na Cloudflare. Os nomes apontam para o IP interno
 # do servidor (de fora não abrem) e o certificado vem do Let's Encrypt pelo DNS.
 # Token da Cloudflare e senha do banco do GLPI: no vault.yml.
-ti_dominio: ""                     # ex.: trrvaledaserra.com.br
+ti_dominio: vsautonomus.com.br     # o DNS do trrvaledaserra.com.br fica na ittek, não na Cloudflare
 vaultwarden_nome: cofre
 glpi_nome: glpi
 vaultwarden_endereco: "{{ vaultwarden_nome }}.{{ ti_dominio }}"
@@ -45,7 +45,7 @@ vaultwarden_cadastro_aberto: false
 
 # --- Nuvem da empresa (pastas compartilhadas, Samba) ---
 # IP do servidor na rede da empresa: \\<IP>\<pasta> no Windows, smb://<IP>/<pasta> no Ubuntu.
-nuvem_endereco: TROCAR-IP-DO-SERVIDOR
+nuvem_endereco: 192.168.170.171   # TRR-PC-0003, reservar no DHCP do firewall
 # Redes que podem abrir as pastas e mandar o WhatsApp (o resto é recusado).
 redes_internas:
   - 10.10.10.0/24      # PCs
