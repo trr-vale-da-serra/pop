@@ -59,9 +59,9 @@ def limpar(texto):
 
 
 def zpl(item, copias):
-    # 400 x 200 pontos. QR (modelo 2, aumento 4, correção L) à esquerda, texto à direita.
+    # 400 x 200 pontos, etiqueta com espaço entre uma e outra (^MNY), térmica direta (^MTD). QR (modelo 2, aumento 4, correção L) à esquerda, texto à direita.
     linhas = [
-        "^XA^CI28^PW400^LL200^LH0,0",
+        "^XA^CI28^MNY^MTD^PW400^LL200^LH0,0",
         f"^FO16,24^BQN,2,4^FDLA,{item['url']}^FS",
         f"^FO170,40^A0N,34,30^FB222,2,4,L^FD{limpar(item['nome'])}^FS",
     ]
@@ -83,7 +83,7 @@ def main():
     a = p.parse_args()
 
     if a.calibrar:
-        itens, dados = [], "~JC\n"
+        itens, dados = [], "^XA^MNY^MTD^PW400^LL200^JUS^XZ\n~JC\n"  # grava o modo e mede o rolo
     elif a.teste:
         itens = [{"nome": "TRR-PC-0000", "patrimonio": "0000", "url": f"{GLPI}/front/computer.form.php?id=0"}]
     else:
