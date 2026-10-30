@@ -1,0 +1,6 @@
+# Gerado pelo Ansible (role ferramentas_ti). Caddy com o módulo de DNS da Cloudflare.
+FROM caddy:{{ caddy_versao }}-builder AS build
+RUN xcaddy build --with github.com/caddy-dns/cloudflare
+
+FROM caddy:{{ caddy_versao }}
+COPY --from=build /usr/bin/caddy /usr/bin/caddy

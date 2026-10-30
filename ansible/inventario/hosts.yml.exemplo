@@ -14,5 +14,11 @@ all:
       hosts: {}   # mesmo formato do linux (o ./pc-novo.sh põe no grupo certo)
     servidor:
       hosts: {}   # o servidor (POP-TI §5.2), playbooks/servidor.yml
-        # servidor:
-        #   ansible_host: 10.10.10.10
+        # O servidor também é o PC da TI: fica no grupo linux e aqui.
+        # No grupo linux:
+        #   TRR-PC-0003:
+        #     ansible_host: 10.10.10.10
+        #     ansible_connection: local   # o Ansible roda nele mesmo
+        #     pc_da_ti: true              # conta usuario com senha, sem login automático
+        # E aqui:
+        #   TRR-PC-0003:

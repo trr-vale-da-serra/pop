@@ -120,6 +120,7 @@
       no-show-notifications=true
       show-apport-crashes=false
     mode: "0644"
+  when: not pc_da_ti | bool
   notify: Atualizar dconf
 
 - name: Pasta de travas do dconf
@@ -141,6 +142,18 @@
       /com/ubuntu/update-notifier/no-show-notifications
       /com/ubuntu/update-notifier/show-apport-crashes
     mode: "0644"
+  when: not pc_da_ti | bool
+  notify: Atualizar dconf
+
+# No PC da TI os avisos continuam (a TI precisa deles).
+- name: Avisos na tela do PC da TI
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/dconf/db/local.d/01-ti-avisos
+    - /etc/dconf/db/local.d/locks/01-ti-avisos
+  when: pc_da_ti | bool
   notify: Atualizar dconf
 
 # Janela "o Ubuntu encontrou um erro interno".

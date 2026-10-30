@@ -3,14 +3,17 @@
 #   Discos 1 e 2: espelho ZFS em /dados (pastas dos funcionários e departamentos, WhatsApp).
 #   Disco 3: só backup (bancos toda noite e a VM toda semana), montado em /backup só
 #   durante o backup.
+#   Vaultwarden e GLPI em /srv, com HTTPS pelo Caddy (role ferramentas_ti).
 # Primeira vez (APAGA os 3 discos, conferir os IDs em group_vars/servidor/main.yml):
 #   ansible-playbook playbooks/servidor.yml -K --ask-vault-pass -e preparar_discos=true
 # Depois, sem o preparar_discos:
 #   ansible-playbook playbooks/servidor.yml -K --ask-vault-pass
-- name: Servidor (discos, pastas, WhatsApp e backup)
+- name: Servidor (discos, pastas, WhatsApp, Vaultwarden e GLPI, backup)
   hosts: servidor
   roles:
     - servidor_discos
     - arquivos
     - whatsapp
+    - role: ferramentas_ti        # só depois de preencher ti_dominio
+      when: ti_dominio | length > 0
     - servidor_backup

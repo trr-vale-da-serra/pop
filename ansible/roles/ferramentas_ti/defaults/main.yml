@@ -1,0 +1,16 @@
+---
+# Ferramentas da TI no servidor (guia do servidor, infra §3): Vaultwarden e GLPI em
+# contêineres, dados em /srv, Caddy na frente com HTTPS do Let's Encrypt.
+ferramentas_pasta: /srv/ferramentas-ti
+
+# Versões fixas: trocar aqui, testar e rodar o servidor.yml de novo. O Caddy é
+# montado no próprio servidor: depois de trocar caddy_versao, rodar uma vez
+# docker compose -f /srv/ferramentas-ti/compose.yml build caddy.
+vaultwarden_imagem: vaultwarden/server:1.37.4
+glpi_imagem: glpi/glpi:12.0.1
+mariadb_imagem: mariadb:11.4
+caddy_versao: 2.11.7
+
+# Portas internas (só 127.0.0.1; a rede chega pelo Caddy, na 443).
+vaultwarden_porta: 47914
+glpi_porta: 47915

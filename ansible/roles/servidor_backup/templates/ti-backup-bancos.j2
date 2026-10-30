@@ -1,6 +1,7 @@
 #!/bin/bash
 # Gerado pelo Ansible (role servidor_backup). Não editar aqui: mudar no repositório pop.
-# Dump de cada banco para /backup/bancos/<banco>/<data>, sem criptografia.
+# Dump de cada banco para /backup/bancos/<banco>/<data>, sem criptografia, e cópia
+# das pastas de backup_pastas (.tar.gz) no mesmo lugar.
 # Guarda os {{ backup_bancos_guarda }} mais novos de cada banco. Resultado no syslog (tag ti-backup).
 set -uo pipefail
 
@@ -38,6 +39,10 @@ salvar() {
 {%   if b.tipo == 'postgres' %}
 {%     set cmd = 'docker compose -f ' ~ b.compose ~ ' exec -T ' ~ b.servico ~ ' pg_dump -Fc -U ' ~ b.usuario ~ ' ' ~ b.banco %}
 {%     set ext = 'dump' %}
+{%   elif b.tipo == 'mariadb' %}
+{%     set dump = 'mariadb-dump --single-transaction -u"$MARIADB_USER" -p"$MARIADB_PASSWORD" "$MARIADB_DATABASE"' %}
+{%     set cmd = 'docker compose -f ' ~ b.compose ~ ' exec -T ' ~ b.servico ~ ' sh -c ' ~ (dump | quote) %}
+{%     set ext = 'sql.gz' %}
 {%   else %}
 {%     set cmd = 'sqlite3 -readonly ' ~ b.arquivo ~ ' .dump' %}
 {%     set ext = 'sql.gz' %}
@@ -49,6 +54,11 @@ salvar() {
 {%     set cmd = cmd ~ ' | gzip' %}
 {%   endif %}
 salvar {{ b.nome | quote }} {{ ext }} {{ cmd | quote }}
+{% endfor %}
+
+# Pastas com chaves e anexos (sem elas o banco sozinho não basta).
+{% for p in backup_pastas | default([]) %}
+salvar {{ p.nome | quote }} tar.gz {{ ('tar -C ' ~ (p.caminho | quote) ~ ' -czf - .') | quote }}
 {% endfor %}
 
 if [ "$falhas" -eq 0 ]; then

@@ -143,6 +143,7 @@ O servidor é o PC Ubuntu ligado 24h descrito no guia do servidor (host + VM `pr
 | `servidor_discos` | Confere os 3 discos, tira a economia de energia do USB, liga o aviso de saúde dos discos (smartd, no syslog), cria o espelho e as pastas (`usuarios`, `departamentos`, `whatsapp`, `emails-ex-funcionarios`, `apps-empresa`), os snapshots (sanoid) e formata o disco 3 |
 | `arquivos` | **Nuvem da empresa** (Samba): uma conta e uma pasta pessoal por funcionário, com cota, e uma pasta por departamento. "Versões anteriores" do Windows mostra os snapshots |
 | `whatsapp` | **Syncthing**: recebe a pasta do WhatsApp de cada celular em `/dados/whatsapp/<aparelho>`. Painel em `http://<IP>:47921` |
+| `ferramentas_ti` | **Vaultwarden** (cofre de senhas) e **GLPI** (chamados e inventário) em contêineres, dados em `/srv`, com HTTPS pelo Caddy na 443, só para a rede interna. Ver "Ferramentas da TI" abaixo |
 | `servidor_backup` | `ti-backup-bancos` (todo dia às 02:00) e `ti-backup-vm` (domingo à 01:30, desliga a VM por alguns minutos). Avisa o monitoramento (Uptime Kuma, monitor "Push") quando termina bem |
 
 **Primeira vez:**
@@ -179,6 +180,48 @@ O servidor é o PC Ubuntu ligado 24h descrito no guia do servidor (host + VM `pr
 - Ubuntu: *Arquivos* → *Outros locais* → `smb://<IP>/<nome.sobrenome>`, usuário e senha da pessoa, *Lembrar para sempre*. Depois *Adicionar aos favoritos* (barra lateral). Repetir para a pasta do departamento.
 
 **Disco com defeito:** `zpool status dados` mostra qual. Trocar o disco na gaveta e rodar `sudo zpool replace dados <ID antigo> <ID novo>`. O espelho se refaz sozinho, e o servidor continua no ar durante a troca.
+
+### O servidor é também o PC da TI
+
+O servidor (TRR-PC-0003) é a estação de trabalho da TI e o lugar de onde o Ansible roda. No inventário ele fica nos grupos `linux` e `servidor`, com `pc_da_ti: true` e `ansible_connection: local` (modelo em `inventario/hosts.yml.exemplo`). Com o `pc_da_ti`, o `linux-padrao.yml`:
+- **mantém a conta `usuario` e tudo o que tem nela**, mas ela passa a pedir senha para entrar e para o `sudo`, e sem login automático. Antes, criar a senha: `sudo passwd usuario` (o playbook para e avisa se ela não tiver senha);
+- deixa os avisos na tela (a TI precisa deles);
+- reinicia sozinho às 04:00 quando uma atualização de segurança pede.
+
+Ansible no próprio servidor (sem WSL):
+```bash
+sudo apt install -y ansible sshpass git python3-winrm
+```
+
+### Ferramentas da TI (Vaultwarden e GLPI)
+
+Rodam no servidor em contêineres (`/srv/ferramentas-ti`), com os dados em `/srv/vaultwarden` e `/srv/glpi`. Entram pela rede interna em `https://cofre.<domínio>` e `https://glpi.<domínio>`. O certificado é do Let's Encrypt, validado pelo DNS da Cloudflare: nenhum PC ou celular precisa instalar certificado, e os nomes apontam para o IP interno do servidor (de fora não abrem).
+
+**Primeira vez:**
+
+1. **Token da Cloudflare** (o domínio da empresa precisa estar na Cloudflare): *My Profile → API Tokens → Create Token → Edit zone DNS*, só no domínio da empresa. Guardar no Vaultwarden.
+2. Em `inventario/group_vars/servidor/main.yml`: `ti_dominio` e `nuvem_endereco` (IP do servidor, **fixo no firewall**: os nomes apontam para ele).
+3. No `vault.yml` do servidor: `cloudflare_token` e `glpi_banco_senha` (`openssl rand -hex 24`).
+4. **Trazer o Vaultwarden antigo** (WSL do PC antigo, pasta `~/vaultwarden`), antes do primeiro `servidor.yml`:
+   - No PC antigo (WSL), parar e copiar os dados para o pendrive (`D:`):
+     ```bash
+     cd ~/vaultwarden && docker compose down && sudo mkdir -p /mnt/d && sudo mount -t drvfs D: /mnt/d && sudo tar czf /mnt/d/vaultwarden-data.tgz -C ~/vaultwarden data && sudo umount /mnt/d
+     ```
+   - No servidor:
+     ```bash
+     sudo mkdir -p /srv/vaultwarden && sudo tar xzf /media/$USER/PENDRIVE/vaultwarden-data.tgz -C /srv/vaultwarden
+     ```
+   - **Apagar o `vaultwarden-data.tgz` do pendrive** (é o cofre inteiro). A pasta antiga fica parada no PC antigo até tudo ser conferido.
+5. Rodar:
+   ```bash
+   ansible-playbook playbooks/servidor.yml -K --ask-vault-pass
+   ```
+6. **Vaultwarden:** em cada app e extensão do Bitwarden, sair da conta e trocar o servidor para `https://cofre.<domínio>` (só o campo "Server URL"). As senhas são as mesmas. O certificado antigo (`vaultwarden-ca.crt`) não é mais usado e pode sair dos aparelhos.
+7. **GLPI:** abrir `https://glpi.<domínio>`, entrar com `glpi` / `glpi` e **trocar na hora as senhas das quatro contas padrão** (`glpi`, `tech`, `normal`, `post-only`), ou desativar as que não forem usadas. Em *Configurar → Geral*, "URL da aplicação" = `https://glpi.<domínio>`. Depois, preencher `glpi_url` em `group_vars/all/main.yml` para os PCs ganharem o GLPI Agent.
+
+**Backup:** o `ti-backup-bancos` leva toda noite o banco do Vaultwarden (SQLite), o do GLPI (MariaDB) e as pastas dos dois (`backup_pastas`): as chaves do Vaultwarden e a `glpicrypt.key` do GLPI, sem as quais o banco sozinho não basta. **Falta a cópia criptografada do Vaultwarden fora da máquina** (guia do servidor, infra §4).
+
+**Versão nova:** trocar a imagem em `roles/ferramentas_ti/defaults/main.yml` e rodar o `servidor.yml`. Antes, conferir que o backup da noite terminou bem.
 
 ## Atualização mensal (POP-06)
 

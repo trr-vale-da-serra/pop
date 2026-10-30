@@ -1,0 +1,19 @@
+# Gerado pelo Ansible (role ferramentas_ti). Não editar aqui: mudar no repositório pop.
+# Certificado do Let's Encrypt validado pelo DNS da Cloudflare: funciona com o
+# servidor só na rede interna, e nenhum aparelho precisa instalar certificado.
+{
+	admin off
+	auto_https disable_redirects
+{% if ti_email | length > 0 %}
+	email {{ ti_email }}
+{% endif %}
+	acme_dns cloudflare {env.CF_API_TOKEN}
+}
+
+{{ vaultwarden_endereco }} {
+	reverse_proxy 127.0.0.1:{{ vaultwarden_porta }}
+}
+
+{{ glpi_endereco }} {
+	reverse_proxy 127.0.0.1:{{ glpi_porta }}
+}
