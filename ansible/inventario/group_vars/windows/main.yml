@@ -15,6 +15,7 @@ windows_choco:
   - name: firefox
     params: /l:pt-BR
   - name: libreoffice-still
+  - name: bitwarden          # cofre de senhas (app)
 
 # Agentes (servidores em group_vars/all). Versões vazias = agente pulado.
 wazuh_grupo: windows

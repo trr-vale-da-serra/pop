@@ -7,4 +7,8 @@ apps_apt:
   - hunspell-pt-br
   - evince            # leitor de PDF
 
-# firefox_politicas (uBlock Origin): em inventario/group_vars/all.
+apps_snap:
+  - firefox
+  - bitwarden         # cofre de senhas (app)
+
+# firefox_politicas (uBlock Origin e Bitwarden): em inventario/group_vars/all.

@@ -55,7 +55,8 @@ Tudo o que o roteiro de configuração padrão (POP-04) instala em todo PC Linux
 
 | Programa | Para quê | Observação |
 |---|---|---|
-| **Firefox** | Navegador | Com o bloqueador de anúncios **uBlock Origin**, instalado à força: o funcionário não consegue remover |
+| **Firefox** | Navegador | Com o bloqueador de anúncios **uBlock Origin** e a extensão do **Bitwarden**, instalados à força: o funcionário não consegue remover |
+| **Bitwarden** | Cofre de senhas (app) | Entra no Vaultwarden da empresa: no primeiro acesso, trocar o servidor para o endereço do Vaultwarden |
 | **LibreOffice** | Documentos, planilhas e apresentações. Abre arquivos do Word, Excel e PowerPoint | Em português, com corretor ortográfico |
 | **Visualizador de documentos** (Evince) | Abrir PDF | |
 | **Dash to Panel** e **ArcMenu** | Barra de tarefas embaixo e menu Iniciar, parecido com o Windows | Extensões do GNOME (§2) |
@@ -81,7 +82,8 @@ Tudo o que o roteiro de configuração padrão (POP-05) instala em todo PC Windo
 
 | Programa | Para quê | Observação |
 |---|---|---|
-| **Firefox** | Navegador | Com o **uBlock Origin**, instalado à força |
+| **Firefox** | Navegador | Com o **uBlock Origin** e a extensão do **Bitwarden**, instalados à força |
+| **Bitwarden** | Cofre de senhas (app) | Entra no Vaultwarden da empresa: no primeiro acesso, trocar o servidor para o endereço do Vaultwarden |
 | **Edge** | Navegador (vem com o Windows) e abrir PDF | Com o **uBlock Origin Lite**, instalado à força. No Chrome, se alguém instalar, também |
 | **LibreOffice** | Documentos, planilhas e apresentações | |
 
