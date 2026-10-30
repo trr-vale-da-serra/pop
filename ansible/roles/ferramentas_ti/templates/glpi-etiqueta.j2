@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Gerado pelo Ansible (role ferramentas_ti). Não editar aqui: mudar no repositório pop.
-# Etiqueta de patrimônio na Zebra ZD220 (50 x 25 mm, 203 dpi): QR que abre o item no
+# Etiqueta de patrimônio na Zebra ZD220 (50 x 30 mm, 203 dpi): QR que abre o item no
 # GLPI, nome e patrimônio. Lê o banco do GLPI direto (só leitura), por isso roda com sudo.
 #   sudo glpi-etiqueta TRR-PC-0012 TRR-MON-0003   pelo nome ou pelo patrimônio
 #   sudo glpi-etiqueta --todos --tipo computer    todos os computadores
@@ -61,14 +61,14 @@ def limpar(texto):
 
 
 def zpl(item, copias):
-    # 400 x 200 pontos, etiqueta com espaço entre uma e outra (^MNY), térmica direta (^MTD). QR (modelo 2, aumento 4, correção L) à esquerda, texto à direita.
+    # 400 x 240 pontos, etiqueta com espaço entre uma e outra (^MNY), térmica direta (^MTD). QR (modelo 2, aumento 5, correção L) à esquerda, texto à direita.
     linhas = [
-        f"^XA^CI28^MNY^MTD^PW832^LL200^LH{MARGEM},0",
-        f"^FO16,24^BQN,2,4^FDLA,{item['url']}^FS",
-        f"^FO170,40^A0N,34,30^FB222,2,4,L^FD{limpar(item['nome'])}^FS",
+        f"^XA^CI28^MNY^MTD^PW832^LL240^LH{MARGEM},0",
+        f"^FO14,22^BQN,2,5^FDLA,{item['url']}^FS",
+        f"^FO192,50^A0N,30,26^FB200,2,4,L^FD{limpar(item['nome'])}^FS",
     ]
     if item["patrimonio"]:
-        linhas.append(f"^FO170,128^A0N,26,24^FB222,1,0,L^FDPat. {limpar(item['patrimonio'])}^FS")
+        linhas.append(f"^FO192,150^A0N,26,24^FB200,1,0,L^FDPat. {limpar(item['patrimonio'])}^FS")
     linhas.append(f"^PQ{copias}^XZ")
     return "\n".join(linhas) + "\n"
 
@@ -85,7 +85,7 @@ def main():
     a = p.parse_args()
 
     if a.calibrar:
-        itens, dados = [], "^XA^MNY^MTD^PW832^LL200^JUS^XZ\n~JC\n"  # grava o modo e mede o rolo
+        itens, dados = [], "^XA^MNY^MTD^PW832^LL240^JUS^XZ\n~JC\n"  # grava o modo e mede o rolo
     elif a.teste:
         itens = [{"nome": "TRR-PC-0000", "patrimonio": "0000", "url": f"{GLPI}/front/computer.form.php?id=0"}]
     else:

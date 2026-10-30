@@ -224,7 +224,7 @@ Rodam no servidor em contêineres (`/srv/ferramentas-ti`), com os dados em `/srv
 
 **Versão nova:** trocar a imagem em `roles/ferramentas_ti/defaults/main.yml` e rodar o `servidor.yml`. Antes, conferir que o backup da noite terminou bem.
 
-**Etiquetas de patrimônio (Zebra ZD220):** a Zebra fica no USB do servidor, com rolo de **50 x 25 mm**. Cada etiqueta tem um QR que abre o item no GLPI (pelo celular, já logado), o nome e o patrimônio (campo "Número de inventário" do GLPI). Primeira vez: ligar a Zebra e rodar `ansible-playbook playbooks/servidor.yml -K --ask-vault-pass --tags ferramentas_ti`, que instala o comando `glpi-etiqueta` e cria a fila `Zebra-ZD220` no CUPS. Depois de cadastrar o item no GLPI:
+**Etiquetas de patrimônio (Zebra ZD220):** a Zebra fica no USB do servidor, com rolo de **50 x 30 mm** (térmica direta, sem fita). Cada etiqueta tem um QR que abre o item no GLPI (pelo celular, já logado), o nome e o patrimônio (campo "Número de inventário" do GLPI). Primeira vez: ligar a Zebra e rodar `ansible-playbook playbooks/servidor.yml -K --ask-vault-pass --tags ferramentas_ti`, que instala o comando `glpi-etiqueta` e cria a fila `Zebra-ZD220` no CUPS. Depois de cadastrar o item no GLPI:
 
 ```bash
 sudo glpi-etiqueta TRR-PC-0012                 # pelo nome ou pelo patrimônio (vários de uma vez)
