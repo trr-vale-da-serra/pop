@@ -18,7 +18,7 @@ Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no
 |---|---|
 | `base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, sistema com o disco inteiro, fuso horário, chave SSH da TI, atualizações e `unattended-upgrades` (diário, sem reinício automático) |
 | `funcionarios` | Conta dos funcionários (`usuario`, com administrador, sem senha e login automático, POP-TI §3.1). O pendrive já cria; o playbook cria nos PCs instalados antes ou à mão |
-| `desktop` | Dash to Panel e ArcMenu (baixados do `extensions.gnome.org`, na versão do GNOME do PC, porque o Ubuntu 26.04 não tem pacote) ligados para todos os usuários (dconf), dock do Ubuntu desligado |
+| `desktop` | Dash to Panel e ArcMenu (baixados do `extensions.gnome.org`, na versão do GNOME do PC, porque o Ubuntu 26.04 não tem pacote) ligados para todos os usuários (dconf), dock do Ubuntu desligado. Sem avisos de atualização, firmware/driver e erro para o funcionário (travados), snaps atualizam à noite |
 | `apps` | LibreOffice em português, leitor de PDF, cliente da nuvem da empresa (Nextcloud) Bitwarden (cofre de senhas) e Firefox com o bloqueador de anúncios uBlock Origin e a extensão do Bitwarden (instalados à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
 | `clamav` | ClamAV com alertas no syslog (para o Wazuh) e varredura semanal da `/home` |
 | `agentes` | MeshCentral, GLPI Agent, Wazuh e AnyDesk (só com `anydesk: true` no host) |
@@ -27,7 +27,7 @@ Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no
 
 | Role | O quê |
 |---|---|
-| `windows_base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso de Brasília, Windows Update sem reinício no horário de trabalho (7h às 19h) nem com alguém usando o PC, atualizações do Windows e confere que o **Microsoft Defender** está ligado |
+| `windows_base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso de Brasília, Windows Update sem avisos para o funcionário e sem reinício no horário de trabalho (7h às 19h) nem com alguém usando o PC, atualizações do Windows e confere que o **Microsoft Defender** está ligado |
 | `windows_funcionarios` | Conta dos funcionários (`usuario`, com administrador e sem senha, POP-TI §3.1). O pendrive já cria; o playbook confere e cria nos PCs instalados à mão |
 | `windows_apps` | Firefox, LibreOffice e Bitwarden pelo **Chocolatey** (lista em `windows_choco`, `inventario/group_vars/windows/main.yml`). uBlock Origin e Bitwarden à força no Firefox e **uBlock Origin Lite** à força no Edge e no Chrome (os dois não aceitam mais o uBlock Origin completo). PDF: o Edge abre |
 | `windows_agentes` | MeshCentral, GLPI Agent, Wazuh e AnyDesk (só com `anydesk: true` no host) |

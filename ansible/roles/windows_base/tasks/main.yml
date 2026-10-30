@@ -22,6 +22,18 @@
     data: 1
     type: dword
 
+# Avisos do Windows Update (drivers, atualizações) não aparecem para o
+# funcionário. Os avisos de reinício continuam. Política: no Home pode não valer.
+- name: Sem avisos de atualização para o funcionário
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+    name: "{{ item }}"
+    data: 1
+    type: dword
+  loop:
+    - SetUpdateNotificationLevel
+    - UpdateNotificationLevel
+
 - name: Horário de trabalho (o Windows Update não reinicia nesse intervalo)
   ansible.windows.win_regedit:
     path: HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings
