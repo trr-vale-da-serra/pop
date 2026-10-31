@@ -27,7 +27,7 @@ Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no
 
 | Role | O quê |
 |---|---|
-| `windows_base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso de Brasília, **nenhum aviso na tela** (desliga de novo a cada entrada no Windows), Windows Update sem reinício no horário de trabalho (7h às 19h) nem com alguém usando o PC, atualizações do Windows e confere que o **Microsoft Defender** está ligado |
+| `windows_base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso de Brasília, barra de tarefas sem Pesquisa, Visão de tarefas e Widgets, **nenhum aviso na tela** (desliga de novo a cada entrada no Windows), Windows Update sem reinício no horário de trabalho (7h às 19h) nem com alguém usando o PC, atualizações do Windows e confere que o **Microsoft Defender** está ligado |
 | `windows_funcionarios` | Conta dos funcionários (`usuario`, com administrador e sem senha, POP-TI §3.1). O pendrive já cria; o playbook confere e cria nos PCs instalados à mão |
 | `windows_apps` | Firefox, LibreOffice e Bitwarden pelo **Chocolatey** (lista em `windows_choco`, `inventario/group_vars/windows/main.yml`). uBlock Origin e Bitwarden à força no Firefox e **uBlock Origin Lite** à força no Edge e no Chrome (os dois não aceitam mais o uBlock Origin completo). PDF: o Edge abre |
 | `windows_agentes` | MeshCentral, GLPI Agent e AnyDesk (em todo Windows; `anydesk: false` no host para pular) |
