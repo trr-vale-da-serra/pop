@@ -233,6 +233,8 @@ sudo glpi-etiqueta --teste                     # etiqueta de teste, sem o GLPI
 sudo glpi-etiqueta --calibrar                  # rolo novo, ou etiqueta saindo torta ou pulando
 ```
 
+Job enviado e nada sai: a Zebra está **pausada** (luz piscando ou âmbar), o que acontece depois de ligar com o botão apertado. Apertar o botão uma vez. Rolo com o lado errado para cima também sai em branco: o lado que escurece com a unha vai para cima, virado para a cabeça.
+
 ## Atualização mensal (POP-06)
 
 ```bash
