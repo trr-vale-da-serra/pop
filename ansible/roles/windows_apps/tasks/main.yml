@@ -38,3 +38,57 @@
       extensao: ddkjiahejlhfcafbddmgiahcphecmpfh;https://clients2.google.com/service/update2/crx
   loop_control:
     label: "{{ item.navegador }}"
+
+# Barra de tarefas e área de trabalho só com o Explorador de Arquivos e o Firefox
+# (decisão da TI, 31/10/2026). Os programas continuam no menu Iniciar.
+- name: Pasta da TI
+  ansible.windows.win_file:
+    path: C:\ProgramData\TI
+    state: directory
+
+- name: Arquivos da barra de tarefas e da área de trabalho
+  ansible.windows.win_copy:
+    src: "{{ item }}"
+    dest: C:\ProgramData\TI\{{ item }}
+  loop:
+    - barra-de-tarefas.xml
+    - area-de-trabalho.ps1
+
+# Vale para todas as contas e volta a cada entrada, mesmo se alguém fixar outro programa.
+- name: Barra de tarefas fixa (política de layout)
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer
+    name: "{{ item.nome }}"
+    data: "{{ item.valor }}"
+    type: "{{ item.tipo }}"
+  loop:
+    - { nome: StartLayoutFile, valor: 'C:\ProgramData\TI\barra-de-tarefas.xml', tipo: expandstring }
+    - { nome: LockedStartLayout, valor: 1, tipo: dword }
+  loop_control:
+    label: "{{ item.nome }}"
+
+- name: Arrumar a área de trabalho a cada entrada, em todas as contas
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+    name: TI-AreaDeTrabalho
+    data: powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File C:\ProgramData\TI\area-de-trabalho.ps1
+    type: string
+
+# Atalhos de todas as contas (instaladores do Chocolatey), menos o do Firefox.
+- name: Área de trabalho pública só com o Firefox
+  ansible.windows.win_powershell:
+    script: |
+      $velhos = Get-ChildItem -Path "$env:PUBLIC\Desktop" -File -Force |
+        Where-Object { $_.Extension -in '.lnk', '.url' -and $_.BaseName -notlike 'Firefox*' }
+      $velhos | Remove-Item -Force
+      $Ansible.Changed = [bool]$velhos
+
+- name: Edge sem atalho na área de trabalho nas atualizações
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate
+    name: "{{ item }}"
+    data: 0
+    type: dword
+  loop:
+    - CreateDesktopShortcutDefault
+    - CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}
