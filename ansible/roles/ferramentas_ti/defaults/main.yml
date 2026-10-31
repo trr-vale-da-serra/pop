@@ -19,6 +19,10 @@ vaultwarden_porta: 47914
 glpi_porta: 47915
 # MeshCentral: só neste PC, para criar a primeira conta antes de ligar o túnel.
 meshcentral_porta: 47916
+# true = túnel da Cloudflare ligado (MeshCentral aberto na internet). Ligar só depois
+# de criar a conta da TI, com 2FA, em http://localhost:<meshcentral_porta>.
+meshcentral_publicar: false
+tunel_nome: servidor-ti
 
 # Fila do CUPS da Zebra ZD220 das etiquetas do GLPI (comando glpi-etiqueta).
 etiqueta_fila: Zebra-ZD220

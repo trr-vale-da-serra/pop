@@ -54,7 +54,7 @@ services:
 {% if cloudflare_tunel_token | default('') | length > 0 %}
 
   # Túnel da Cloudflare: só conexão de saída. O endereço público
-  # ({{ meshcentral_endereco }} -> http://meshcentral:4430) fica no painel Zero Trust.
+  # ({{ meshcentral_endereco }} -> http://meshcentral:4430) é criado pela role (tunel.yml).
   cloudflared:
     image: {{ cloudflared_imagem }}
     restart: unless-stopped

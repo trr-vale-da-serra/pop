@@ -4,11 +4,9 @@
 senhas_samba: {}
   # joao.silva: TROCAR
 
-# Token da Cloudflare só com "Zone > DNS > Edit" no domínio da empresa (ti_dominio):
-# cria os nomes e prova ao Let's Encrypt que o domínio é nosso.
+# Token da Cloudflare com "Zone > DNS > Edit" no domínio da empresa (ti_dominio) e
+# "Account > Cloudflare Tunnel > Edit": cria os nomes, prova ao Let's Encrypt que o
+# domínio é nosso e monta o túnel do MeshCentral.
 cloudflare_token: ""
 # Senha do banco do GLPI (openssl rand -hex 24).
 glpi_banco_senha: ""
-# Token do túnel da Cloudflare (Zero Trust → Networks → Tunnels → o túnel → token).
-# Vazio = MeshCentral só neste PC. Preencher depois de criar a conta da TI nele.
-cloudflare_tunel_token: ""

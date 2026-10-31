@@ -1,0 +1,68 @@
+---
+# Túnel da Cloudflare do MeshCentral, todo pela API (o mesmo cloudflare_token do DNS,
+# com "Account > Cloudflare Tunnel > Edit" a mais). Cria o túnel se não existir, aponta
+# o endereço público para o contêiner e busca o token que o cloudflared usa.
+- name: Conta da Cloudflare do domínio
+  ansible.builtin.uri:
+    url: "https://api.cloudflare.com/client/v4/zones?name={{ ti_dominio }}"
+    headers: { Authorization: "Bearer {{ cloudflare_token }}" }
+  register: tunel_zona
+  no_log: true
+
+- name: Conferir o acesso do token
+  ansible.builtin.assert:
+    that: tunel_zona.json.result | length > 0
+    fail_msg: "O cloudflare_token não enxerga o domínio {{ ti_dominio }}."
+
+- name: Procurar o túnel
+  ansible.builtin.uri:
+    url: "https://api.cloudflare.com/client/v4/accounts/{{ tunel_conta }}/cfd_tunnel?name={{ tunel_nome }}&is_deleted=false"
+    headers: { Authorization: "Bearer {{ cloudflare_token }}" }
+  register: tunel_lista
+  no_log: true
+
+- name: Criar o túnel
+  ansible.builtin.uri:
+    url: "https://api.cloudflare.com/client/v4/accounts/{{ tunel_conta }}/cfd_tunnel"
+    method: POST
+    headers: { Authorization: "Bearer {{ cloudflare_token }}" }
+    body_format: json
+    body: { name: "{{ tunel_nome }}", config_src: cloudflare }
+  register: tunel_novo
+  when: tunel_lista.json.result | length == 0
+  no_log: true
+
+- name: Endereço público do MeshCentral no túnel
+  ansible.builtin.uri:
+    url: "https://api.cloudflare.com/client/v4/accounts/{{ tunel_conta }}/cfd_tunnel/{{ tunel_id }}/configurations"
+    method: PUT
+    headers: { Authorization: "Bearer {{ cloudflare_token }}" }
+    body_format: json
+    body:
+      config:
+        ingress:
+          - { hostname: "{{ meshcentral_endereco }}", service: "http://meshcentral:4430" }
+          - { service: "http_status:404" }
+  changed_when: false
+  no_log: true
+
+- name: Nome do MeshCentral no DNS (aponta para o túnel)
+  community.general.cloudflare_dns:
+    zone: "{{ ti_dominio }}"
+    record: "{{ meshcentral_nome }}"
+    type: CNAME
+    value: "{{ tunel_id }}.cfargotunnel.com"
+    proxied: true
+    api_token: "{{ cloudflare_token }}"
+
+- name: Token do túnel
+  ansible.builtin.uri:
+    url: "https://api.cloudflare.com/client/v4/accounts/{{ tunel_conta }}/cfd_tunnel/{{ tunel_id }}/token"
+    headers: { Authorization: "Bearer {{ cloudflare_token }}" }
+  register: tunel_token
+  no_log: true
+
+- name: Guardar o token para o cloudflared
+  ansible.builtin.set_fact:
+    cloudflare_tunel_token: "{{ tunel_token.json.result }}"
+  no_log: true

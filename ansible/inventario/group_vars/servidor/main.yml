@@ -37,6 +37,8 @@ ti_dominio: vsautonomus.com.br     # o DNS do trrvaledaserra.com.br fica na itte
 vaultwarden_nome: cofre
 glpi_nome: glpi
 meshcentral_nome: mesh
+# Túnel ligado: conta da TI (luigr) criada com 2FA em 31/10/2026.
+meshcentral_publicar: true
 vaultwarden_endereco: "{{ vaultwarden_nome }}.{{ ti_dominio }}"
 glpi_endereco: "{{ glpi_nome }}.{{ ti_dominio }}"
 meshcentral_endereco: "{{ meshcentral_nome }}.{{ ti_dominio }}"

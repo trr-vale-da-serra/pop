@@ -42,6 +42,14 @@
     - { caminho: /srv/meshcentral/files, modo: "0700" }
     - { caminho: /srv/meshcentral/backups, modo: "0700" }
 
+# Só depois de criar a conta da TI no MeshCentral (README, "Ferramentas da TI").
+- name: Túnel da Cloudflare (MeshCentral)
+  ansible.builtin.import_tasks: tunel.yml
+  when: meshcentral_publicar | bool
+  vars:
+    tunel_conta: "{{ tunel_zona.json.result[0].account.id }}"
+    tunel_id: "{{ tunel_novo.json.result.id if tunel_novo is changed else tunel_lista.json.result[0].id }}"
+
 - name: Configuração do compose
   ansible.builtin.template:
     src: "{{ item.src }}"
@@ -113,4 +121,4 @@
       - "GLPI: https://{{ glpi_endereco }} (primeiro acesso: trocar as senhas das contas padrão glpi, tech, normal e post-only)"
       - >-
         MeshCentral: {{ ('https://' ~ meshcentral_endereco) if cloudflare_tunel_token | default('') | length > 0
-        else 'http://127.0.0.1:' ~ meshcentral_porta ~ ' (só neste PC; túnel desligado até ter o cloudflare_tunel_token)' }}
+        else 'http://localhost:' ~ meshcentral_porta ~ ' (só neste PC; túnel desligado: meshcentral_publicar)' }}
