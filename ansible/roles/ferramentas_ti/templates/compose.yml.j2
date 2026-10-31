@@ -64,6 +64,27 @@ services:
       - meshcentral
 {% endif %}
 
+  # RustDesk (tela dos PCs Linux no Wayland, onde o MeshCentral não vê a tela).
+  # network_mode host para o ufw filtrar: só as redes internas chegam nas portas.
+  # A chave do servidor fica em /srv/rustdesk (id_ed25519.pub vai nos PCs).
+  rustdesk-hbbs:
+    image: {{ rustdesk_servidor_imagem }}
+    restart: unless-stopped
+    command: hbbs
+    network_mode: host
+    volumes:
+      - /srv/rustdesk:/root
+    depends_on:
+      - rustdesk-hbbr
+
+  rustdesk-hbbr:
+    image: {{ rustdesk_servidor_imagem }}
+    restart: unless-stopped
+    command: hbbr
+    network_mode: host
+    volumes:
+      - /srv/rustdesk:/root
+
   glpi-db:
     image: {{ mariadb_imagem }}
     restart: unless-stopped

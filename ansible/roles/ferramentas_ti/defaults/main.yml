@@ -1,5 +1,5 @@
 ---
-# Ferramentas da TI no servidor (guia do servidor, infra §3): Vaultwarden e GLPI em
+# Ferramentas da TI no servidor (guia do servidor, infra §3): Vaultwarden, GLPI e RustDesk em
 # contêineres, dados em /srv, Caddy na frente com HTTPS do Let's Encrypt.
 # MeshCentral: o único de fora, pelo túnel da Cloudflare (sem porta aberta no firewall).
 ferramentas_pasta: /srv/ferramentas-ti
@@ -13,6 +13,7 @@ mariadb_imagem: mariadb:11.4
 caddy_versao: 2.11.7
 meshcentral_imagem: ghcr.io/ylianst/meshcentral:1.3.1
 cloudflared_imagem: cloudflare/cloudflared:2026.10.7
+rustdesk_servidor_imagem: rustdesk/rustdesk-server:1.1.16
 
 # Portas internas (só 127.0.0.1; a rede chega pelo Caddy, na 443).
 vaultwarden_porta: 47914

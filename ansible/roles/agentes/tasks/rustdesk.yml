@@ -1,0 +1,55 @@
+---
+# RustDesk: tela dos PCs Linux no Wayland, onde o MeshCentral só tem terminal e arquivos.
+# Pacote "unattended-wayland": abre a tela sem ninguém aceitar no PC. Usa só o servidor
+# da empresa (rustdesk_servidor), com ID = nome do PC e a senha fixa do vault.
+- name: Baixar o RustDesk
+  ansible.builtin.get_url:
+    url: "https://github.com/rustdesk/rustdesk/releases/download/{{ rustdesk_versao }}/rustdesk-unattended-wayland-{{ rustdesk_versao }}-x86_64.deb"
+    dest: /var/cache/ti-rustdesk-{{ rustdesk_versao }}.deb
+    mode: "0644"
+
+- name: RustDesk
+  ansible.builtin.apt:
+    deb: /var/cache/ti-rustdesk-{{ rustdesk_versao }}.deb
+
+- name: RustDesk ligado
+  ansible.builtin.service:
+    name: rustdesk
+    state: started
+    enabled: true
+
+# O comando conversa com o serviço, que leva uns segundos para subir depois de instalado.
+- name: Servidor da empresa no RustDesk
+  ansible.builtin.shell: |
+    atual=$(rustdesk --option {{ item.chave }})
+    if [ "$atual" != "{{ item.valor }}" ]; then rustdesk --option {{ item.chave }} '{{ item.valor }}' && echo mudou; fi
+  register: rustdesk_opcao
+  changed_when: "'mudou' in rustdesk_opcao.stdout"
+  until: rustdesk_opcao.rc == 0 and 'privileges required' not in rustdesk_opcao.stdout
+  retries: 6
+  delay: 5
+  loop:
+    - { chave: custom-rendezvous-server, valor: "{{ rustdesk_servidor }}" }
+    - { chave: relay-server, valor: "{{ rustdesk_servidor }}" }
+    - { chave: key, valor: "{{ rustdesk_chave }}" }
+    # Entra com a senha fixa, sem alguém clicar em "Aceitar" no PC.
+    - { chave: verification-method, valor: use-permanent-password }
+    - { chave: approve-mode, valor: password }
+  loop_control:
+    label: "{{ item.chave }}"
+
+# O PC da TI só usa o RustDesk para entrar nos outros: sem senha fixa, ninguém entra nele.
+- name: ID do RustDesk = nome do PC
+  ansible.builtin.shell: |
+    if [ "$(rustdesk --get-id)" != "{{ inventory_hostname }}" ]; then rustdesk --set-id {{ inventory_hostname }}; echo mudou; fi
+  register: rustdesk_id
+  changed_when: "'mudou' in rustdesk_id.stdout"
+  when: not pc_da_ti | bool
+
+- name: Senha fixa do RustDesk
+  ansible.builtin.command: rustdesk --password {{ rustdesk_senha | quote }}
+  register: rustdesk_senha_definida
+  changed_when: false
+  failed_when: "'Done' not in rustdesk_senha_definida.stdout"
+  no_log: true
+  when: not pc_da_ti | bool

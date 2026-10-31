@@ -16,6 +16,12 @@ meshcentral_url: https://mesh.vsautonomus.com.br   # pelo túnel da Cloudflare (
 glpi_url: https://glpi.vsautonomus.com.br/   # ferramentas_ti no TRR-PC-0003 (glpi_endereco)
 glpi_agent_versao: "1.21"    # Linux e Windows, github.com/glpi-project/glpi-agent/releases
 
+# RustDesk: tela dos PCs Linux (o MeshCentral não vê a tela no Wayland). Servidor no
+# TRR-PC-0003 (role ferramentas_ti), só pela rede interna. A chave é a pública
+# (/srv/rustdesk/id_ed25519.pub); a senha de acesso fica no vault.yml (rustdesk_senha).
+rustdesk_servidor: 192.168.170.171
+rustdesk_chave: R4WHkvFnipuIbFrkY1hSYbHyn7FYp5LGjt04ljZorJg=
+
 # AnyDesk só nos PCs que recebem suporte de fornecedor (marcar no host).
 # Windows: em todos (group_vars/windows).
 anydesk: false

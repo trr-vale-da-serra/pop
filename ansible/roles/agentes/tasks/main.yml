@@ -1,5 +1,5 @@
 ---
-# POP-04 §4.2: MeshCentral e GLPI Agent.
+# POP-04 §4.2: MeshCentral, GLPI Agent e RustDesk.
 # Cada agente só é instalado quando o servidor dele está configurado em group_vars/linux.
 - name: MeshCentral
   ansible.builtin.include_tasks: meshcentral.yml
@@ -8,6 +8,10 @@
 - name: GLPI Agent
   ansible.builtin.include_tasks: glpi.yml
   when: glpi_url | length > 0
+
+- name: RustDesk (tela remota no Wayland)
+  ansible.builtin.include_tasks: rustdesk.yml
+  when: (rustdesk_chave | default('')) | length > 0 and (rustdesk_senha | default('')) | length > 0
 
 - name: AnyDesk (só PCs com suporte de fornecedor, POP-TI §3.2)
   ansible.builtin.include_tasks: anydesk.yml
@@ -19,5 +23,6 @@
   vars:
     pulados: >-
       {{ (['MeshCentral'] if meshcentral_url | length == 0 or (meshcentral_meshid | default('')) | length == 0 else [])
-         + (['GLPI'] if glpi_url | length == 0 else []) }}
+         + (['GLPI'] if glpi_url | length == 0 else [])
+         + (['RustDesk'] if (rustdesk_chave | default('')) | length == 0 or (rustdesk_senha | default('')) | length == 0 else []) }}
   when: pulados | length > 0

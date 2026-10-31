@@ -41,6 +41,7 @@
     - { caminho: /srv/meshcentral/data, modo: "0700" }
     - { caminho: /srv/meshcentral/files, modo: "0700" }
     - { caminho: /srv/meshcentral/backups, modo: "0700" }
+    - { caminho: /srv/rustdesk, modo: "0700" }
 
 # Só depois de criar a conta da TI no MeshCentral (README, "Ferramentas da TI").
 - name: Túnel da Cloudflare (MeshCentral)
@@ -110,6 +111,30 @@
     from_ip: "{{ item }}"
     comment: ferramentas da TI (Vaultwarden e GLPI)
   loop: "{{ redes_internas }}"
+
+# RustDesk: 21115 a 21117 TCP e 21116 UDP, só das redes internas.
+- name: RustDesk liberado para a rede interna (ufw)
+  community.general.ufw:
+    rule: allow
+    port: "{{ item.0.porta }}"
+    proto: "{{ item.0.proto }}"
+    from_ip: "{{ item.1 }}"
+    comment: RustDesk (servidor)
+  loop: "{{ [{'porta': '21115:21117', 'proto': 'tcp'}, {'porta': '21116', 'proto': 'udp'}] | product(redes_internas) | list }}"
+  loop_control:
+    label: "{{ item.0.porta }}/{{ item.0.proto }} {{ item.1 }}"
+
+- name: Chave pública do servidor RustDesk
+  ansible.builtin.command: cat /srv/rustdesk/id_ed25519.pub
+  register: rustdesk_chave_servidor
+  changed_when: false
+  failed_when: false
+
+- name: Conferir a chave do RustDesk em group_vars/all
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Chave do RustDesk ok.' if rustdesk_chave_servidor.stdout == (rustdesk_chave | default(''))
+      else 'Pôr em rustdesk_chave (group_vars/all/main.yml): ' ~ rustdesk_chave_servidor.stdout }}
 
 - name: Etiquetas do GLPI (Zebra)
   ansible.builtin.import_tasks: etiquetas.yml

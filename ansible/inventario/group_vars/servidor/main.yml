@@ -126,3 +126,6 @@ backup_pastas:
   # o servidor novo) e configuração.
   - nome: meshcentral-pasta
     caminho: /srv/meshcentral/data
+  # RustDesk: a chave do servidor (sem ela, todo PC precisa da chave nova).
+  - nome: rustdesk-pasta
+    caminho: /srv/rustdesk

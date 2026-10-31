@@ -2,3 +2,5 @@
 # Copiar para vault.yml e criptografar:
 #   ansible-vault encrypt inventario/group_vars/all/vault.yml
 meshcentral_meshid: ""
+# Senha fixa de acesso do RustDesk nos PCs Linux (openssl rand -base64 18).
+rustdesk_senha: ""
