@@ -55,7 +55,8 @@ print(f"Inventário: {nome} = {ip} ({grupo})")
 PY
 
 extra=()
-[[ -f inventario/group_vars/all/vault.yml ]] && extra+=(--ask-vault-pass)
+# Senha do vault só se algum vault.yml estiver criptografado (o Ansible recusa senha vazia).
+grep -qs '^\$ANSIBLE_VAULT' inventario/group_vars/*/vault.yml && extra+=(--ask-vault-pass)
 
 if [[ $grupo == linux ]]; then
   echo "Senha pedida a seguir (BECOME password): a da conta da TI."
