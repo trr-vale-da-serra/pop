@@ -218,7 +218,7 @@ Rodam no servidor em contêineres (`/srv/ferramentas-ti`), com os dados em `/srv
    ansible-playbook playbooks/servidor.yml -K --ask-vault-pass
    ```
 6. **Vaultwarden:** em cada app e extensão do Bitwarden, sair da conta e trocar o servidor para `https://cofre.<domínio>` (só o campo "Server URL"). As senhas são as mesmas. O certificado antigo (`vaultwarden-ca.crt`) não é mais usado e pode sair dos aparelhos.
-7. **GLPI:** abrir `https://glpi.<domínio>`, entrar com `glpi` / `glpi` e **trocar na hora as senhas das quatro contas padrão** (`glpi`, `tech`, `normal`, `post-only`), ou desativar as que não forem usadas. Em *Configurar → Geral*, "URL da aplicação" = `https://glpi.<domínio>`. Depois, preencher `glpi_url` em `group_vars/all/main.yml` para os PCs ganharem o GLPI Agent.
+7. **GLPI:** abrir `https://glpi.<domínio>`, entrar com `glpi` / `glpi` e **trocar na hora as senhas das quatro contas padrão** (`glpi`, `tech`, `normal`, `post-only`), ou desativar as que não forem usadas. Em *Configurar → Geral*, "URL da aplicação" = `https://glpi.<domínio>`. Em *Administração → Inventário*, marcar **Ativar inventário** e salvar: sem isso o GLPI recusa o que os agentes mandam ("Access denied"). O `glpi_url` em `group_vars/all/main.yml` já aponta para ele, e os PCs ganham o GLPI Agent no próximo playbook.
 
 **Backup:** o `ti-backup-bancos` leva toda noite o banco do Vaultwarden (SQLite), o do GLPI (MariaDB) e as pastas dos dois (`backup_pastas`): as chaves do Vaultwarden e a `glpicrypt.key` do GLPI, sem as quais o banco sozinho não basta. **Falta a cópia criptografada do Vaultwarden fora da máquina** (guia do servidor, infra §4).
 

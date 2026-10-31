@@ -13,7 +13,7 @@ pc_da_ti: false
 # --- Servidores dos agentes (POP-TI §5.2). Vazio = o agente é pulado. ---
 meshcentral_url: ""          # ex.: https://mesh.trrvaledaserra.com.br
 # meshcentral_meshid: no vault.yml (ID do grupo de dispositivos do MeshCentral)
-glpi_url: ""                 # ex.: http://192.168.1.10:8080/
+glpi_url: https://glpi.vsautonomus.com.br/   # ferramentas_ti no TRR-PC-0003 (glpi_endereco)
 wazuh_manager: ""            # ex.: 192.168.1.10
 
 # AnyDesk só nos PCs que recebem suporte de fornecedor (marcar no host).
