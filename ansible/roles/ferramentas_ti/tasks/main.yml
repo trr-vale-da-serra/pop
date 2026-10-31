@@ -48,7 +48,7 @@
   when: meshcentral_publicar | bool
   vars:
     tunel_conta: "{{ tunel_zona.json.result[0].account.id }}"
-    tunel_id: "{{ tunel_novo.json.result.id if tunel_novo is changed else tunel_lista.json.result[0].id }}"
+    tunel_id: "{{ (tunel_lista.json.result | first).id if tunel_lista.json.result else tunel_novo.json.result.id }}"
 
 - name: Configuração do compose
   ansible.builtin.template:

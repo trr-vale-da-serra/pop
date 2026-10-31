@@ -29,6 +29,7 @@
     body_format: json
     body: { name: "{{ tunel_nome }}", config_src: cloudflare }
   register: tunel_novo
+  changed_when: true
   when: tunel_lista.json.result | length == 0
   no_log: true
 
