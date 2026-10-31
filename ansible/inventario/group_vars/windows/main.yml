@@ -21,9 +21,6 @@ windows_choco:
   - name: libreoffice-still
   - name: bitwarden          # cofre de senhas (app)
 
-# Agentes (servidores em group_vars/all). Versão vazia = agente pulado.
-glpi_agent_versao: "1.21"    # github.com/glpi-project/glpi-agent/releases
-
 # AnyDesk em todo PC Windows (decisão da TI, 31/10/2026). No Linux, só marcando no host.
 anydesk: true
 

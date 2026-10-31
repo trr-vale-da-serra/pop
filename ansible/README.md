@@ -261,7 +261,7 @@ A senha do vault vai para o Vaultwarden. `vault.yml` só entra no git criptograf
 ## Conferir no primeiro PC (POP-TI §9, passo 5)
 
 - [ ] Dash to Panel e ArcMenu funcionam no GNOME 50 do Ubuntu 26.04 (vêm do `extensions.gnome.org`).
-- [ ] O pacote `glpi-agent` do Ubuntu conversa com a versão do servidor GLPI. Se não, trocar pelo instalador oficial.
+- [x] GLPI Agent no Linux: o Ubuntu 26.04 não tem o pacote, o role `agentes` instala o .deb oficial (`glpi_agent_versao`, igual ao Windows).
 - [ ] Nome da conta da TI (`ansible_user`, hoje `ti`).
 - [ ] O instalador Desktop do 26.04 lê o `autoinstall.yaml` do pendrive gravado pelo Rufus, instala o SSH e aplica o nome `pc-novo-XXXX`.
 - [ ] O uBlock Origin e o Bitwarden aparecem sozinhos no Firefox (snap) e não dá para remover. Se não aparecer, conferir em `about:policies`.

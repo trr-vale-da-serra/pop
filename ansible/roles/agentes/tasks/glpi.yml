@@ -1,8 +1,8 @@
 ---
+# O Ubuntu 26.04 não tem o pacote glpi-agent: usa o .deb oficial, mesma versão do Windows.
 - name: GLPI Agent
   ansible.builtin.apt:
-    name: glpi-agent
-    state: present
+    deb: "https://github.com/glpi-project/glpi-agent/releases/download/{{ glpi_agent_versao }}/glpi-agent_{{ glpi_agent_versao }}-1_all.deb"
 
 - name: Servidor do GLPI
   ansible.builtin.copy:
@@ -18,3 +18,8 @@
     name: glpi-agent
     state: started
     enabled: true
+
+# Primeiro inventário já agora, sem esperar o agente rodar sozinho.
+- name: Inventário no GLPI agora
+  ansible.builtin.command: glpi-agent --force
+  changed_when: false
