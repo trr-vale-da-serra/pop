@@ -1,10 +1,23 @@
 ---
 # Etiquetas de patrimônio do GLPI na Zebra ZD220, ligada no USB do servidor.
 # A fila é "raw": o glpi-etiqueta manda ZPL pronto e o CUPS só repassa.
-- name: CUPS
+- name: CUPS e o Pillow (logo na etiqueta)
   ansible.builtin.apt:
-    name: cups
+    name: [cups, python3-pil]
     state: present
+
+- name: Pasta do símbolo
+  ansible.builtin.file:
+    path: /usr/local/share/glpi-etiqueta
+    state: directory
+    mode: "0755"
+
+# A gota do logo, sem texto (sai nos itens TRR-* e POSTOS-*).
+- name: Símbolo da empresa
+  ansible.builtin.copy:
+    src: logos/simbolo.png
+    dest: /usr/local/share/glpi-etiqueta/simbolo.png
+    mode: "0644"
 
 - name: Comando glpi-etiqueta
   ansible.builtin.template:

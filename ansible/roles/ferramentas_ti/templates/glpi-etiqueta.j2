@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 # Gerado pelo Ansible (role ferramentas_ti). Não editar aqui: mudar no repositório pop.
 # Etiqueta de patrimônio na Zebra ZD220 (50 x 30 mm, 203 dpi): QR que abre o item no
-# GLPI, nome e patrimônio. Lê o banco do GLPI direto (só leitura), por isso roda com sudo.
+# GLPI, símbolo da empresa (a gota, sem texto) e nome. O símbolo sai nos itens TRR-* e
+# POSTOS-*; nos outros, a etiqueta sai só com o nome. Lê o banco do GLPI direto (só leitura),
+# por isso roda com sudo.
 #   sudo glpi-etiqueta TRR-PC-0012 TRR-MON-0003   pelo nome ou pelo patrimônio
 #   sudo glpi-etiqueta --todos --tipo computer    todos os computadores
 #   sudo glpi-etiqueta --teste                    etiqueta de teste, sem o GLPI
 #   sudo glpi-etiqueta --calibrar                 mede o rolo (etiqueta torta ou pulando)
 #   --arquivo x.zpl grava em vez de imprimir; --copias N imprime N de cada.
 import argparse
+import os
 import re
 import subprocess
 import sys
@@ -17,6 +20,8 @@ COMPOSE = "{{ ferramentas_pasta }}/compose.yml"
 FILA = "{{ etiqueta_fila }}"
 # A etiqueta não começa na ponta esquerda da cabeça (832 pontos): tudo anda MARGEM pontos.
 MARGEM = {{ etiqueta_margem }}
+SIMBOLO = "/usr/local/share/glpi-etiqueta/simbolo.png"
+COM_SIMBOLO = {"trr", "postos"}  # começo do nome do item
 
 # Tipo do GLPI -> tabela no banco e página do item.
 TIPOS = {
@@ -60,15 +65,41 @@ def limpar(texto):
     return texto.replace("^", "").replace("~", "")
 
 
+_simbolo = []
+
+
+def logo(nome, larg=200, alt=110, limiar=200):
+    # PNG colorido -> preto e branco (a Zebra só imprime preto), cortado e no tamanho da
+    # caixa. Volta (largura, altura, ^GFA) ou None se o item não leva o símbolo.
+    if nome.split("-")[0].lower() not in COM_SIMBOLO or not os.path.exists(SIMBOLO):
+        return None
+    if not _simbolo:
+        from PIL import Image, ImageOps
+        im = Image.open(SIMBOLO).convert("L")
+        im = im.crop(ImageOps.invert(im).point(lambda v: 255 if v > 255 - limiar else 0).getbbox())
+        im.thumbnail((larg, alt), Image.LANCZOS)
+        im = ImageOps.invert(im.point(lambda v: 0 if v < limiar else 255)).convert("1")
+        por_linha = (im.width + 7) // 8
+        dados = im.tobytes().hex().upper()
+        total = por_linha * im.height
+        _simbolo.append((im.width, im.height, f"^GFA,{total},{total},{por_linha},{dados}"))
+    return _simbolo[0]
+
+
 def zpl(item, copias):
-    # 400 x 240 pontos, etiqueta com espaço entre uma e outra (^MNY), térmica direta (^MTD). QR (modelo 2, aumento 5, correção L) à esquerda, texto à direita.
+    # 400 x 240 pontos, etiqueta com espaço entre uma e outra (^MNY), térmica direta (^MTD).
+    # QR (modelo 2, aumento 5, correção L) à esquerda; à direita o logo em cima e o nome embaixo.
     linhas = [
         f"^XA^CI28^MNY^MTD^PW832^LL240^LH{MARGEM},0",
         f"^FO14,22^BQN,2,5^FDLA,{item['url']}^FS",
-        f"^FO192,50^A0N,30,26^FB200,2,4,L^FD{limpar(item['nome'])}^FS",
     ]
-    if item["patrimonio"]:
-        linhas.append(f"^FO192,150^A0N,26,24^FB200,1,0,L^FDPat. {limpar(item['patrimonio'])}^FS")
+    lg = logo(item["nome"])
+    if lg:
+        larg, alt, gf = lg
+        linhas.append(f"^FO{192 + (200 - larg) // 2},{12 + (110 - alt) // 2}{gf}^FS")
+        linhas.append(f"^FO192,142^A0N,30,26^FB200,2,4,C^FD{limpar(item['nome'])}^FS")
+    else:
+        linhas.append(f"^FO192,50^A0N,30,26^FB200,2,4,L^FD{limpar(item['nome'])}^FS")
     linhas.append(f"^PQ{copias}^XZ")
     return "\n".join(linhas) + "\n"
 
