@@ -132,6 +132,7 @@ Só aparelhos da empresa. **Celular pessoal não é gerenciado** e não recebe d
 | **Google Documentos** | Abrir **Word** (.docx), sem anúncios |
 | **Google Apresentações** | Abrir **PowerPoint** (.pptx), sem anúncios |
 | **Syncthing** | Envia o backup do WhatsApp para o servidor (§4.3). Só a TI mexe |
+| **Bitwarden** | Cofre de senhas. A TI troca o servidor para `https://cofre.<domínio>` (Self-hosted → Server URL, digitado exatamente assim), entra na conta e liga o Bitwarden como **preenchimento automático** do Android (Configurações → Senhas e contas → Serviço de preenchimento automático → Bitwarden; no app, Configurações → Preenchimento automático: ligar também "Usar acessibilidade" e "Usar sobreposição" se o aparelho pedir) |
 
 Os apps do Google usam o Gmail da empresa do aparelho (§4.1). Qualquer outro app segue o POP-08.
 

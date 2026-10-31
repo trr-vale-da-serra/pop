@@ -51,6 +51,7 @@ Garantir que todo funcionário novo conheça a empresa nos **dois primeiros dias
     - Registrar o aparelho no **MDM**.
     - Entrar com o **Gmail da empresa daquele aparelho** (`celularNN.<empresa>@gmail.com`, senha no cofre de senhas). Se o aparelho é novo, a TI cria a conta antes, com e-mail de recuperação `lui.grosz@trrvaledaserra.com.br` e telefone de recuperação do celular corporativo do Lui Grosz (POP-TI §4.1). O funcionário não usa Gmail pessoal no aparelho.
     - Conferir que o aparelho recebeu os **apps padrão** e todas as políticas do POP-TI §4.2 (bloqueio de apps, PIN, bloqueio de reset, bloqueio e wipe remotos, Wi-Fi, localização desativada).
+    - **Bitwarden:** trocar o servidor para `https://cofre.<domínio>` (Self-hosted → Server URL, digitado exatamente assim, sem espaço nem `https://` repetido), entrar na conta e ligar o Bitwarden como **preenchimento automático** do Android (POP-TI §4.2). Testar abrindo o login de um app ou site e conferindo que o Bitwarden oferece a senha.
 12. **WhatsApp corporativo** (se aprovado): número da empresa no celular corporativo, nome no padrão da empresa e **foto de perfil** = a foto editada pelo RH, incluir nos grupos de trabalho aprovados. Configurar o **backup do WhatsApp para o servidor**, sem vídeos e com criptografia (POP-TI §4.3).
 13. Preencher no GLPI a ficha **Formulário B: Checklist de acessos** com cada conta criada (sistema, usuário, data, quem criou) e salvar cada senha no **cofre de senhas**, na pasta do funcionário.
 
