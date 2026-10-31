@@ -5,10 +5,30 @@
   chocolatey.chocolatey.win_chocolatey:
     name: "{{ item.name }}"
     package_params: "{{ item.params | default(omit) }}"
+    install_args: "{{ item.args | default(omit) }}"
     state: present
   loop: "{{ windows_choco }}"
   loop_control:
     label: "{{ item.name }}"
+
+# PCs de antes do /allusers ficaram com o Bitwarden só na conta da TI: reinstala para todos.
+- name: Bitwarden instalado para todas as contas?
+  ansible.windows.win_powershell:
+    script: |
+      $chaves = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*',
+                'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*'
+      $Ansible.Result = [bool](Get-ItemProperty $chaves -ErrorAction SilentlyContinue |
+        Where-Object { $_.DisplayName -like 'Bitwarden*' })
+      $Ansible.Changed = $false
+  register: bitwarden_todos
+
+- name: Reinstalar o Bitwarden para todas as contas
+  chocolatey.chocolatey.win_chocolatey:
+    name: bitwarden
+    install_args: /allusers
+    force: true
+    state: present
+  when: not bitwarden_todos.result
 
 # uBlock Origin e Bitwarden em todo Firefox, instalados à força (mesmas políticas do Linux).
 - name: Pasta de políticas do Firefox

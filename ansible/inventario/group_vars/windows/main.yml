@@ -20,6 +20,7 @@ windows_choco:
     params: /l:pt-BR
   - name: libreoffice-still
   - name: bitwarden          # cofre de senhas (app)
+    args: /allusers          # sem isso o instalador põe só na conta da TI (a do Ansible)
 
 # AnyDesk em todo PC Windows (decisão da TI, 31/10/2026). No Linux, só marcando no host.
 anydesk: true
