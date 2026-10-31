@@ -197,7 +197,7 @@ O **MeshCentral** (acesso remoto, dados em `/srv/meshcentral`) é o único que a
 
 **Primeira vez:**
 
-1. **Token da Cloudflare** (o domínio da empresa precisa estar na Cloudflare): *My Profile → API Tokens → Create Token → Edit zone DNS*, só no domínio da empresa. Guardar no Vaultwarden.
+1. **Token da Cloudflare** (o domínio da empresa precisa estar na Cloudflare): *My Profile → API Tokens → Create Token → Edit zone DNS*, só no domínio da empresa, e acrescentar *Account → Cloudflare Tunnel → Edit* (túnel do MeshCentral). Guardar no Vaultwarden.
 2. Em `inventario/group_vars/servidor/main.yml`: `ti_dominio` e `nuvem_endereco` (IP do servidor, **fixo no firewall**: os nomes apontam para ele).
 3. No `vault.yml` do servidor: `cloudflare_token` e `glpi_banco_senha` (`openssl rand -hex 24`).
 4. **Trazer o Vaultwarden antigo** (WSL do PC antigo, pasta `~/vaultwarden`), antes do primeiro `servidor.yml`:
@@ -222,12 +222,13 @@ O **MeshCentral** (acesso remoto, dados em `/srv/meshcentral`) é o único que a
 6. **Vaultwarden:** em cada app e extensão do Bitwarden, sair da conta e trocar o servidor para `https://cofre.<domínio>` (só o campo "Server URL"). As senhas são as mesmas. O certificado antigo (`vaultwarden-ca.crt`) não é mais usado e pode sair dos aparelhos.
 7. **GLPI:** abrir `https://glpi.<domínio>`, entrar com `glpi` / `glpi` e **trocar na hora as senhas das quatro contas padrão** (`glpi`, `tech`, `normal`, `post-only`), ou desativar as que não forem usadas. Em *Configurar → Geral*, "URL da aplicação" = `https://glpi.<domínio>`. Em *Administração → Inventário*, marcar **Ativar inventário** e salvar: sem isso o GLPI recusa o que os agentes mandam ("Access denied"). O `glpi_url` em `group_vars/all/main.yml` já aponta para ele, e os PCs ganham o GLPI Agent no próximo playbook.
 8. **MeshCentral**, na ordem (o túnel só liga depois que a conta da TI existe, para ninguém de fora criar a primeira conta):
-   1. Sem o `cloudflare_tunel_token`, o `servidor.yml` sobe o MeshCentral **só neste PC**. No navegador do servidor, abrir `http://localhost:47916`, criar a conta da TI (a primeira conta vira a administradora) e ligar o 2FA, que o MeshCentral exige. Guardar no Vaultwarden.
-   2. *Adicionar grupo de dispositivos*: nome `PCs`, tipo "Gerenciar usando um agente de software". No grupo, *Adicionar agente → Windows*: o link de download tem `meshid=<ID>`. Guardar o ID em `inventario/group_vars/all/vault.yml` (`meshcentral_meshid`, modelo no `vault.yml.exemplo` da mesma pasta) e criptografar com `ansible-vault encrypt`.
-   3. **Túnel:** Cloudflare → *Zero Trust → Networks → Tunnels → Create a tunnel → Cloudflared*, nome `servidor-ti`. Copiar só o **token** (o texto depois de `--token` no comando de instalação; não instalar nada no servidor, o contêiner faz isso). Em *Public hostname*: `mesh` . `<domínio>`, serviço **HTTP** `meshcentral:4430`. Pôr o token em `cloudflare_tunel_token`, no `vault.yml` do servidor, e rodar de novo:
+   1. Com `meshcentral_publicar: false` (`group_vars/servidor/main.yml`), o `servidor.yml` sobe o MeshCentral **só neste PC**. No navegador do servidor, abrir `http://localhost:47916`, criar a conta da TI (a primeira conta vira a administradora) e ligar o 2FA, que o MeshCentral exige. Guardar no Vaultwarden.
+   2. *Adicionar grupo de dispositivos*: nome `PCs`, tipo "Gerenciar usando um agente de software". O ID do grupo vai em `inventario/group_vars/all/vault.yml` (`meshcentral_meshid`, modelo no `vault.yml.exemplo` da mesma pasta). Para ler o ID: `sudo grep '"type":"mesh"' /srv/meshcentral/data/meshcentral.db` (o texto depois de `mesh//`).
+   3. **Túnel:** o `cloudflare_token` precisa também da permissão *Account → Cloudflare Tunnel → Edit* (Cloudflare → *My Profile → API Tokens* → editar o token; o valor não muda). Pôr `meshcentral_publicar: true` e rodar de novo:
       ```bash
       ansible-playbook playbooks/servidor.yml -K --ask-vault-pass --tags ferramentas_ti
       ```
+      A role cria o túnel `servidor-ti`, o endereço `mesh.<domínio>` e o nome no DNS, e liga o contêiner `cloudflared`. Nada para fazer no painel da Cloudflare.
    4. Conferir de fora (celular no 4G): `https://mesh.<domínio>` abre e pede o 2FA. Depois, rodar o `windows-padrao.yml` / `linux-padrao.yml` (com `--ask-vault-pass`): os PCs ganham o agente.
 
    O agente confere o servidor pela chave do próprio MeshCentral (no `meshcentral-data`), e não pelo certificado, porque o da Cloudflare muda sozinho (`ignoreAgentHashCheck`). Por isso a pasta `/srv/meshcentral/data` vai no backup: sem ela, os agentes não reconhecem um servidor reinstalado.
