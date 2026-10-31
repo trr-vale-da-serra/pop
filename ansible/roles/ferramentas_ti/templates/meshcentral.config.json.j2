@@ -1,0 +1,23 @@
+{
+  "__comment__": "Gerado pelo Ansible (role ferramentas_ti). Não editar aqui: mudar no repositório pop.",
+  "settings": {
+    "cert": "{{ meshcentral_endereco }}",
+    "WANonly": true,
+    "port": 4430,
+    "aliasPort": 443,
+    "redirPort": 0,
+    "tlsOffload": true,
+    "ignoreAgentHashCheck": true,
+    "agentPong": 60,
+    "browserPong": 60,
+    "selfUpdate": false,
+    "plugins": { "enabled": false }
+  },
+  "domains": {
+    "": {
+      "title": "TI",
+      "newAccounts": false,
+      "passwordRequirements": { "min": 12, "force2factor": true }
+    }
+  }
+}

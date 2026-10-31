@@ -40,6 +40,30 @@ services:
     ports:
       - "127.0.0.1:{{ glpi_porta }}:80"
 
+  # Acesso remoto (POP-TI §3.2). A internet chega pelo túnel (cloudflared), sem
+  # porta aberta no firewall; a porta abaixo é só deste PC.
+  meshcentral:
+    image: {{ meshcentral_imagem }}
+    restart: unless-stopped
+    volumes:
+      - /srv/meshcentral/data:/opt/meshcentral/meshcentral-data
+      - /srv/meshcentral/files:/opt/meshcentral/meshcentral-files
+      - /srv/meshcentral/backups:/opt/meshcentral/meshcentral-backups
+    ports:
+      - "127.0.0.1:{{ meshcentral_porta }}:4430"
+{% if cloudflare_tunel_token | default('') | length > 0 %}
+
+  # Túnel da Cloudflare: só conexão de saída. O endereço público
+  # ({{ meshcentral_endereco }} -> http://meshcentral:4430) fica no painel Zero Trust.
+  cloudflared:
+    image: {{ cloudflared_imagem }}
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    env_file: cloudflared.env
+    depends_on:
+      - meshcentral
+{% endif %}
+
   glpi-db:
     image: {{ mariadb_imagem }}
     restart: unless-stopped

@@ -2,3 +2,7 @@
 - name: Recarregar o Caddy
   ansible.builtin.command: docker compose -f {{ ferramentas_pasta }}/compose.yml restart caddy
   changed_when: true
+
+- name: Reiniciar o MeshCentral
+  ansible.builtin.command: docker compose -f {{ ferramentas_pasta }}/compose.yml restart meshcentral
+  changed_when: true

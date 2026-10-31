@@ -11,7 +11,7 @@
 | Função (nome usado nos POPs) | Ferramenta atual | Observação |
 |---|---|---|
 | Chamados, inventário e patrimônio | **GLPI + GLPI Agent** | Citado pelo nome nos POPs |
-| Acesso remoto (TI) | **MeshCentral** | Único serviço exposto na internet (porta 443, HTTPS), com 2FA |
+| Acesso remoto (TI) | **MeshCentral** | Único serviço exposto na internet (HTTPS, com 2FA), pelo túnel da Cloudflare: nenhuma porta aberta no firewall |
 | Programa de suporte de fornecedor | **AnyDesk** | Em todo PC Windows; no Linux, só nos PCs que recebem suporte de fornecedor (POP-TI §3.2) |
 | Configuração em massa | **Ansible** | Os "roteiros de configuração" dos POPs são os playbooks do Ansible |
 | Antivírus | **Microsoft Defender** (Windows) e **ClamAV** (Linux) | |

@@ -9,3 +9,6 @@ senhas_samba: {}
 cloudflare_token: ""
 # Senha do banco do GLPI (openssl rand -hex 24).
 glpi_banco_senha: ""
+# Token do túnel da Cloudflare (Zero Trust → Networks → Tunnels → o túnel → token).
+# Vazio = MeshCentral só neste PC. Preencher depois de criar a conta da TI nele.
+cloudflare_tunel_token: ""

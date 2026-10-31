@@ -11,7 +11,7 @@ conta_funcionarios: usuario
 pc_da_ti: false
 
 # --- Servidores dos agentes (POP-TI §5.2). Vazio = o agente é pulado. ---
-meshcentral_url: ""          # ex.: https://mesh.trrvaledaserra.com.br
+meshcentral_url: https://mesh.vsautonomus.com.br   # pelo túnel da Cloudflare (ferramentas_ti)
 # meshcentral_meshid: no vault.yml (ID do grupo de dispositivos do MeshCentral)
 glpi_url: https://glpi.vsautonomus.com.br/   # ferramentas_ti no TRR-PC-0003 (glpi_endereco)
 glpi_agent_versao: "1.21"    # Linux e Windows, github.com/glpi-project/glpi-agent/releases

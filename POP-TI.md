@@ -169,7 +169,7 @@ O **firewall** troca para o link reserva automaticamente quando o link principal
 
 ### 5.3 O que fica exposto na internet
 
-- **Só o acesso remoto** (HTTPS), com 2FA.
+- **Só o acesso remoto** (HTTPS), com 2FA, pelo **túnel da Cloudflare**: nenhuma porta aberta no firewall. Funciona também para as outras bases e notebooks fora da empresa.
 - Todo o resto (GLPI, cofre de senhas, MDM, backup, monitoramento) fica **só na rede interna**. De fora, acessar pela **VPN** do firewall.
 - Durante uma queda do link principal, a rede interna funciona normalmente pelo link reserva, mas **o acesso de fora fica indisponível** até o link voltar. Isso é aceito.
 

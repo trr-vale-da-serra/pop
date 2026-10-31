@@ -1,6 +1,6 @@
 ---
 # Guia do servidor (infra §3): Vaultwarden e GLPI no host, dados em /srv, entrada
-# só pela rede interna, pelo Caddy (HTTPS) na 443.
+# só pela rede interna, pelo Caddy (HTTPS) na 443. MeshCentral pelo túnel da Cloudflare.
 - name: Conferir o domínio e as senhas
   ansible.builtin.assert:
     that:
@@ -37,6 +37,10 @@
     - { caminho: /srv/glpi }
     - { caminho: /srv/glpi/var, dono: "33" }
     - { caminho: /srv/glpi/mariadb, dono: "999" }
+    - { caminho: /srv/meshcentral, modo: "0700" }
+    - { caminho: /srv/meshcentral/data, modo: "0700" }
+    - { caminho: /srv/meshcentral/files, modo: "0700" }
+    - { caminho: /srv/meshcentral/backups, modo: "0700" }
 
 - name: Configuração do compose
   ansible.builtin.template:
@@ -48,9 +52,17 @@
     - { src: caddy.Dockerfile.j2, dest: caddy/Dockerfile }
     - { src: caddy.env.j2, dest: caddy.env, modo: "0600" }
     - { src: glpi.env.j2, dest: glpi.env, modo: "0600" }
+    - { src: cloudflared.env.j2, dest: cloudflared.env, modo: "0600" }
   loop_control:
     label: "{{ item.dest }}"
-  diff: false   # caddy.env e glpi.env têm senhas
+  diff: false   # caddy.env, glpi.env e cloudflared.env têm senhas
+
+- name: Configuração do MeshCentral
+  ansible.builtin.template:
+    src: meshcentral.config.json.j2
+    dest: /srv/meshcentral/data/config.json
+    mode: "0600"
+  notify: Reiniciar o MeshCentral
 
 - name: Endereços no Caddy
   ansible.builtin.template:
@@ -99,3 +111,6 @@
     msg:
       - "Vaultwarden: https://{{ vaultwarden_endereco }}"
       - "GLPI: https://{{ glpi_endereco }} (primeiro acesso: trocar as senhas das contas padrão glpi, tech, normal e post-only)"
+      - >-
+        MeshCentral: {{ ('https://' ~ meshcentral_endereco) if cloudflare_tunel_token | default('') | length > 0
+        else 'http://127.0.0.1:' ~ meshcentral_porta ~ ' (só neste PC; túnel desligado até ter o cloudflare_tunel_token)' }}

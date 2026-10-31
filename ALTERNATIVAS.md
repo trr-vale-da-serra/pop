@@ -13,6 +13,8 @@
 | Ferramenta | Situação | Por quê |
 |---|---|---|
 | **MeshCentral** | ✅ Escolhido (TI) | Painel web único para Windows e Linux: tela, terminal, arquivos, inventário básico, ações em massa. Grátis, servidor próprio |
+| **MeshCentral pelo túnel da Cloudflare** | ✅ Escolhido (31/10/2026) | Nenhuma porta aberta no firewall (gerido pela empresa de TI), funciona com o IP público mudando (PPPoE) e chega nos PCs das outras bases. O agente só faz HTTPS de saída. Contra: depende da Cloudflare; se ela cair, o acesso remoto cai junto (a rede interna segue normal) |
+| MeshCentral com a porta 443 aberta no firewall | ❌ Descartado (31/10/2026) | Servidor exposto direto na internet, precisa de DNS dinâmico e de mudança no firewall pela empresa de TI |
 | **AnyDesk** | ✅ Permitido só para fornecedores | Muitos fornecedores só trabalham com AnyDesk. Uso assistido, nunca acesso autônomo (ver POP-TI §3.2) |
 | **RustDesk** (servidor próprio) | 🔁 Plano B | Desde agosto/2026 tem acesso autônomo no Wayland (versão preview, Ubuntu/Debian). Entra se o MeshCentral não funcionar no Ubuntu 26.04 |
 | **Tactical RMM** | ❌ Descartado | Agente Linux e alguns recursos ficam restritos a patrocinadores |

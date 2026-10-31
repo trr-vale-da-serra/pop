@@ -189,9 +189,11 @@ Ansible no próprio servidor (sem WSL):
 sudo apt install -y ansible sshpass git python3-winrm
 ```
 
-### Ferramentas da TI (Vaultwarden e GLPI)
+### Ferramentas da TI (Vaultwarden, GLPI e MeshCentral)
 
 Rodam no servidor em contêineres (`/srv/ferramentas-ti`), com os dados em `/srv/vaultwarden` e `/srv/glpi`. Entram pela rede interna em `https://cofre.<domínio>` e `https://glpi.<domínio>`. O certificado é do Let's Encrypt, validado pelo DNS da Cloudflare: nenhum PC ou celular precisa instalar certificado, e os nomes apontam para o IP interno do servidor (de fora não abrem).
+
+O **MeshCentral** (acesso remoto, dados em `/srv/meshcentral`) é o único que abre de fora, em `https://mesh.<domínio>`, pelo **túnel da Cloudflare** (contêiner `cloudflared`): o servidor só faz conexão de saída, sem porta aberta no firewall, e funciona mesmo com o IP público mudando. Assim os PCs das outras bases e os notebooks fora da empresa também aparecem. Login só com 2FA, e ninguém cria conta pela tela.
 
 **Primeira vez:**
 
@@ -219,8 +221,18 @@ Rodam no servidor em contêineres (`/srv/ferramentas-ti`), com os dados em `/srv
    ```
 6. **Vaultwarden:** em cada app e extensão do Bitwarden, sair da conta e trocar o servidor para `https://cofre.<domínio>` (só o campo "Server URL"). As senhas são as mesmas. O certificado antigo (`vaultwarden-ca.crt`) não é mais usado e pode sair dos aparelhos.
 7. **GLPI:** abrir `https://glpi.<domínio>`, entrar com `glpi` / `glpi` e **trocar na hora as senhas das quatro contas padrão** (`glpi`, `tech`, `normal`, `post-only`), ou desativar as que não forem usadas. Em *Configurar → Geral*, "URL da aplicação" = `https://glpi.<domínio>`. Em *Administração → Inventário*, marcar **Ativar inventário** e salvar: sem isso o GLPI recusa o que os agentes mandam ("Access denied"). O `glpi_url` em `group_vars/all/main.yml` já aponta para ele, e os PCs ganham o GLPI Agent no próximo playbook.
+8. **MeshCentral**, na ordem (o túnel só liga depois que a conta da TI existe, para ninguém de fora criar a primeira conta):
+   1. Sem o `cloudflare_tunel_token`, o `servidor.yml` sobe o MeshCentral **só neste PC**. No navegador do servidor, abrir `http://localhost:47916`, criar a conta da TI (a primeira conta vira a administradora) e ligar o 2FA, que o MeshCentral exige. Guardar no Vaultwarden.
+   2. *Adicionar grupo de dispositivos*: nome `PCs`, tipo "Gerenciar usando um agente de software". No grupo, *Adicionar agente → Windows*: o link de download tem `meshid=<ID>`. Guardar o ID em `inventario/group_vars/all/vault.yml` (`meshcentral_meshid`, modelo no `vault.yml.exemplo` da mesma pasta) e criptografar com `ansible-vault encrypt`.
+   3. **Túnel:** Cloudflare → *Zero Trust → Networks → Tunnels → Create a tunnel → Cloudflared*, nome `servidor-ti`. Copiar só o **token** (o texto depois de `--token` no comando de instalação; não instalar nada no servidor, o contêiner faz isso). Em *Public hostname*: `mesh` . `<domínio>`, serviço **HTTP** `meshcentral:4430`. Pôr o token em `cloudflare_tunel_token`, no `vault.yml` do servidor, e rodar de novo:
+      ```bash
+      ansible-playbook playbooks/servidor.yml -K --ask-vault-pass --tags ferramentas_ti
+      ```
+   4. Conferir de fora (celular no 4G): `https://mesh.<domínio>` abre e pede o 2FA. Depois, rodar o `windows-padrao.yml` / `linux-padrao.yml` (com `--ask-vault-pass`): os PCs ganham o agente.
 
-**Backup:** o `ti-backup-bancos` leva toda noite o banco do Vaultwarden (SQLite), o do GLPI (MariaDB) e as pastas dos dois (`backup_pastas`): as chaves do Vaultwarden e a `glpicrypt.key` do GLPI, sem as quais o banco sozinho não basta. **Falta a cópia criptografada do Vaultwarden fora da máquina** (guia do servidor, infra §4).
+   O agente confere o servidor pela chave do próprio MeshCentral (no `meshcentral-data`), e não pelo certificado, porque o da Cloudflare muda sozinho (`ignoreAgentHashCheck`). Por isso a pasta `/srv/meshcentral/data` vai no backup: sem ela, os agentes não reconhecem um servidor reinstalado.
+
+**Backup:** o `ti-backup-bancos` leva toda noite o banco do Vaultwarden (SQLite), o do GLPI (MariaDB) e as pastas dos três (`backup_pastas`): as chaves do Vaultwarden, a `glpicrypt.key` do GLPI e o banco e as chaves do MeshCentral, sem as quais o banco sozinho não basta. **Falta a cópia criptografada do Vaultwarden fora da máquina** (guia do servidor, infra §4).
 
 **Versão nova:** trocar a imagem em `roles/ferramentas_ti/defaults/main.yml` e rodar o `servidor.yml`. Antes, conferir que o backup da noite terminou bem.
 

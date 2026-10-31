@@ -36,8 +36,10 @@ snapshots_mes: 6
 ti_dominio: vsautonomus.com.br     # o DNS do trrvaledaserra.com.br fica na ittek, não na Cloudflare
 vaultwarden_nome: cofre
 glpi_nome: glpi
+meshcentral_nome: mesh
 vaultwarden_endereco: "{{ vaultwarden_nome }}.{{ ti_dominio }}"
 glpi_endereco: "{{ glpi_nome }}.{{ ti_dominio }}"
+meshcentral_endereco: "{{ meshcentral_nome }}.{{ ti_dominio }}"
 servidor_ip: "{{ nuvem_endereco }}"
 ti_email: ""                       # avisos do Let's Encrypt (opcional)
 # Cadastro aberto no Vaultwarden: true só enquanto a TI cria as contas.
@@ -118,3 +120,7 @@ backup_pastas:
     caminho: /srv/vaultwarden/data
   - nome: glpi-pasta
     caminho: /srv/glpi/var
+  # MeshCentral: banco (NeDB), chaves do servidor (sem elas os agentes não reconhecem
+  # o servidor novo) e configuração.
+  - nome: meshcentral-pasta
+    caminho: /srv/meshcentral/data

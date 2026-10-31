@@ -1,6 +1,7 @@
 ---
 # Ferramentas da TI no servidor (guia do servidor, infra §3): Vaultwarden e GLPI em
 # contêineres, dados em /srv, Caddy na frente com HTTPS do Let's Encrypt.
+# MeshCentral: o único de fora, pelo túnel da Cloudflare (sem porta aberta no firewall).
 ferramentas_pasta: /srv/ferramentas-ti
 
 # Versões fixas: trocar aqui, testar e rodar o servidor.yml de novo. O Caddy é
@@ -10,10 +11,14 @@ vaultwarden_imagem: vaultwarden/server:1.37.4
 glpi_imagem: glpi/glpi:12.0.1
 mariadb_imagem: mariadb:11.4
 caddy_versao: 2.11.7
+meshcentral_imagem: ghcr.io/ylianst/meshcentral:1.3.1
+cloudflared_imagem: cloudflare/cloudflared:2026.10.7
 
 # Portas internas (só 127.0.0.1; a rede chega pelo Caddy, na 443).
 vaultwarden_porta: 47914
 glpi_porta: 47915
+# MeshCentral: só neste PC, para criar a primeira conta antes de ligar o túnel.
+meshcentral_porta: 47916
 
 # Fila do CUPS da Zebra ZD220 das etiquetas do GLPI (comando glpi-etiqueta).
 etiqueta_fila: Zebra-ZD220
