@@ -10,7 +10,7 @@
     name: "{{ inventory_hostname }}"
 
 - name: Fuso horário
-  community.windows.win_timezone:
+  ansible.windows.win_timezone:
     timezone: "{{ fuso_horario_windows }}"
 
 # O reinício fica para o fim do playbook ou para a janela mensal (POP-06),

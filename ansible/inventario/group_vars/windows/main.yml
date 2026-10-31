@@ -8,6 +8,9 @@ ansible_winrm_scheme: http
 # NTLM criptografa o conteúdo mesmo pelo http. Só aceita da mesma rede e do
 # servidor da TI, 192.168.170.171 (firewall do PC, autounattend.xml).
 ansible_winrm_transport: ntlm
+# O padrão (30 s) cai no meio da instalação do Chocolatey e dos programas.
+ansible_winrm_operation_timeout_sec: 120
+ansible_winrm_read_timeout_sec: 150
 
 fuso_horario_windows: E. South America Standard Time
 
