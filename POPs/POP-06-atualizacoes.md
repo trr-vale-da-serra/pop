@@ -17,7 +17,7 @@ Entre uma janela e outra:
 
 - **Linux:** atualizações de segurança automáticas todos os dias.
 - **Celulares:** atualização automática em janela noturna (MDM).
-- **Falha grave anunciada** (painel de segurança ou notícia): a TI atualiza no mesmo dia, sem esperar a janela.
+- **Falha grave anunciada** (aviso do fabricante ou notícia): a TI atualiza no mesmo dia, sem esperar a janela.
 
 ## 3. Passo a passo
 
@@ -36,7 +36,7 @@ Entre uma janela e outra:
 
 6. Anotar os PCs que ficaram de fora (estavam desligados ou fora da empresa).
 7. Quando cada um aparecer online no acesso remoto, rodar o roteiro de atualização só nele. Se o reinício atrapalhar quem está usando, combinar o horário com a pessoa.
-8. No painel de segurança: conferir a lista de vulnerabilidades. PC que continuar sem atualizar recebe atualização manual.
+8. No GLPI: conferir a versão do sistema de cada PC. PC que continuar sem atualizar recebe atualização manual.
 9. No MDM: conferir celulares com o sistema muito atrasado.
 
 ## 4. Registro

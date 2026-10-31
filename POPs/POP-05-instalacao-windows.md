@@ -34,7 +34,7 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
    - Atualizações do Windows.
    - Programas padrão.
    - Confere que o **antivírus** está ativo.
-   - Agentes: **acesso remoto**, **GLPI Agent** e **painel de segurança**.
+   - Agentes: **acesso remoto** e **GLPI Agent**.
 7. Instalar o programa que exige Windows.
 8. Programa de suporte de fornecedor: instalar **só** se o PC recebe suporte de fornecedor (POP-TI §3.2).
 
@@ -46,7 +46,7 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
 
 ### 4.4 Conferência
 
-11. O PC aparece no **acesso remoto**, no **GLPI** e no **painel de segurança**.
+11. O PC aparece no **acesso remoto** e no **GLPI**.
 12. A pasta pessoal e a do departamento, na **nuvem da empresa**, estão ligadas no PC (unidade de rede) com a conta de quem usa o PC e abrem.
 13. Registrar no GLPI: patrimônio, número de série, quem recebe e **por que é Windows**.
 

@@ -9,7 +9,7 @@ Agir rápido e de forma organizada quando acontece algo como vírus, invasão de
 
 ## 2. Exemplos de incidente
 
-- Alerta crítico no painel de segurança ou vírus encontrado pelo antivírus.
+- Vírus encontrado pelo antivírus.
 - Funcionário clicou em link suspeito ou digitou a senha num site falso.
 - Conta de e-mail ou de WhatsApp mandando mensagens que a pessoa não mandou.
 - Arquivos que de repente não abrem ou mudam de nome (possível ransomware).
@@ -35,7 +35,7 @@ Agir rápido e de forma organizada quando acontece algo como vírus, invasão de
 
 ### 4.2 Entender (no mesmo dia)
 
-4. Ver no painel de segurança e no acesso remoto o que aconteceu, desde quando e em quais máquinas.
+4. Ver no acesso remoto (e no histórico do antivírus de cada PC) o que aconteceu, desde quando e em quais máquinas.
 5. Responder: **vazou dado pessoal?** Se sim ou se não der para saber, avisar a direção (seção 3).
 6. Avisar o gestor do setor afetado.
 

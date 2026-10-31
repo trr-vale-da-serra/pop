@@ -36,7 +36,7 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
    - Aparência parecida com o Windows (barra de tarefas embaixo e menu Iniciar).
    - Programas padrão (navegador, LibreOffice, leitor de PDF).
    - **Antivírus**.
-   - Agentes: **acesso remoto**, **GLPI Agent** e **painel de segurança**.
+   - Agentes: **acesso remoto** e **GLPI Agent**.
 8. Programa de suporte de fornecedor: instalar **só** se o PC recebe suporte de fornecedor (POP-TI §3.2).
 
 ### 4.3 Conta dos funcionários
@@ -49,8 +49,7 @@ Todo PC Linux da empresa sai **igual**: mesmo sistema, mesma aparência, mesmos 
 
 11. O PC aparece no **acesso remoto** e abre a tela remota.
 12. O PC aparece no **GLPI** com o hardware e o software corretos.
-13. O PC aparece no **painel de segurança** como ativo.
-14. A pasta pessoal e a do departamento, na **nuvem da empresa**, estão ligadas no PC com a conta de quem usa o PC e abrem (README do Ansible, "Servidor").
+13. A pasta pessoal e a do departamento, na **nuvem da empresa**, estão ligadas no PC com a conta de quem usa o PC e abrem (README do Ansible, "Servidor").
 15. Registrar no GLPI: patrimônio, número de série e quem recebe.
 
 ## 5. Registro

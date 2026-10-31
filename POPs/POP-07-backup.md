@@ -27,7 +27,7 @@ O disco de backup fica desmontado fora da hora do backup e **não tem criptograf
 - Domingo à 01:30: cópia da VM dos sistemas. A VM fica desligada por alguns minutos.
 - 02:00: cópia dos bancos.
 - O monitoramento avisa a TI se a cópia dos bancos não terminar bem no dia.
-- Problema num disco (saúde ou espelho incompleto) aparece no painel de segurança.
+- Teste de saúde dos discos (todo dia às 02h, completo no dia 1). O resultado fica no registro do servidor e é conferido toda semana (§4).
 
 ## 4. Toda semana (TI, segunda-feira)
 
@@ -38,8 +38,11 @@ O disco de backup fica desmontado fora da hora do backup e **não tem criptograf
    ```bash
    journalctl -t ti-backup --since "8 days ago"
    ```
-   O espelho precisa estar `ONLINE` nos dois discos, e cada banco com `ok` em todos os dias.
-2. Disco `DEGRADED` ou `FAULTED`: trocar o disco (README do Ansible, "Servidor"). Banco sem `ok`: descobrir por quê e resolver no mesmo dia.
+   ```bash
+   journalctl -u smartmontools --since "8 days ago" -p warning
+   ```
+   O espelho precisa estar `ONLINE` nos dois discos, cada banco com `ok` em todos os dias, e a saúde dos discos sem nenhuma linha.
+2. Disco `DEGRADED` ou `FAULTED`, ou com aviso de saúde: trocar o disco (README do Ansible, "Servidor"). Banco sem `ok`: descobrir por quê e resolver no mesmo dia.
 
 ## 5. Todo mês (TI, 1ª semana)
 

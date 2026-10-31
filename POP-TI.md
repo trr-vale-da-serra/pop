@@ -26,8 +26,7 @@ Os POPs falam da **função** de cada ferramenta (ex.: "cofre de senhas", "acess
 | **Acesso remoto** | Tela, terminal e arquivos de qualquer PC, Windows ou Linux, pelo navegador |
 | **Programa de suporte de fornecedor** | Só para fornecedores externos, com regras (§3.2) |
 | **Configuração em massa** | Instala programas e aplica configurações em vários PCs de uma vez, por roteiros de configuração |
-| **Painel de segurança** | Painel central de alertas de segurança de todas as máquinas |
-| **Antivírus** | Em cada máquina, com alertas enviados ao painel de segurança |
+| **Antivírus** | Em cada máquina, com os alertas na própria máquina |
 | **Monitoramento** | Avisa quando o link, o servidor ou um serviço cai |
 | **Nuvem da empresa** | Pasta pessoal de cada funcionário e pasta de cada departamento, no servidor. É o único lugar dos arquivos de trabalho |
 | **Backup do servidor** | Espelho de discos com snapshots, e cópia dos bancos e da VM dos sistemas para um disco só de backup |
@@ -65,8 +64,7 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 
 ### 3.3 Segurança
 
-- **Antivírus:** em todo PC, Windows e Linux, enviando alertas ao painel de segurança.
-- **Painel de segurança:** a TI olha o painel **toda semana** e trata os alertas críticos no mesmo dia (POP-09).
+- **Antivírus:** em todo PC, Windows e Linux. Vírus encontrado é incidente: tratar no mesmo dia (POP-09).
 - **Criptografia de disco:** **não é usada**, nem nos PCs nem no servidor. Se o Windows ligar a criptografia sozinho na instalação, desligar (POP-05).
 - **Senhas:** **todas** as senhas ficam no cofre de senhas, inclusive as pessoais de cada funcionário (e-mail, Sistema VS, Petroshow, Infinitum, Orion), numa pasta por funcionário. Só a TI acessa o cofre, com 2FA. A TI gera senhas fortes e entrega pessoalmente. O funcionário **não troca** senha sozinho: pede à TI, que troca e atualiza o cofre. O usuário do PC não tem senha (§3.1). A senha que o gestor escolhe para o próprio PC é a única que não vai para o cofre.
 - **Monitoramento:** vigia o link principal, o link reserva, o servidor e cada serviço. Os alertas vão para o e-mail da TI.
@@ -166,13 +164,13 @@ O **firewall** troca para o link reserva automaticamente quando o link principal
 
 - Roda num **PC Ubuntu da empresa**, dentro da empresa, ligado 24h. Os sistemas da empresa ficam numa máquina virtual, e os serviços da TI em **contêineres**.
 - Discos: uma **gaveta USB-C com 3 discos de 4 TB**. Dois formam um **espelho** (se um disco morre, nada se perde), com a nuvem da empresa, o WhatsApp e as pastas do servidor, e snapshots a cada hora. O terceiro é **só para backup** (bancos toda noite, VM toda semana), sem criptografia, e fica desmontado fora da hora do backup.
-- Reinícios e manutenção **só fora do horário de trabalho**: se esse PC para, param juntos o acesso remoto, o MDM, o GLPI, o painel de segurança, o cofre de senhas e o backup.
+- Reinícios e manutenção **só fora do horário de trabalho**: se esse PC para, param juntos o acesso remoto, o MDM, o GLPI, o cofre de senhas e o backup.
 - O PC também é usado no dia a dia, então: 2FA em todos os painéis e atualizações em dia.
 
 ### 5.3 O que fica exposto na internet
 
 - **Só o acesso remoto** (HTTPS), com 2FA.
-- Todo o resto (GLPI, painel de segurança, cofre de senhas, MDM, backup, monitoramento) fica **só na rede interna**. De fora, acessar pela **VPN** do firewall.
+- Todo o resto (GLPI, cofre de senhas, MDM, backup, monitoramento) fica **só na rede interna**. De fora, acessar pela **VPN** do firewall.
 - Durante uma queda do link principal, a rede interna funciona normalmente pelo link reserva, mas **o acesso de fora fica indisponível** até o link voltar. Isso é aceito.
 
 ---
@@ -225,6 +223,6 @@ Padrão de endereço `nome.sobrenome@`, assinatura em imagem padronizada feita p
 1. Preparar o servidor: contêineres, gaveta de discos (espelho e disco de backup), nuvem da empresa e backup dos celulares.
 2. Firewall: troca automática para o link reserva e VPN.
 3. Cofre de senhas (precisa existir antes de criar as outras senhas).
-4. Acesso remoto, GLPI, painel de segurança e monitoramento.
+4. Acesso remoto, GLPI e monitoramento.
 5. Primeiro PC Linux pelo POP-04: conferir a ferramenta de acesso remoto e o programa de suporte de fornecedor no Linux padrão. Depois, os demais PCs.
 6. MDM e o primeiro celular: conferir todas as políticas do §4.2. Depois, os demais celulares.

@@ -34,7 +34,7 @@
     mode: "0644"
   notify: Recarregar udev
 
-# Alertas de saúde no syslog (lido pelo painel de segurança). A gaveta USB precisa do -d sat.
+# Alertas de saúde no syslog (conferidos toda semana, POP-07 §4). A gaveta USB precisa do -d sat.
 - name: Saúde dos discos (smartd)
   ansible.builtin.copy:
     dest: /etc/smartd.conf
