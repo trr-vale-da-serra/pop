@@ -20,8 +20,8 @@ Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no
 | `funcionarios` | Conta dos funcionários (`usuario`, com administrador, sem senha e login automático, POP-TI §3.1). O pendrive já cria; o playbook cria nos PCs instalados antes ou à mão |
 | `desktop` | Dash to Panel e ArcMenu (baixados do `extensions.gnome.org`, na versão do GNOME do PC, porque o Ubuntu 26.04 não tem pacote) ligados para todos os usuários (dconf), dock do Ubuntu desligado. **Nenhum aviso na tela** do funcionário ("Não perturbe" travado; ficam no menu do relógio), sem avisos de atualização, firmware/driver e erro, snaps atualizam à noite |
 | `apps` | LibreOffice em português, leitor de PDF, Bitwarden (cofre de senhas) e Firefox com o bloqueador de anúncios uBlock Origin e a extensão do Bitwarden (instalados à força, o usuário não remove). Lista em `roles/apps/defaults/main.yml` (programa novo: POP-08) |
-| `clamav` | ClamAV com alertas no syslog (para o Wazuh) e varredura semanal da `/home` |
-| `agentes` | MeshCentral, GLPI Agent, Wazuh e AnyDesk (só com `anydesk: true` no host) |
+| `clamav` | ClamAV com alertas no syslog e varredura semanal da `/home` |
+| `agentes` | MeshCentral, GLPI Agent e AnyDesk (só com `anydesk: true` no host) |
 
 ## O que o `windows-padrao.yml` faz
 
@@ -30,11 +30,11 @@ Configuração em massa dos PCs (POP-TI §2). Aqui ficam os playbooks citados no
 | `windows_base` | Confere o nome `<EMPRESA>-PC-<patrimônio>`, fuso de Brasília, **nenhum aviso na tela** (desliga de novo a cada entrada no Windows), Windows Update sem reinício no horário de trabalho (7h às 19h) nem com alguém usando o PC, atualizações do Windows e confere que o **Microsoft Defender** está ligado |
 | `windows_funcionarios` | Conta dos funcionários (`usuario`, com administrador e sem senha, POP-TI §3.1). O pendrive já cria; o playbook confere e cria nos PCs instalados à mão |
 | `windows_apps` | Firefox, LibreOffice e Bitwarden pelo **Chocolatey** (lista em `windows_choco`, `inventario/group_vars/windows/main.yml`). uBlock Origin e Bitwarden à força no Firefox e **uBlock Origin Lite** à força no Edge e no Chrome (os dois não aceitam mais o uBlock Origin completo). PDF: o Edge abre |
-| `windows_agentes` | MeshCentral, GLPI Agent, Wazuh e AnyDesk (só com `anydesk: true` no host) |
+| `windows_agentes` | MeshCentral, GLPI Agent e AnyDesk (só com `anydesk: true` no host) |
 
 No fim, reinicia o PC se precisar (atualização ou nome novo).
 
-Cada agente **só é instalado depois que o servidor dele estiver configurado** em `inventario/group_vars/all/main.yml` (no Windows, também a versão do GLPI Agent e do Wazuh, em `group_vars/windows`). Enquanto o campo estiver vazio, o playbook pula o agente e avisa no final.
+Cada agente **só é instalado depois que o servidor dele estiver configurado** em `inventario/group_vars/all/main.yml` (no Windows, também a versão do GLPI Agent, em `group_vars/windows`). Enquanto o campo estiver vazio, o playbook pula o agente e avisa no final.
 
 ## Onde roda
 
@@ -245,7 +245,7 @@ ansible-playbook playbooks/linux-atualizacao.yml -K
 ansible-playbook playbooks/windows-atualizacao.yml -k
 ```
 
-Atualiza de 5 em 5 PCs e reinicia só os que precisam. PC desligado ou fora da empresa aparece como `UNREACHABLE` e os outros seguem normalmente. Quando ele voltar à rede (POP-06 §3.3), rodar só nele com `--limit <nome-do-pc>`. O agente Wazuh fica **segurado** (`hold`) para não ficar mais novo que o servidor: atualizar junto com o servidor Wazuh.
+Atualiza de 5 em 5 PCs e reinicia só os que precisam. PC desligado ou fora da empresa aparece como `UNREACHABLE` e os outros seguem normalmente. Quando ele voltar à rede (POP-06 §3.3), rodar só nele com `--limit <nome-do-pc>`.
 
 ## Senhas
 

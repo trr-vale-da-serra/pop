@@ -77,8 +77,8 @@ Fontes: [Ubuntu 25.10 drops GNOME on Xorg](https://discourse.ubuntu.com/t/ubuntu
 
 | Opção | Situação | Por quê |
 |---|---|---|
-| **Wazuh + Defender + ClamAV** | ✅ Escolhido | Antivírus em cada máquina e um painel central com todos os alertas |
-| Só Defender + ClamAV | ❌ Descartado | Ninguém veria os alertas de todas as máquinas juntos |
+| **Só Defender + ClamAV** | ✅ Escolhido (31/10/2026) | Antivírus em cada máquina, sem servidor para manter. Contra: cada alerta fica só no PC onde aconteceu; ninguém vê os de todas as máquinas juntos |
+| Wazuh + Defender + ClamAV | ❌ Descartado (31/10/2026) | Painel central com todos os alertas, mas é um servidor pesado a mais, e o agente usa protocolo próprio (portas 1514/1515): os PCs das outras bases só chegariam nele por VPN entre as bases ou por um programa a mais em cada PC (WARP) |
 | **Uptime Kuma** | ✅ Escolhido | Simples e leve, avisa por WhatsApp/Telegram/e-mail |
 | Zabbix | ❌ Descartado | Pesado e complexo para o tamanho atual |
 | **Vaultwarden** | ✅ Escolhido | Cofre compartilhado, usa os apps do Bitwarden |

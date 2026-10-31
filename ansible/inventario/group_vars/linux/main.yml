@@ -13,6 +13,3 @@ ti_chave_ssh_publica: "{{ lookup('ansible.builtin.file', '~/.ssh/id_ed25519.pub'
 ssh_desativar_senha: false
 
 fuso_horario: America/Sao_Paulo
-
-# Agentes (servidores em group_vars/all).
-wazuh_grupo: linux

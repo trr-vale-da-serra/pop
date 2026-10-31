@@ -1,5 +1,5 @@
 ---
-# POP-05 §4.2: MeshCentral, GLPI Agent e Wazuh.
+# POP-05 §4.2: MeshCentral e GLPI Agent.
 # Cada agente só é instalado quando o servidor dele está configurado (group_vars).
 - name: Pasta dos instaladores
   ansible.windows.win_file:
@@ -30,23 +30,6 @@
       RUNNOW=1 EXECMODE=1
     creates_path: C:\Program Files\GLPI-Agent
 
-- name: Wazuh
-  when: wazuh_manager | length > 0 and wazuh_versao | length > 0
-  block:
-    - name: Agente Wazuh
-      ansible.windows.win_package:
-        path: "https://packages.wazuh.com/4.x/windows/wazuh-agent-{{ wazuh_versao }}-1.msi"
-        arguments: >-
-          /q WAZUH_MANAGER={{ wazuh_manager }}
-          WAZUH_AGENT_NAME={{ inventory_hostname }} WAZUH_AGENT_GROUP={{ wazuh_grupo }}
-        creates_path: C:\Program Files (x86)\ossec-agent\wazuh-agent.exe
-
-    - name: Agente Wazuh ligado
-      ansible.windows.win_service:
-        name: WazuhSvc
-        start_mode: auto
-        state: started
-
 - name: AnyDesk (só PCs com suporte de fornecedor, POP-TI §3.2)
   when: anydesk | bool
   chocolatey.chocolatey.win_chocolatey:
@@ -59,6 +42,5 @@
   vars:
     pulados: >-
       {{ (['MeshCentral'] if meshcentral_url | length == 0 or (meshcentral_meshid | default('')) | length == 0 else [])
-         + (['GLPI'] if glpi_url | length == 0 or glpi_agent_versao | length == 0 else [])
-         + (['Wazuh'] if wazuh_manager | length == 0 or wazuh_versao | length == 0 else []) }}
+         + (['GLPI'] if glpi_url | length == 0 or glpi_agent_versao | length == 0 else []) }}
   when: pulados | length > 0

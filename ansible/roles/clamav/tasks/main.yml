@@ -7,7 +7,7 @@
       - clamav-freshclam
     state: present
 
-# O Wazuh lê os alertas do ClamAV pelo syslog (POP-TI §3.3).
+# Alertas do ClamAV no syslog (journalctl -t clamd).
 - name: ClamAV registra no syslog
   ansible.builtin.lineinfile:
     path: /etc/clamav/clamd.conf

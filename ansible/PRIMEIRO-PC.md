@@ -106,7 +106,7 @@ O pendrive está pronto e serve para todos os PCs. Ele tem a senha da TI (em has
    cd ~/repos/pop && git pull && ansible/pc-novo.sh TRR-PC-0012 10.10.10.101
    ```
    Pede a senha da conta da TI (`BECOME password`). O script põe o PC no inventário e roda o playbook, que troca o nome do PC, cria a conta dos funcionários (`usuario`) e configura tudo. No final o PC **reinicia sozinho** (o login automático e a barra nova só valem depois disso).
-   Enquanto os servidores do MeshCentral, GLPI e Wazuh não estiverem no ar, o playbook pula esses agentes e avisa no final. Isso é esperado.
+   Enquanto os servidores do MeshCentral e do GLPI não estiverem no ar, o playbook pula esses agentes e avisa no final. Isso é esperado.
 
 ## 9. Ajustar a aparência
 

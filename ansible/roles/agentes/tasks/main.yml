@@ -1,5 +1,5 @@
 ---
-# POP-04 §4.2: MeshCentral, GLPI Agent e Wazuh.
+# POP-04 §4.2: MeshCentral e GLPI Agent.
 # Cada agente só é instalado quando o servidor dele está configurado em group_vars/linux.
 - name: MeshCentral
   ansible.builtin.include_tasks: meshcentral.yml
@@ -8,10 +8,6 @@
 - name: GLPI Agent
   ansible.builtin.include_tasks: glpi.yml
   when: glpi_url | length > 0
-
-- name: Wazuh
-  ansible.builtin.include_tasks: wazuh.yml
-  when: wazuh_manager | length > 0
 
 - name: AnyDesk (só PCs com suporte de fornecedor, POP-TI §3.2)
   ansible.builtin.include_tasks: anydesk.yml
@@ -23,6 +19,5 @@
   vars:
     pulados: >-
       {{ (['MeshCentral'] if meshcentral_url | length == 0 or (meshcentral_meshid | default('')) | length == 0 else [])
-         + (['GLPI'] if glpi_url | length == 0 else [])
-         + (['Wazuh'] if wazuh_manager | length == 0 else []) }}
+         + (['GLPI'] if glpi_url | length == 0 else []) }}
   when: pulados | length > 0

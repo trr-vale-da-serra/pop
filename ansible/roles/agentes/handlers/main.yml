@@ -3,8 +3,3 @@
   ansible.builtin.service:
     name: glpi-agent
     state: restarted
-
-- name: Reiniciar wazuh-agent
-  ansible.builtin.service:
-    name: wazuh-agent
-    state: restarted

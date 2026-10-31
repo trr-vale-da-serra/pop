@@ -14,7 +14,6 @@
 | Acesso remoto (TI) | **MeshCentral** | Único serviço exposto na internet (porta 443, HTTPS), com 2FA |
 | Programa de suporte de fornecedor | **AnyDesk** | Só nos PCs que recebem suporte de fornecedor (POP-TI §3.2) |
 | Configuração em massa | **Ansible** | Os "roteiros de configuração" dos POPs são os playbooks do Ansible |
-| Painel de segurança | **Wazuh** | Recebe os alertas dos antivírus |
 | Antivírus | **Microsoft Defender** (Windows) e **ClamAV** (Linux) | |
 | Monitoramento | **Uptime Kuma** | Alertas no e-mail da TI |
 | Nuvem da empresa | **Samba** (pastas de rede) | No servidor: pasta pessoal por funcionário, com cota, e pasta por departamento. "Versões anteriores" do Windows mostra os snapshots |
@@ -67,7 +66,6 @@ Tudo o que o roteiro de configuração padrão (POP-04) instala em todo PC Linux
 |---|---|---|
 | **GLPI Agent** | Inventário | |
 | Agente do **MeshCentral** | Acesso remoto | |
-| Agente do **Wazuh** | Painel de segurança | Versão segurada, atualiza junto com o servidor |
 | **ClamAV** | Antivírus | Varredura semanal da pasta `/home` |
 | **AnyDesk** | Programa de suporte de fornecedor | Só nos PCs que recebem suporte de fornecedor (POP-TI §3.2) |
 | **unattended-upgrades** | Atualização de segurança diária | Sem reinício automático (o reinício fica para o POP-06) |
@@ -93,6 +91,6 @@ Tudo o que o roteiro de configuração padrão (POP-05) instala em todo PC Windo
 |---|---|---|
 | **Microsoft Defender** | Antivírus | Vem com o Windows; o roteiro confere que está ligado |
 | **Chocolatey** | Instala e atualiza os programas | Só a TI usa |
-| **GLPI Agent**, agente do **MeshCentral**, agente do **Wazuh** | Inventário, acesso remoto, painel de segurança | Só depois que o servidor de cada um estiver no ar |
+| **GLPI Agent** e agente do **MeshCentral** | Inventário e acesso remoto | Só depois que o servidor de cada um estiver no ar |
 | **AnyDesk** | Programa de suporte de fornecedor | Só nos PCs que recebem suporte de fornecedor (POP-TI §3.2) |
 | **WinRM** | Acesso do roteiro de configuração em massa | Ligado pelo pendrive; só aceita da mesma rede |
