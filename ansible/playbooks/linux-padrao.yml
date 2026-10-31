@@ -24,10 +24,16 @@
         path: /var/run/reboot-required
       register: reinicio
 
+    # Uma instalação ainda terminando (apt, snap) segura o desligamento por um tempo
+    # ("active block inhibitor"): espera e tenta de novo.
     - name: Reiniciar o PC
       ansible.builtin.reboot:
         msg: "Reinicio da configuracao da TI"
         reboot_timeout: 900
+      register: reiniciado
+      until: reiniciado is succeeded
+      retries: 5
+      delay: 60
       when: reinicio.stat.exists and reiniciar | default(true) | bool
 
     - name: Reinício pendente
