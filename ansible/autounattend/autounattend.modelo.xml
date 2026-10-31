@@ -118,10 +118,10 @@
           <Order>3</Order>
           <CommandLine>powershell -NoProfile -ExecutionPolicy Bypass -Command "Enable-PSRemoting -Force -SkipNetworkProfileCheck"</CommandLine>
         </SynchronousCommand>
-        <!-- Só aceita WinRM da mesma rede. -->
+        <!-- Só aceita WinRM da mesma rede e do servidor da TI (Ansible, TRR-PC-0003), que fica em outra rede. -->
         <SynchronousCommand wcm:action="add">
           <Order>4</Order>
-          <CommandLine>powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-NetFirewallRule -Name 'WINRM-HTTP-In-TCP*' | Set-NetFirewallRule -RemoteAddress LocalSubnet -Enabled True"</CommandLine>
+          <CommandLine>powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-NetFirewallRule -Name 'WINRM-HTTP-In-TCP*' | Set-NetFirewallRule -RemoteAddress LocalSubnet,192.168.170.171 -Enabled True"</CommandLine>
         </SynchronousCommand>
         <!-- Conta local administradora pode ser usada pelo WinRM. -->
         <SynchronousCommand wcm:action="add">

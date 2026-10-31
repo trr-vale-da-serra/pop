@@ -30,7 +30,7 @@
       RUNNOW=1 EXECMODE=1
     creates_path: C:\Program Files\GLPI-Agent
 
-- name: AnyDesk (só PCs com suporte de fornecedor, POP-TI §3.2)
+- name: AnyDesk (todo PC Windows, POP-TI §3.2)
   when: anydesk | bool
   chocolatey.chocolatey.win_chocolatey:
     name: anydesk.install

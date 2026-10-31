@@ -36,7 +36,7 @@ Padronizar os PCs que **continuam no Windows** porque usam algum programa que n�
    - Confere que o **antivírus** está ativo.
    - Agentes: **acesso remoto** e **GLPI Agent**.
 7. Instalar o programa que exige Windows.
-8. Programa de suporte de fornecedor: instalar **só** se o PC recebe suporte de fornecedor (POP-TI §3.2).
+8. Programa de suporte de fornecedor: o roteiro já instala em todo PC Windows (POP-TI §3.2).
 
 ### 4.3 Conta dos funcionários
 

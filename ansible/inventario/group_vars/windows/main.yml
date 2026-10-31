@@ -5,7 +5,8 @@ ansible_user: ti
 ansible_connection: winrm
 ansible_port: 5985
 ansible_winrm_scheme: http
-# NTLM criptografa o conteúdo mesmo pelo http. Só aceita da mesma rede (firewall do PC).
+# NTLM criptografa o conteúdo mesmo pelo http. Só aceita da mesma rede e do
+# servidor da TI, 192.168.170.171 (firewall do PC, autounattend.xml).
 ansible_winrm_transport: ntlm
 
 fuso_horario_windows: E. South America Standard Time
@@ -19,6 +20,9 @@ windows_choco:
 
 # Agentes (servidores em group_vars/all). Versão vazia = agente pulado.
 glpi_agent_versao: "1.21"    # github.com/glpi-project/glpi-agent/releases
+
+# AnyDesk em todo PC Windows (decisão da TI, 31/10/2026). No Linux, só marcando no host.
+anydesk: true
 
 # Horário de trabalho: o Windows não reinicia sozinho para atualizar nesse intervalo.
 horario_inicio: 7

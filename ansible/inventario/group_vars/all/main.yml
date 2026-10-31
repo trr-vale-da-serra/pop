@@ -16,6 +16,7 @@ meshcentral_url: ""          # ex.: https://mesh.trrvaledaserra.com.br
 glpi_url: https://glpi.vsautonomus.com.br/   # ferramentas_ti no TRR-PC-0003 (glpi_endereco)
 
 # AnyDesk só nos PCs que recebem suporte de fornecedor (marcar no host).
+# Windows: em todos (group_vars/windows).
 anydesk: false
 
 # Políticas do Firefox: https://mozilla.github.io/policy-templates/

@@ -12,7 +12,7 @@
 |---|---|---|
 | Chamados, inventário e patrimônio | **GLPI + GLPI Agent** | Citado pelo nome nos POPs |
 | Acesso remoto (TI) | **MeshCentral** | Único serviço exposto na internet (porta 443, HTTPS), com 2FA |
-| Programa de suporte de fornecedor | **AnyDesk** | Só nos PCs que recebem suporte de fornecedor (POP-TI §3.2) |
+| Programa de suporte de fornecedor | **AnyDesk** | Em todo PC Windows; no Linux, só nos PCs que recebem suporte de fornecedor (POP-TI §3.2) |
 | Configuração em massa | **Ansible** | Os "roteiros de configuração" dos POPs são os playbooks do Ansible |
 | Antivírus | **Microsoft Defender** (Windows) e **ClamAV** (Linux) | |
 | Monitoramento | **Uptime Kuma** | Alertas no e-mail da TI |
@@ -92,5 +92,5 @@ Tudo o que o roteiro de configuração padrão (POP-05) instala em todo PC Windo
 | **Microsoft Defender** | Antivírus | Vem com o Windows; o roteiro confere que está ligado |
 | **Chocolatey** | Instala e atualiza os programas | Só a TI usa |
 | **GLPI Agent** e agente do **MeshCentral** | Inventário e acesso remoto | Só depois que o servidor de cada um estiver no ar |
-| **AnyDesk** | Programa de suporte de fornecedor | Só nos PCs que recebem suporte de fornecedor (POP-TI §3.2) |
+| **AnyDesk** | Programa de suporte de fornecedor | Em todo PC Windows (POP-TI §3.2) |
 | **WinRM** | Acesso do roteiro de configuração em massa | Ligado pelo pendrive; só aceita da mesma rede |

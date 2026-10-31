@@ -60,7 +60,7 @@ Não há domínio (Active Directory). As configurações dos PCs são aplicadas 
 1. Só quando **a empresa chamou o fornecedor**. Nunca para quem ligou oferecendo suporte.
 2. Sempre **assistido**: alguém no PC aceita a conexão e acompanha. **Nunca** configurar senha de acesso autônomo.
 3. Cada acesso é registrado num **chamado do GLPI**: fornecedor, data, motivo e quem acompanhou.
-4. O programa de suporte de fornecedor fica instalado só nos PCs que recebem suporte de fornecedor.
+4. O programa de suporte de fornecedor fica instalado em **todo PC Windows**. No Linux, só nos PCs que recebem suporte de fornecedor.
 
 ### 3.3 Segurança
 
